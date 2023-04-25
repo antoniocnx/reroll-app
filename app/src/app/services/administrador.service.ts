@@ -5,7 +5,7 @@ import { Administrador, RespuestaAdmin, RespuestaLogin, RespuestaSignUp, Respues
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { NavController } from '@ionic/angular';
 
-const url = environment.url;
+const url = environment.heroku_url;
 
 @Injectable({
   providedIn: 'root'
