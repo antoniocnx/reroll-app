@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { /*Juego,*/ RespuestaPost } from '../interfaces/interfaces';
 
-const url = environment.heroku_url;
+const url = environment.url;
 
 @Injectable({
   providedIn: 'root'
