@@ -7,7 +7,7 @@ import { UsuarioService } from './usuario.service';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@awesome-cordova-plugins/file-transfer';
 import { Filesystem, FilesystemDirectory } from '@capacitor/filesystem';
 
-const url = environment.url;
+const url = environment.heroku_url;
 
 @Injectable({
   providedIn: 'root'

@@ -4,7 +4,7 @@ import { Articulo, RespuestaArticulo, RespuestaCrearArticulo } from '../interfac
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 
-const url = environment.url;
+const url = environment.heroku_url;
 
 @Injectable({
   providedIn: 'root'
