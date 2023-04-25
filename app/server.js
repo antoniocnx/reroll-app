@@ -1,11 +1,18 @@
-let express = require('express');
+const express = require('express');
+const path = require('path');
 
-let app = express();
+const app = express();
 
-app.use(express.static(__dirname + 'www'));
+// Servir los archivos estáticos de la carpeta "www/dist"
+app.use(express.static(path.join(__dirname, 'www')));
 
-app.get('/*', (req, resp) => {
-    resp.sendFile(__dirname + '/www/index.html');
+// Manejar todas las demás rutas con el archivo "index.html"
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'www', 'index.html'));
 });
 
-app.listen(process.env.PORT || 4200);
+// Iniciar el servidor
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Servidor iniciado en el puerto ${port}`);
+});
