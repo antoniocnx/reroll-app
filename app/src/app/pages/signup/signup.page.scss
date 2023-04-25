@@ -1,0 +1,183 @@
+// .form-container {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     min-height: calc(100vh - 90px);
+// }
+
+// ion-col {
+//     text-align: center;
+// }
+
+// img {
+//     width: 120px;
+//     margin-bottom: 20px;
+// }
+
+// .toolbar-footer {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+// }
+
+// ion-footer {
+//   height: 90px;
+// }
+
+// ion-toolbar{
+//     height: 100%;
+// }
+
+// .pick-avatar {
+//     width: 80px;
+//     opacity: 0.3;
+// }
+
+// .pick-avatar-seleccionado {
+//     transition: opacity 0.5s linear;
+//     opacity: 1 !important;
+// }
+
+// ion-radio-group ion-label {
+//     margin-left: 15px;
+// }
+
+// .btn-crear-usuario {
+//     margin-top: 15px;
+//     margin-bottom: 15px;
+// }
+
+// NUEVO LOGIN
+
+// ::-webkit-scrollbar, *::-webkit-scrollbar {
+//     display: none;
+//     overflow: hidden;
+//   }
+  
+  // ion-content {
+  //   overflow: hidden;
+  //   --overflow: hidden;
+  // }
+  
+  // .scroll-content {
+  //   overflow: hidden;
+  // }
+  
+  ion-list {
+    background: transparent;
+    // transform: translateY(15vh);
+    ion-item {
+      border: 1px solid var(--ion-color-medium);
+      border-radius: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    ion-row {
+      margin-bottom: 5vh;
+    }
+    ion-button {
+      width: 30vh;
+      margin: auto;
+    }
+    .alignItems {
+      ion-checkbox, ion-note {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      ion-checkbox {
+        margin-right: 3vw;
+        --size: 1.1rem;
+      }
+    }
+    
+    ion-col {
+      ion-note {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .form-container {
+    margin-top: 100px; /* ajusta la posición vertical del formulario */
+  }
+
+  .backButton {
+      position: absolute;
+      top: 190px;
+      left: 15px;
+      font-size: 2rem;
+  }
+  
+  .circleBase {
+    border-radius: 50%;
+  }
+  
+  .type1 {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    top: -50px;
+    left: -50px;
+      // Oscuro a claro
+  // background: linear-gradient(90deg, #520070 0%, #631a7e 100%);
+  // box-shadow: 0px 1px 10px rgba(98, 140, 255, 0.2);
+  // Claro a oscuro
+  background: linear-gradient(90deg, #631a7e 0%, #520070 100%);
+  box-shadow: 0px 1px 5px rgba(82, 0, 112, 0.2);
+  }
+  
+  .type2 {
+    width: 100px;
+    height: 100px;
+    background: #000;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .type2 {
+      background-color: white;
+    }
+  }
+  
+  @media (prefers-color-scheme: light) {
+    .type2 {
+      background-color: black;
+    }
+  }
+  
+  .circle1 {
+    margin-left: 180px;
+    margin-top: 50px;
+  }
+  
+  .circle2 {
+    position: absolute;
+    top: 150px;
+    left: -20px;
+  }
+  
+  .welcomeMessage {
+    position: absolute;
+    top: 70px;
+    left: 50px;
+    p {
+      font-weight: bold;
+      font-size: 1.8rem;
+      margin-top: 5px;
+    }
+  }
+  
+  .error {
+    font-size: 0.75rem;
+  }
+
+  ion-radio-group ion-item {
+    border: none !important;
+  }
+
+  ion-radio-group ion-item ion-label {
+    margin-left: 10px !important;
+  }
+
+.btn-crear-usuario {
+  text-align: center;
+}

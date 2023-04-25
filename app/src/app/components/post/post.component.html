@@ -1,0 +1,57 @@
+<div class="post">
+
+  <ion-item lines="none">
+
+    <ion-avatar slot="start">
+      <img src="/assets/avatars/{{ post.usuario?.avatar }}">
+    </ion-avatar>
+
+    <ion-label>
+      <h3>{{ post.usuario?.nombre }}</h3>
+      <h5>{{ post.usuario?.email }}</h5>
+    </ion-label>
+  
+  </ion-item>
+
+  <!-- Imágenes -->
+  <ion-slides pager="true" *ngIf="post && post.imgs && post.imgs.length > 1">
+    <!-- Variante usando la pipe DomSanitizer -->
+    <ion-slide class="image-slide"
+                *ngFor="let img of post.imgs"
+                [style.background-image]="(img | imagen: post.usuario?._id ?? '') | domSanitazer">
+    </ion-slide>
+
+  </ion-slides>
+
+  <ion-slides *ngIf="post && post.imgs && post.imgs.length === 1" [options]="blockSlide">
+    <!-- Variante usando la pipe DomSanitizer -->
+    <ion-slide class="image-slide"
+                *ngFor="let img of post.imgs"
+                [style.background-image]="(post.imgs[0] | imagen: post.usuario?._id ?? '') | domSanitazer">
+    </ion-slide>
+    
+  </ion-slides>
+
+  <!-- Mapa -->
+  <!-- <app-mapa *ngIf="post.coords" [coords]="post.coords"></app-mapa> -->
+  <ng-container *ngIf="post.coords">
+    <app-mapa [coords]="post.coords"></app-mapa>
+  </ng-container>
+
+  <ion-item lines="none">
+    <ion-label text-wrap>
+      {{ post.mensaje }}
+    </ion-label>
+  </ion-item>
+
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="tertiary" (click)="favorito()">
+      <ion-icon [name]="esFavorito ? 'heart' : 'heart-outline'" [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+</div>
+
+

@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>
+      Chats
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+
+  <ion-list *ngIf="segment == 'chats' && (chatRooms) as rooms">
+
+    <ion-item
+    *ngFor="let item of rooms" 
+    (click)="getChat(item)"
+    [detail]="true">
+      <ion-avatar slot="start">
+        <img [src]="item?.photo" />
+      </ion-avatar>
+      <ion-label>
+        {{item?.name}}
+        <p>
+          <ion-text>
+            Mensaje
+          </ion-text>
+        </p>
+      </ion-label>
+      <ion-text slot="end" color="medium">10:00h</ion-text>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

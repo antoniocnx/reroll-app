@@ -1,0 +1,215 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <!-- <ion-title>
+      Perfil
+    </ion-title> ->
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content scrollY="true">
+
+  <ion-row class="top-20">
+    <ion-col size="12" class="ion-text-center">
+      <img src="assets/avatars/{{ usuario.avatar }}" class="img-avatar">
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="top-20">
+    <ion-col size="12" class="ion-text-center">
+      <ion-label>
+        <h1>Editar perfil</h1>
+      </ion-label>
+    </ion-col>
+  </ion-row>
+
+  <form [formGroup]="formUpdate" (ngSubmit)="actualizar(formUpdate)"> <!-- (ngSubmit)="valorForm(formUpdate)" -->
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          <ion-list lines="none" class="ion-margin">
+          <!-- Avatar selector -->
+          <app-avatar-selector (avatarSeleccionado)="formUpdate.get('avatar')?.setValue($event)"></app-avatar-selector>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Nombre:</ion-label>
+            <ion-icon 
+              name="person-outline" slot="end" color="medium">
+            </ion-icon>
+            <ion-input type="text" class="form-control" formControlName="nombre" placeholder="Nombre"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('nombre')?.valid && formUpdate.get('nombre')?.touched">
+            <p class="error">* Por favor, indique su nombre</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Apellidos:</ion-label>
+            <ion-icon 
+              name="person-outline" slot="end" color="medium">
+            </ion-icon>
+            <ion-input type="text" class="form-control" formControlName="apellidos" placeholder="Apellidos"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('apeliidos')?.valid && formUpdate.get('apeliidos')?.touched">
+            <p class="error">* Por favor, indique sus apeliidos</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Email:</ion-label>
+            <ion-icon 
+              name="mail-outline" slot="end" color="medium">
+            </ion-icon>
+            <ion-input type="email" class="form-control" formControlName="email" placeholder="Email"></ion-input>
+          </ion-item>
+            <ion-text 
+              class="ion-text-left"
+              color="danger"
+              *ngIf="!formUpdate.get('email')?.valid && formUpdate.get('email')?.touched">
+              <p class="error">* Por favor, indique un email válido</p>
+            </ion-text>
+            <ion-text 
+              class="ion-text-left"
+              color="danger"
+              *ngIf="formUpdate.get('email')?.hasError('emailAdminNoValido')">
+              <p class="error">* Email inválido. No se permiten direcciones de correo que terminen en "@admin.com"</p>
+            </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Contraseña:</ion-label>
+            <ion-icon (click)="onChange()"
+              [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'" 
+              slot="end" 
+              [color]="isTypePassword ? 'medium' : 'primary'">
+            </ion-icon>
+          <ion-input type="password" class="form-control" formControlName="password" placeholder="Contraseña" [type]="isTypePassword ? 'password' : 'text'"></ion-input>
+            <!-- <ion-input 
+              formControlName="password" 
+              [type]="isTypePassword ? 'password' : 'text'"
+              placeholder="Enter Password">
+            </ion-input> -->
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('password')?.valid && formUpdate.get('password')?.touched">
+            <p 
+              class="error" 
+              *ngIf="formUpdate.get('password')?.invalid || formUpdate.get('password')?.dirty">
+              * Por favor, introduce una contraseña de al menos 6 caracteres
+            </p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Fecha de nacimiento:</ion-label>
+            <ion-input type="date" class="form-control" formControlName="nacimiento" placeholder="Seleccione la fecha"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('nacimiento')?.valid && formUpdate.get('nacimiento')?.touched">
+            <p class="error">* Por favor, indique su fecha de nacimiento</p>
+          </ion-text>
+
+          <ion-item>
+            <ion-radio-group class="form-control" formControlName="sexo">
+              <ion-label position="floating" slot="start">Sexo:</ion-label>
+              <ion-item>
+                <ion-radio value="Hombre"></ion-radio>
+                <ion-label>Hombre</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-radio value="Mujer"></ion-radio>
+                <ion-label>Mujer</ion-label>
+              </ion-item>
+            </ion-radio-group>
+          </ion-item>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Dirección:</ion-label>
+            <ion-icon 
+              name="location-outline" slot="end" color="medium">
+            </ion-icon>
+            <ion-input type="text" class="form-control" formControlName="direccion" placeholder="Dirección"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('direccion')?.valid && formUpdate.get('direccion')?.touched">
+            <p class="error">* Por favor, indique su dirección</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Ciudad:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="ciudad" placeholder="Ciudad"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('ciudad')?.valid && formUpdate.get('ciudad')?.touched">
+            <p class="error">* Por favor, indique su ciudad</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Localidad:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="localidad" placeholder="Localidad"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('localidad')?.valid && formUpdate.get('localidad')?.touched">
+            <p class="error">* Por favor, indique su localidad</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">País:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="pais" placeholder="País"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('pais')?.valid && formUpdate.get('pais')?.touched">
+            <p class="error">* Por favor, indique su país</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Código postal:</ion-label>
+            <ion-input type="number" class="form-control" formControlName="cp" placeholder="Código postal"></ion-input>
+          </ion-item>
+          <ion-text 
+            class="ion-text-left"
+            color="danger"
+            *ngIf="!formUpdate.get('cp')?.valid && formUpdate.get('cp')?.touched">
+            <p class="error">* Por favor, indique su código postal</p>
+          </ion-text>
+        
+        <ion-row style="margin-top: 30px;">
+          <ion-col class="ion-text-center">
+            <ion-button type="submit"
+                        color="tertiary"
+                        shape="round"
+                        class="btn">
+              Guardar
+            </ion-button>
+          </ion-col>
+
+          <ion-col class="ion-text-center">
+            <ion-button type="submit"
+                        color="tertiary"
+                        shape="round"
+                        [routerLink]="['/user/perfil']"
+                        class="btn">
+              Cancelar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

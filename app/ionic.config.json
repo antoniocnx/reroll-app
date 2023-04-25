@@ -1,0 +1,7 @@
+{
+  "name": "rolea",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

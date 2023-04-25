@@ -1,0 +1,82 @@
+<ion-content [fullscreen]="true">
+  <div class="circleBase type2 circle1"></div>
+  <div class="circleBase type1"></div>
+  <div class="circleBase type2 circle2"></div>
+
+  <ion-label class="welcomeMessage">
+    <ion-text color="dark">Bienvenido a</ion-text> 
+    <ion-text color="dark">
+      <p>Reroll</p>
+    </ion-text>
+  </ion-label> 
+
+  <ion-icon class="icon-admin" name="shield-half-outline" [routerLink]="['/login-admin']"></ion-icon>
+
+  <form [formGroup]="formLogin" (ngSubmit)="login(formLogin)">
+    <ion-list lines="none" class="ion-margin ion-padding ion-text-center">
+      <ion-item class="ion-margin-vertical">
+        <ion-icon 
+          name="mail-outline" slot="end" color="medium">
+        </ion-icon>
+        <ion-input 
+          formControlName="email" 
+          placeholder="Email">
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!formLogin.get('email')?.valid && formLogin.get('email')?.touched">
+        <p class="error">* Por favor, introduzca un email válido</p>
+      </ion-text>
+
+      <ion-item class="ion-margin-vertical">
+        <ion-icon (click)="onChange()"
+          [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'" 
+          slot="end" 
+          [color]="isTypePassword ? 'medium' : 'primary'">
+        </ion-icon>
+        <ion-input 
+          formControlName="password" 
+          [type]="isTypePassword ? 'password' : 'text'"
+          placeholder="Contraseña">
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!formLogin.get('password')?.valid && formLogin.get('password')?.touched">
+        <p 
+          class="error" 
+          *ngIf="formLogin.get('password')?.invalid"> <!--- && formLogin.get('password')?.errors['required'] -->
+          * Por favor, introduzca su contraseña
+        </p>
+        <p 
+          class="error" 
+          *ngIf="formLogin.get('password')?.dirty">
+          * La contraseña debe tener al menos 8 caracteres
+        </p>
+      </ion-text>
+
+      <ion-row class="ion-margin-vertical">
+        <ion-col size="6" class="alignItems">
+          <div class="ion-text-start">
+            <ion-checkbox></ion-checkbox>
+            <ion-note>Recuérdame</ion-note>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div class="ion-text-end">
+            <ion-note>¿Olvidaste la contraseña?</ion-note>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-button color="tertiary" shape="round" type="submit">Iniciar sesión</ion-button>
+      <p class="signup">
+        <ion-note>
+          ¿Todavía no tienes cuenta? <ion-text routerLink="/signup" color="primary">Regístrate</ion-text>
+        </ion-note>
+      </p>
+    </ion-list>
+  </form>
+</ion-content>

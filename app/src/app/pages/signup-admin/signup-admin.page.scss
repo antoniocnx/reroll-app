@@ -1,0 +1,84 @@
+ion-header ion-toolbar ion-title {
+    text-align: center;
+}
+
+// .pick-avatar {
+//     width: 80px;
+//     opacity: 0.3;
+// }
+
+// .pick-avatar-seleccionado {
+//     transition: opacity 0.5s linear;
+//     opacity: 1 !important;
+// }
+
+// ion-radio-group ion-label {
+//     margin-left: 15px;
+// }
+
+// // .btn-crear-administrador {
+// //     margin-top: 15px;
+// //     margin-bottom: 15px;
+// // }
+
+// .btn-crear-administrador {
+//     margin-top: 15px;
+//     margin-bottom: 15px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+// }
+
+ion-list {
+    background: transparent;
+    // transform: translateY(15vh);
+    ion-item {
+      border: 1px solid var(--ion-color-medium);
+      border-radius: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    ion-row {
+      margin-bottom: 5vh;
+    }
+    ion-button {
+      width: 30vh;
+      margin: auto;
+    }
+    .alignItems {
+      ion-checkbox, ion-note {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      ion-checkbox {
+        margin-right: 3vw;
+        --size: 1.1rem;
+      }
+    }
+    
+    ion-col {
+      ion-note {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+//   .form-container {
+//     margin-top: 100px; /* ajusta la posición vertical del formulario */
+//   }
+  
+  .error {
+    font-size: 0.75rem;
+  }
+
+  ion-radio-group ion-item {
+    border: none !important;
+  }
+
+  ion-radio-group ion-item ion-label {
+    margin-left: 10px !important;
+  }
+
+.btn-crear-usuario {
+  text-align: center;
+}
