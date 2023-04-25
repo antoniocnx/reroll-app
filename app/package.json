@@ -1,15 +1,16 @@
 {
-  "name": "rolea",
+  "name": "reroll",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "heroku-postbuild": "ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +35,7 @@
     "@ionic/storage": "^3.0.6",
     "@ionic/storage-angular": "^3.0.6",
     "cordova-plugin-file-transfer": "github:apache/cordova-plugin-file-transfer",
+    "express": "^4.18.2",
     "ionicons": "^6.0.3",
     "mapbox-gl": "^2.13.0",
     "rxjs": "~7.5.0",
@@ -47,7 +49,7 @@
     "@angular-eslint/eslint-plugin": "^14.0.0",
     "@angular-eslint/eslint-plugin-template": "^14.0.0",
     "@angular-eslint/template-parser": "^14.0.0",
-    "@angular/cli": "^15.0.0",
+    "@angular/cli": "^15.2.6",
     "@angular/compiler": "^15.0.0",
     "@angular/compiler-cli": "^15.0.0",
     "@angular/language-service": "^15.0.0",
