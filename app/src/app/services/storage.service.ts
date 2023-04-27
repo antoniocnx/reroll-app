@@ -12,8 +12,6 @@ import { Post } from '../interfaces/interfaces';
 })
 export class StorageService {
 
-  // posts: Post[] = [];
-
   postsFavoritos: Post[] = [];
 
   esFavorito: boolean = false;

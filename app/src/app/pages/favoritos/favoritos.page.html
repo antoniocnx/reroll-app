@@ -14,7 +14,7 @@
   </ion-refresher> -->
 
   <!-- POSTS -->
-  <app-posts *ngIf="postsFavoritos" [posts]="postsFavoritos"></app-posts>
+  <!-- <app-posts *ngIf="postsFavoritos" [posts]="postsFavoritos"></app-posts> -->
 
   <!-- INFINITE SCROLL -->
   <ion-infinite-scroll [disabled]="estadoInfiniteScroll" threshold="150px" (ionInfinite)="scroll($event)">
