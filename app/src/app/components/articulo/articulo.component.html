@@ -2,11 +2,11 @@
 
   <ion-item lines="none">
 
-    <ion-avatar slot="start">
+    <ion-avatar slot="start" style="margin-left: 10px;">
       <img src="/assets/avatars/{{ articulo.usuario?.avatar }}">
     </ion-avatar>
 
-    <ion-label>
+    <ion-label style="margin-left: 20px;">
       <h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2>
     </ion-label>
   
@@ -38,17 +38,17 @@
   </ng-container> -->
 
   <ion-item lines="none">
-    <ion-button slot="end" color="tertiary">
-      <ion-icon slot="icon-only" name="heart-outline" *ngIf="esFavorito" color="danger"></ion-icon>
+    <ion-button shape="round" size="default" fill="clear" slot="end" color="light" (click)="favorito()">
+      <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'" [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
   </ion-button>
 
-    <h3>
+    <h3 style="margin-left: 20px;">
       {{ articulo.precio }}€
     </h3>
   </ion-item>
 
   <ion-item lines="none">
-    <h5>
+    <h5 style="margin-left: 20px;">
       {{ articulo.nombre }}
     </h5>
   </ion-item>
