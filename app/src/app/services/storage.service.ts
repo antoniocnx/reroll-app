@@ -18,11 +18,18 @@ export class StorageService {
 
   getFavorito() {
     return this.esFavorito;
+    // return this.almacenaFavorito(this.esFavorito);
   }
 
   cambiaFavorito() {
     this.esFavorito = !this.esFavorito;
+    console.log('FAVORITO EN STORAGE', this.esFavorito);
+    // this.almacenaFavorito(this.esFavorito);
   }
+
+  // almacenaFavorito(fav: boolean) {
+  //   return fav;
+  // }
 
   constructor(private storage: Storage, private toastCtrl: ToastController) {
     // this.cargarFavoritos();

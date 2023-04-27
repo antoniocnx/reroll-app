@@ -9,7 +9,7 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class ArticuloComponent implements OnInit {
 
-  esFavorito: boolean = false;
+  esFavorito: boolean = false; //false;
 
   @Input() articulo: Articulo = {};
 
@@ -22,11 +22,16 @@ export class ArticuloComponent implements OnInit {
 
   ngOnInit() {
     this.esFavorito = this.storage.getFavorito();
+    console.log('FAVORITO OnInit EN ARTICULO.TS', this.esFavorito);
   }
 
   favorito() {
-    // this.storage.cambiaFavorito();
-    this.esFavorito = !this.esFavorito;
+    this.storage.cambiaFavorito();
+    
+    this.esFavorito = this.storage.getFavorito();
+    // this.esFavorito = this.storage.almacenaFavorito(this.esFavorito);
+    
+    console.log('FAVORITO EN ARTICULO.TS', this.esFavorito);
     // this.esFavorito = this.storage.getFavorito();
     // this.storage.guardarPostFavorito(this.articulo);
   }
