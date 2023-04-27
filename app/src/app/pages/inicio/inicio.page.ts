@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from 'src/app/interfaces/interfaces';
-import { PostsService } from 'src/app/services/posts.service';
+import { Articulo } from 'src/app/interfaces/interfaces';
+import { ArticulosService } from 'src/app/services/articulos.service';
 
 @Component({
   selector: 'app-inicio',
@@ -9,39 +9,40 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class InicioPage implements OnInit {
 
-  posts: Post[] = [];
+  articulos: Articulo[] = [];
 
   estadoInfiniteScroll = false;
 
-  constructor(private postsService: PostsService) { }
+  constructor(private articulosService: ArticulosService) { }
 
   ngOnInit() {
     this.scroll();
-    this.postsService.nuevoPost.subscribe(post => {
-      this.posts.unshift(post);
+
+    this.articulosService.nuevoArticulo.subscribe(arti => {
+      this.articulos.unshift(arti);
     });
   }
 
   // FUNCIÓN DEL REFRESHER
   refresh(event: any) {
     this.scroll(event, true);
-    this.posts = [];
+    this.articulos = [];
     this.estadoInfiniteScroll = false;
   }
 
   // FUNCIÓN DEL INFINITE SCROLL
   scroll(event?: any, pull: boolean = false) {
 
-    this.postsService.getPosts(pull)
+    this.articulosService.getArticulos(pull)
       .subscribe(resp => {
       console.log(resp);
-      this.posts.push(...resp.posts);
+      this.articulos.push(...resp.articulos);
       
       if(event) {
         event.target.complete();
-        if(resp.posts.length === 0) {
+        if(resp.articulos.length === 0) {
           this.estadoInfiniteScroll = true;
-          console.log('Todos los posts se han cargado');
+          console.log('Todos los articulos se han cargado');
         }
       }
     })

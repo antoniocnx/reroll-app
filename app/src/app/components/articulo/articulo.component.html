@@ -7,8 +7,7 @@
     </ion-avatar>
 
     <ion-label>
-      <h3>{{ articulo.usuario?.nombre }}</h3>
-      <h5>{{ articulo.usuario?.email }}</h5>
+      <h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2>
     </ion-label>
   
   </ion-item>
@@ -39,17 +38,27 @@
   </ng-container> -->
 
   <ion-item lines="none">
-    <ion-label text-wrap>
+    <ion-button slot="end" color="tertiary">
+      <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
+  </ion-button>
+
+    <h3>
+      {{ articulo.precio }}€
+    </h3>
+  </ion-item>
+
+  <ion-item lines="none">
+    <h5>
       {{ articulo.nombre }}
-    </ion-label>
+    </h5>
   </ion-item>
 
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="tertiary" (click)="favorito()">
       <ion-icon [name]="esFavorito ? 'heart' : 'heart-outline'" [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
 
 </div>
