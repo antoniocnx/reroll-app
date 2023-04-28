@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavParams } from '@ionic/angular';
 import { Articulo } from 'src/app/interfaces/interfaces';
@@ -13,16 +13,17 @@ export class ItemPage implements OnInit {
 
   public articulo: Articulo = {};
 
-  constructor(private activatedRoute: ActivatedRoute, private articulosService: ArticulosService) { }
+  constructor(private route: ActivatedRoute, private articulosService: ArticulosService) { }
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id) {
-      this.articulosService.getArticuloById(id).subscribe(data => {
-        this.articulo = data;
-        console.log('ITEM PAGE TS: ', this.articulo);
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
+      this.articulosService.getArticuloById(id).subscribe(res => {
+        this.articulo = res;
+        console.log('ARTICULO EN ITEM', this.articulo);
       });
-    }
+    });
+
   }
 
 }

@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: () => import('../inicio/inicio.module').then(m => m.InicioPageModule)
       },
       {
+        path: 'item/:id',
+        loadChildren: () => import('../item/item.module').then( m => m.ItemPageModule)
+      },
+      {
         path: 'postear',
         loadChildren: () => import('../postear/postear.module').then(m => m.PostearPageModule)
       },

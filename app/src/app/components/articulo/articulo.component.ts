@@ -13,6 +13,8 @@ export class ArticuloComponent implements OnInit {
 
   @Input() articulo: Articulo = {};
 
+  @Input() item: Articulo ={};
+
   blockSlide = {
     allowSlideNext: false,
     allowSlidePrev: false
