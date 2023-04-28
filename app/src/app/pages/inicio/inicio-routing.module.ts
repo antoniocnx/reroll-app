@@ -6,7 +6,13 @@ import { InicioPage } from './inicio.page';
 const routes: Routes = [
   {
     path: '',
-    component: InicioPage
+    component: InicioPage,
+    children: [
+        {
+          path: 'item/:id',
+          loadChildren: () => import('../item/item.module').then( m => m.ItemPageModule)
+        }
+    ]
   }
 ];
 

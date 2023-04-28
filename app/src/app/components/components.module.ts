@@ -25,6 +25,7 @@ import { ArticulosComponent } from './articulos/articulos.component';
     SwiperModule
   ],
   exports: [
+    ArticuloComponent,
     ArticulosComponent,
     AvatarSelectorComponent,
     MapaComponent,

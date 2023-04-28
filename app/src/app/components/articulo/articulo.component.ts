@@ -9,7 +9,7 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class ArticuloComponent implements OnInit {
 
-  esFavorito: boolean = false; //false;
+  esFavorito: boolean = false;
 
   @Input() articulo: Articulo = {};
 

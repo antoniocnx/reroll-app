@@ -28,6 +28,10 @@ export class ArticulosService {
     return this.http.get<RespuestaArticulo>(`${url}/articulo/get?pagina=${this.paginaArticulos}`);
   }
 
+  getArticuloById(id: string) {
+    return this.http.get(`${ url }/articulo/${ id } `);
+  }
+
   crearArticulo(articulo: any) {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
