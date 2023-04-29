@@ -1,137 +1,19 @@
-<!-- <ion-content scrollY="true"> -->
- <!-- <div class="articulo"> -->
-    <!-- Vista CARD -->
-    <!-- <ion-item lines="none">
-
-      <ion-avatar slot="start" style="margin-left: 10px;">
-        <img src="/assets/avatars/{{ articulo.usuario?.avatar }}">
-      </ion-avatar>
-
-      <ion-label style="margin-left: 20px;">
-        <h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2>
-      </ion-label>
-    
-    </ion-item>
-    
-
-    <!-- Imágenes ->
-    <ion-slides pager="true" *ngIf="articulo && articulo.galeria && articulo.galeria.length > 1">
-      <!-- Variante usando la pipe DomSanitizer ->
-      <ion-slide class="image-slide"
-                  *ngFor="let img of articulo.galeria"
-                  [style.background-image]="(img | imagen: articulo.usuario?._id ?? '') | domSanitazer">
-      </ion-slide>
-
-    </ion-slides>
-
-    <ion-slides *ngIf="articulo && articulo.galeria && articulo.galeria.length === 1" [options]="blockSlide">
-      <!-- Variante usando la pipe DomSanitizer ->
-      <ion-slide class="image-slide"
-                  *ngFor="let img of articulo.galeria"
-                  [style.background-image]="(articulo.galeria[0] | imagen: articulo.usuario?._id ?? '') | domSanitazer">
-      </ion-slide>
-      
-    </ion-slides>
-
-    <!-- Mapa -->
-    <!-- <app-mapa *ngIf="articulo.coords" [coords]="articulo.coords"></app-mapa> ->
-    <!-- <ng-container *ngIf="articulo.localizacion">
-      <app-mapa [localizacion]="articulo.localizacion"></app-mapa>
-    </ng-container> ->
-
-    <ion-item lines="none">
-      <ion-button shape="round" size="default" fill="clear" slot="end" color="light" (click)="favorito()">
-        <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'" [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
-    </ion-button>
-
-      <h3 style="margin-left: 20px;">
-        {{ articulo.precio }}€
-      </h3>
-    </ion-item>
-
-    <ion-item lines="none">
-      <h5 style="margin-left: 20px;">
-        {{ articulo.nombre }}
-      </h5>
-    </ion-item> -->
-
-    <!---->
-
-    <!-- FICHA ARTÍCULO -->
-  <div class="articulo">
-      <!-- Imágenes -->
-      <ion-slides pager="true" *ngIf="articulo && articulo.galeria && articulo.galeria.length > 1">
-        <!-- Variante usando la pipe DomSanitizer -->
-        <ion-slide class="image-slide"
-                    *ngFor="let img of articulo.galeria"
-                    [style.background-image]="(img | imagen: articulo.usuario?._id ?? '') | domSanitazer">
-        </ion-slide>
-    
-      </ion-slides>
-    
-      <ion-slides *ngIf="articulo && articulo.galeria && articulo.galeria.length === 1" [options]="blockSlide">
-        <!-- Variante usando la pipe DomSanitizer -->
-        <ion-slide class="image-slide"
-                    *ngFor="let img of articulo.galeria"
-                    [style.background-image]="(articulo.galeria[0] | imagen: articulo.usuario?._id ?? '') | domSanitazer">
-        </ion-slide>
-        
-      </ion-slides>
-      <!---->
-
-      <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
-
-      <ion-item [color]="articulo.estado === 'En venta' ? 'success' : 
-                        (articulo.estado === 'Reservado' ? 'warning' : 
-                        (articulo.estado === 'Vendido' ? 'danger' : ''))">
-        <ion-text class="texto-estado">{{ articulo.estado }}</ion-text>
-      </ion-item>
-
-      <!-- <ion-item lines="none">
-        <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
-      </ion-item> -->
-
-      <ion-item lines="none">
-        <ion-button shape="round" size="default" fill="clear" slot="end" color="light" (click)="favorito()">
-          <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'" [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
+<ion-card (click)="articulo._id !== undefined && irAlArticulo(articulo._id)"> 
+  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col size="9">
+        <ion-card-header>
+          <ion-card-title>{{articulo.precio}}€</ion-card-title>
+          <ion-card-subtitle>{{articulo.nombre}}</ion-card-subtitle>
+        </ion-card-header>
+      </ion-col>
+      <ion-col size="3" class="ion-text-end">
+        <ion-button shape="round" size="large" fill="clear" color="light" (click)="favorito()">
+          <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'"
+            [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
         </ion-button>
-
-        <ion-text color="dark">
-          <h1>{{ articulo.precio }}€</h1>
-        </ion-text>
-      </ion-item>
-    
-      <ion-item lines="none">
-        <ion-text color="dark"><h4>{{ articulo.nombre }}</h4></ion-text>
-      </ion-item>
-    
-      <ion-item lines="none">
-        <ion-button shape="round" size="default" fill="clear" slot="end" color="light">
-          <ion-icon slot="icon-only" name="chatbubble" color="dark"></ion-icon>
-        </ion-button>
-
-        <ion-avatar slot="start">
-          <img src="/assets/avatars/{{ articulo.usuario?.avatar }}">
-        </ion-avatar>
-    
-        <ion-label>
-          <ion-text color="dark"><h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2></ion-text>
-        </ion-label>
-      </ion-item>
-
-      <ion-item lines="none">
-        <ion-text color="dark">{{ articulo.categoria }}</ion-text>
-      </ion-item>
-
-      <ion-item lines="none">
-        <ion-text color="dark">{{ articulo.descripcion }}</ion-text>
-      </ion-item>
-
-      <ion-item lines="none">
-        <ion-text color="dark">Envío:&nbsp;</ion-text>
-        <ion-text [ngClass]="{'disponible': articulo.envio === 'Disponible', 'no-disponible': articulo.envio === 'No disponible'}">{{ articulo.envio }}</ion-text>
-      </ion-item>
-      
-
-  </div>
-<!-- </ion-content> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>

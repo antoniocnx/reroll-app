@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { Articulo, RespuestaArticulo, RespuestaCrearArticulo } from '../interfaces/interfaces';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
+import { firstValueFrom } from 'rxjs';
 
 const url = environment.heroku_url;
 
@@ -15,8 +16,14 @@ export class ArticulosService {
 
   nuevoArticulo = new EventEmitter<Articulo>();
 
+  articuloSeleccionado: Articulo = {};
+
   constructor(private http: HttpClient,
     private usuarioService: UsuarioService) { }
+
+  seleccionarArticulo(articulo: Articulo) {
+    this.articuloSeleccionado = articulo;
+  }
 
   getArticulos(pull: boolean = false) {
     if(pull) {
@@ -28,8 +35,9 @@ export class ArticulosService {
     return this.http.get<RespuestaArticulo>(`${url}/articulo/get?pagina=${this.paginaArticulos}`);
   }
 
-  getArticuloById(id: string) {
-    return this.http.get(`${ url }/articulo/${ id } `);
+  async getArticuloById(id: string) {
+    const res: any = await firstValueFrom(this.http.get(`${ url }/articulo/${ id } `));
+    return res.articulo;
   }
 
   crearArticulo(articulo: any) {

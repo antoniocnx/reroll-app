@@ -10,7 +10,86 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- <app-articulo [articulo]="articulo"></app-articulo> -->
-  <app-articulo [item]="articulo"></app-articulo>
+<ion-content *ngIf="articulo">
+  <!-- <app-articulo-ficha *ngIf="articulo" [articulo]="articulo"></app-articulo-ficha> -->
+  <div class="articulo">
+    <!-- Imágenes -->
+    <ion-slides pager="true" *ngIf="articulo && articulo.galeria && articulo.galeria.length > 1">
+      <!-- Variante usando la pipe DomSanitizer -->
+      <ion-slide class="image-slide" *ngFor="let img of articulo.galeria"
+        [style.background-image]="(img | imagen: articulo.usuario?._id ?? '') | domSanitazer">
+      </ion-slide>
+
+    </ion-slides>
+
+    <ion-slides *ngIf="articulo && articulo.galeria && articulo.galeria.length === 1" [options]="blockSlide">
+      <!-- Variante usando la pipe DomSanitizer -->
+      <ion-slide class="image-slide" *ngFor="let img of articulo.galeria"
+        [style.background-image]="(articulo.galeria[0] | imagen: articulo.usuario?._id ?? '') | domSanitazer">
+      </ion-slide>
+
+    </ion-slides>
+
+    <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+
+    <ion-item [color]="articulo.estado === 'En venta' ? 'success' : 
+                        (articulo.estado === 'Reservado' ? 'warning' : 
+                        (articulo.estado === 'Vendido' ? 'danger' : ''))">
+      <ion-text class="texto-estado">{{ articulo.estado }}</ion-text>
+    </ion-item>
+
+    <!-- <ion-item lines="none">
+        <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
+      </ion-item> -->
+
+    <ion-item lines="none">
+      <ion-button shape="round" size="default" fill="clear" slot="end" color="light" (click)="favorito()">
+        <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'"
+          [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
+      </ion-button>
+
+      <ion-text color="dark">
+        <h1>{{ articulo.precio }}€</h1>
+      </ion-text>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text color="dark">
+        <h4>{{ articulo.nombre }}</h4>
+      </ion-text>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-button shape="round" size="default" fill="clear" slot="end" color="light">
+        <ion-icon slot="icon-only" name="chatbubble" color="dark"></ion-icon>
+      </ion-button>
+
+      <ion-avatar slot="start">
+        <img src="/assets/avatars/{{ articulo.usuario?.avatar }}">
+      </ion-avatar>
+
+      <ion-label>
+        <ion-text color="dark">
+          <h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text color="dark">{{ articulo.categoria }}</ion-text>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text color="dark">{{ articulo.descripcion }}</ion-text>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text color="dark">Envío:&nbsp;</ion-text>
+      <ion-text
+        [ngClass]="{'disponible': articulo.envio === 'Disponible', 'no-disponible': articulo.envio === 'No disponible'}">{{
+        articulo.envio }}</ion-text>
+    </ion-item>
+
+
+  </div>
 </ion-content>

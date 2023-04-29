@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Articulo } from 'src/app/interfaces/interfaces';
+import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -11,22 +13,18 @@ export class ArticuloComponent implements OnInit {
 
   esFavorito: boolean = false;
 
+  mostrarDetalle: boolean = false;
+
   @Input() articulo: Articulo = {};
 
-  @Input() item: Articulo ={};
-
-  blockSlide = {
-    allowSlideNext: false,
-    allowSlidePrev: false
-  }
-
-  constructor(private storage: StorageService) { }
-
+  constructor(private storage: StorageService, private router: Router, private articulosService: ArticulosService) { }
+  
   ngOnInit() {
+    console.log('INPUT ARTICULO EN ARTICULOCOMPONENT', this.articulo);
     this.esFavorito = this.storage.getFavorito();
     console.log('FAVORITO OnInit EN ARTICULO.TS', this.esFavorito);
   }
-
+  
   favorito() {
     this.storage.cambiaFavorito();
     
@@ -36,6 +34,10 @@ export class ArticuloComponent implements OnInit {
     console.log('FAVORITO EN ARTICULO.TS', this.esFavorito);
     // this.esFavorito = this.storage.getFavorito();
     // this.storage.guardarPostFavorito(this.articulo);
+  }
+  
+  irAlArticulo(id: string) {
+    this.router.navigate(['/user/item/' + id]);
   }
 
 }
