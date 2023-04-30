@@ -20,9 +20,7 @@ export class ArticuloComponent implements OnInit {
   constructor(private storage: StorageService, private router: Router, private articulosService: ArticulosService) { }
   
   ngOnInit() {
-    console.log('INPUT ARTICULO EN ARTICULOCOMPONENT', this.articulo);
     this.esFavorito = this.storage.getFavorito();
-    console.log('FAVORITO OnInit EN ARTICULO.TS', this.esFavorito);
   }
   
   favorito() {

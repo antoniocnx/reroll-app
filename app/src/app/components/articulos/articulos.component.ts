@@ -24,11 +24,7 @@ export class ArticulosComponent implements OnInit {
     this.storage.cambiaFavorito();
     
     this.esFavorito = this.storage.getFavorito();
-    // this.esFavorito = this.storage.almacenaFavorito(this.esFavorito);
-    
-    console.log('FAVORITO EN ARTICULO.TS', this.esFavorito);
-    // this.esFavorito = this.storage.getFavorito();
-    // this.storage.guardarPostFavorito(this.articulo);
+
   }
 
   irAlArticulo(id: string) {

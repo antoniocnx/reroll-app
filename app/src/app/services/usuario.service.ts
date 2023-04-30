@@ -151,7 +151,6 @@ export class UsuarioService {
     });
 
     return this.http.get<RespuestaFavoritos>(`${ url }/usuario/favoritos`, { headers });
-    // return this.http.get<Articulo[]>(`${ url }/usuario/favoritos`, { headers });
     
   }
 

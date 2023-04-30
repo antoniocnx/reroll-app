@@ -102,3 +102,8 @@ export interface RespuestaFavoritos {
   ok: boolean;
   favoritos: Articulo[];
 }
+
+export interface ArticuloFavorito {
+  ok: boolean;
+  mensaje: string;
+}
