@@ -9,16 +9,16 @@
 <ion-content [fullscreen]="true" color="light">
 
   <!-- REFRESHER -->
-  <!-- <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher> -->
+  </ion-refresher>
 
-  <!-- POSTS -->
-  <!-- <app-posts *ngIf="postsFavoritos" [posts]="postsFavoritos"></app-posts> -->
+  <!-- ARTÍCULOS -->
+  <app-articulos *ngIf="articulos" [articulos]="articulos"></app-articulos>
 
   <!-- INFINITE SCROLL -->
   <ion-infinite-scroll [disabled]="estadoInfiniteScroll" threshold="150px" (ionInfinite)="scroll($event)">
-    <ion-infinite-scroll-content  loadingText="Cargando..." loadingSpinner="crescent"></ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingText="Cargando..." loadingSpinner="crescent"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
 </ion-content>

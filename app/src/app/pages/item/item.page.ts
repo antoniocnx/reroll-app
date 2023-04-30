@@ -14,19 +14,6 @@ export class ItemPage implements OnInit {
 
   articulo: Articulo = {};
 
-  // articulo: Articulo = {
-  //   fecha: new Date(),
-  //   nombre: '',
-  //   precio: this.articulo1?.precio,
-  //   categoria: '',
-  //   descripcion: '',
-  //   localizacion: '',
-  //   estado: '',
-  //   envio: '',
-  //   galeria: [],
-  //   usuario: {}
-  // };
-
   esFavorito: boolean = false;
 
   blockSlide = {
@@ -40,10 +27,6 @@ export class ItemPage implements OnInit {
     console.log('ARTICULO BASE: ' + this.articulo);
     this.route.paramMap.subscribe(params => {
       const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
-      // this.articulosService.getArticuloById(id).subscribe(res => {
-      //   this.articulo = res;
-      //   console.log('ARTICULO OnInit EN ITEM', this.articulo);
-      // });
       this.articulosService.getArticuloById(id).then(async res => {
         this.articulo = res;
         console.log('RES', res);

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
-import { RespuestaLogin, RespuestaSignUp, RespuestaUsuario, Usuario } from '../interfaces/interfaces';
+import { Articulo, RespuestaFavoritos, RespuestaLogin, RespuestaSignUp, RespuestaUsuario, Usuario } from '../interfaces/interfaces';
 import { NavController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 const url = environment.heroku_url;
 
@@ -143,5 +144,16 @@ export class UsuarioService {
     })
 
   }
+
+  getFavoritos() {
+    const headers = new HttpHeaders({
+      'x-token': this.token
+    });
+
+    return this.http.get<RespuestaFavoritos>(`${ url }/usuario/favoritos`, { headers });
+    // return this.http.get<Articulo[]>(`${ url }/usuario/favoritos`, { headers });
+    
+  }
+
 
 }

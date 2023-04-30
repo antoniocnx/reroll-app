@@ -96,3 +96,9 @@ export interface RespuestaAdmin {
   ok: boolean;
   admin: Usuario;
 }
+
+
+export interface RespuestaFavoritos {
+  ok: boolean;
+  favoritos: Articulo[];
+}
