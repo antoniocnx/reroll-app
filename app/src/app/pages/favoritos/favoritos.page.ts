@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Articulo } from 'src/app/interfaces/interfaces';
-import { ArticulosService } from 'src/app/services/articulos.service';
-import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -17,9 +15,7 @@ export class FavoritosPage implements OnInit {
 
   estadoInfiniteScroll = false;
 
-  constructor(private storage: StorageService,
-    private usuarioService: UsuarioService,
-    private articulosService: ArticulosService) { }
+  constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit() {
     this.usuarioService.getFavoritos().subscribe(res => {
@@ -43,19 +39,17 @@ export class FavoritosPage implements OnInit {
   // FUNCIÓN DEL INFINITE SCROLL
   scroll(event?: any, pull: boolean = false) {
 
-    this.articulosService.getArticulos(pull)
-      .subscribe(resp => {
-        console.log(resp);
-        this.articulos.push(...resp.articulos);
+      this.usuarioService.getFavoritos().subscribe(res => {
+        this.articulos.unshift(...res.favoritos);
 
         if (event) {
           event.target.complete();
-          if (resp.articulos.length === 0) {
+          if (res.favoritos.length === 0) {
             this.estadoInfiniteScroll = true;
-            console.log('Todos los articulos se han cargado');
+            console.log('Todos los articulos favoritos se han cargado');
           }
         }
-      })
+      });
 
   }
 
