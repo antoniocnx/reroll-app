@@ -53,7 +53,7 @@ export class ItemPage implements OnInit {
   
     console.log('TOKEN:', this.usuarioService.token); // Verificar el valor del token
     
-    this.http.post(`${ url_local }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
+    this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
       (res: any) => {
         console.log('Petición al servidor de favoritos:', res); // Verificar la respuesta del servidor
         this.esFavorito = true;
