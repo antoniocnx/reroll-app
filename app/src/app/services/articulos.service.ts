@@ -26,17 +26,17 @@ export class ArticulosService {
   }
 
   getArticulos(pull: boolean = false) {
-    if(pull) {
+    if (pull) {
       this.paginaArticulos = 0;
     }
-  
+
     this.paginaArticulos++;
-  
+
     return this.http.get<RespuestaArticulo>(`${url}/articulo/get?pagina=${this.paginaArticulos}`);
   }
 
   async getArticuloById(id: string) {
-    const res: any = await firstValueFrom(this.http.get(`${ url }/articulo/${ id } `));
+    const res: any = await firstValueFrom(this.http.get(`${url}/articulo/${id} `));
     return res.articulo;
   }
 
@@ -46,13 +46,33 @@ export class ArticulosService {
     })
 
     return new Promise(resolve => {
-      this.http.post<RespuestaCrearArticulo>(`${url}/posts/post`, articulo, {headers})
-                .subscribe(resp => {
-                  this.nuevoArticulo.emit(resp['articulo']);
-                  resolve(true);
-                });
+      this.http.post<RespuestaCrearArticulo>(`${url}/articulo/post`, articulo, { headers })
+        .subscribe(resp => {
+          this.nuevoArticulo.emit(resp['articulo']);
+          resolve(true);
+        });
     });
 
   }
+
+  // subirImagen(img: string) {
+
+  //   const options: FileUploadOptions = {
+  //     fileKey: 'image',
+  //     headers: {
+  //       'x-token': this.usuarioService.token
+  //     }
+  //   };
+
+  //   const fileTransfer: FileTransferObject = FileTransfer.create();
+
+  //   fileTransfer.upload(img, `${url}/posts/upload`, options)
+  //     .then(data => {
+  //       console.log(data);
+  //     }).catch(err => {
+  //       console.log('Error al subir la imagen', err);
+  //     });
+
+  // };
 
 }

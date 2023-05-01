@@ -51,11 +51,7 @@ export class ItemPage implements OnInit {
 
       this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
 
-    },
-    error => {
-      console.error(error);
-    }
-    );
+    });
 
   }
 

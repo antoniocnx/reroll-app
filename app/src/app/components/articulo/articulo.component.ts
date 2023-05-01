@@ -30,23 +30,19 @@ export class ArticuloComponent implements OnInit {
     private http: HttpClient) { }
   
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
-      this.articulosService.getArticuloById(id).then(async res => {
-        this.articulo = res;
-      })
-    });
+    // this.route.paramMap.subscribe(params => {
+    //   const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
+    //   this.articulosService.getArticuloById(id).then(async res => {
+    //     this.articulo = res;
+    //   })
+    // });
 
     this.usuarioService.getFavoritos().subscribe(res => {
       this.articulosFavoritos = res.favoritos;
 
       this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
 
-    },
-    error => {
-      console.error(error);
-    }
-    );
+    });
 
   }
 

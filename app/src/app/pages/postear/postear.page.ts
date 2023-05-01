@@ -5,6 +5,8 @@ import { PostsService } from '../../services/posts.service';
 import { Geolocation } from '@capacitor/geolocation';
 
 import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
+import { Articulo } from 'src/app/interfaces/interfaces';
+import { ArticulosService } from 'src/app/services/articulos.service';
 
 
 @Component({
@@ -14,7 +16,20 @@ import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor
 })
 export class PostearPage implements OnInit {
 
-  images: string[] = [];
+  articulo: Articulo ={
+    fecha: new Date(),
+    nombre: '',
+    precio: 0,
+    categoria: '',
+    descripcion: '',
+    localizacion: '',
+    estado: 'En venta',
+    envio: '',
+    galeria: [],
+    // usuario: 
+  };
+
+  galeria: string[] = [];
 
   cargandoGeoLoc = false;
 
@@ -42,31 +57,27 @@ export class PostearPage implements OnInit {
     source: CameraSource.Photos
   }
 
-  constructor(private postService: PostsService,
+  constructor(private articuloService: ArticulosService,
               private route: Router,) { }
 
   ngOnInit() {
   }
 
-  async crearPost() {
-    await this.postService.crearPost(this.post);
+  async crearArticulo() {
+    await this.articuloService.crearArticulo(this.articulo);
     
-    this.post = {
-      mensaje: '',
-      coords: null,
-      posicion: false
-    };
+    this.articulo = {};
 
-    this.images = [];
+    this.galeria = [];
 
-    this.route.navigateByUrl('/main/tabs/inicio');
+    this.route.navigateByUrl('/user/inicio');
   }
 
   async getPosicion() {
-    if(!this.post.posicion) {
-      this.post.coords = null;
-      return;
-    }
+    // if(!this.articulo.posicion) {
+    //   this.articulo.localizacion = null;
+    //   return;
+    // }
 
     this.cargandoGeoLoc = true;
 
@@ -76,18 +87,18 @@ export class PostearPage implements OnInit {
       maximumAge: 0
     };
 
-    const coordinates = await Geolocation.getCurrentPosition();
+    const coordenadas = await Geolocation.getCurrentPosition();
 
-    if(coordinates) {
-      const coords = `${coordinates.coords.latitude}, ${coordinates.coords.longitude}`;
-      this.post.coords = coords;
+    if(coordenadas) {
+      const localizacion = `${coordenadas.coords.latitude}, ${coordenadas.coords.longitude}`;
+      this.articulo.localizacion = localizacion;
       this.cargandoGeoLoc = false;
     } else {
       console.log('Error al obtener la localización');
     }
 
   
-    console.log('Current position:', coordinates);
+    console.log('Current position:', coordenadas);
 
   }
 
@@ -97,8 +108,8 @@ export class PostearPage implements OnInit {
       const image = await Camera.getPhoto(this.opcionesCamara);
       this.fotoTomada = image.webPath;
       if(this.fotoTomada) {
-        this.images.push(this.fotoTomada);
-        this.postService.subirImagen(this.fotoTomada);
+        this.galeria.push(this.fotoTomada);
+        // this.articuloService.subirImagen(this.fotoTomada);
       }
 
 
@@ -113,8 +124,8 @@ export class PostearPage implements OnInit {
       const image = await Camera.getPhoto(this.opcionesGaleria);
       this.fotoTomada = image.webPath;
       if(this.fotoTomada) {
-        this.images.push(this.fotoTomada);
-        this.postService.subirImagen(this.fotoTomada);
+        this.galeria.push(this.fotoTomada);
+        // this.articuloService.subirImagen(this.fotoTomada);
       }
 
     } else {
