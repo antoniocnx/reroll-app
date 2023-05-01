@@ -20,7 +20,6 @@ export class FavoritosPage implements OnInit {
   ngOnInit() {
     this.usuarioService.getFavoritos().subscribe(res => {
         this.articulos = res.favoritos;
-        console.log('FAVORITOS: ', this.articulos);
       },
       error => {
         console.error(error);

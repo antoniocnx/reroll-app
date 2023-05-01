@@ -13,22 +13,24 @@ export class ArticulosComponent implements OnInit {
 
   @Input() articulos: Articulo[] = [];
 
-  esFavorito: boolean = false;
+  // esFavorito: boolean = false;
 
-  constructor(private storage: StorageService,
-              private router: Router) { }
+  constructor(/*private storage: StorageService,
+              private router: Router*/) { }
 
-  ngOnInit() { this.esFavorito = this.storage.getFavorito(); }
+  ngOnInit() { 
+    // this.esFavorito = this.storage.getFavorito(); 
+  }
 
-  favorito() {
-    this.storage.cambiaFavorito();
+  // favorito() {
+  //   this.storage.cambiaFavorito();
     
-    this.esFavorito = this.storage.getFavorito();
+  //   this.esFavorito = this.storage.getFavorito();
 
-  }
+  // }
 
-  irAlArticulo(id: string) {
-    this.router.navigate(['/user/item/' + id]);
-  }
+  // irAlArticulo(id: string) {
+  //   this.router.navigate(['/user/item/' + id]);
+  // }
 
 }

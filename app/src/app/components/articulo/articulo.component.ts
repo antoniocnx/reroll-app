@@ -1,8 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Articulo } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { environment } from 'src/environments/environment';
+
+const url = environment.heroku_url;
+const url_local = environment.url;
 
 @Component({
   selector: 'app-articulo',
@@ -10,28 +16,54 @@ import { StorageService } from 'src/app/services/storage.service';
   styleUrls: ['./articulo.component.scss'],
 })
 export class ArticuloComponent implements OnInit {
+  
+  @Input() articulo: Articulo = {};
+  
+  articulosFavoritos: Articulo[] = [];
 
   esFavorito: boolean = false;
-
-  mostrarDetalle: boolean = false;
-
-  @Input() articulo: Articulo = {};
-
-  constructor(private storage: StorageService, private router: Router, private articulosService: ArticulosService) { }
+  
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private usuarioService: UsuarioService,
+    private articulosService: ArticulosService, 
+    private http: HttpClient) { }
   
   ngOnInit() {
-    this.esFavorito = this.storage.getFavorito();
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
+      this.articulosService.getArticuloById(id).then(async res => {
+        this.articulo = res;
+      })
+    });
+
+    this.usuarioService.getFavoritos().subscribe(res => {
+      this.articulosFavoritos = res.favoritos;
+
+      this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
+
+    },
+    error => {
+      console.error(error);
+    }
+    );
+
   }
-  
+
   favorito() {
-    this.storage.cambiaFavorito();
+    const headers = new HttpHeaders({
+      'x-token': this.usuarioService.token
+    });
     
-    this.esFavorito = this.storage.getFavorito();
-    // this.esFavorito = this.storage.almacenaFavorito(this.esFavorito);
+    const articuloId = this.articulo._id;
+  
+    console.log('TOKEN:', this.usuarioService.token); // Verificar el valor del token
     
-    console.log('FAVORITO EN ARTICULO.TS', this.esFavorito);
-    // this.esFavorito = this.storage.getFavorito();
-    // this.storage.guardarPostFavorito(this.articulo);
+    this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
+      (err: any) => {
+        console.error(err);
+      }
+    );
   }
   
   irAlArticulo(id: string) {

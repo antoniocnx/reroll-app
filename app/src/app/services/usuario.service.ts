@@ -14,6 +14,7 @@ const url = environment.heroku_url;
 export class UsuarioService {
 
   token: string = '';
+  
   private usuario: Usuario = {};
 
   constructor(private http: HttpClient,

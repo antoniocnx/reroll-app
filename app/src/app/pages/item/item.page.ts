@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavParams } from '@ionic/angular';
+import { Location } from '@angular/common';
 import { Articulo, ArticuloFavorito } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -22,6 +22,8 @@ export class ItemPage implements OnInit {
 
   articulo: Articulo = {};
 
+  articulosFavoritos: Articulo[] = [];
+
   esFavorito: boolean = false;
 
   blockSlide = {
@@ -33,7 +35,8 @@ export class ItemPage implements OnInit {
               private usuarioService: UsuarioService,
               private articulosService: ArticulosService, 
               private storage: StorageService,
-              private http: HttpClient) { }
+              private http: HttpClient,
+              private location: Location) { }
   
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -42,6 +45,18 @@ export class ItemPage implements OnInit {
         this.articulo = res;
       })
     });
+
+    this.usuarioService.getFavoritos().subscribe(res => {
+      this.articulosFavoritos = res.favoritos;
+
+      this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
+
+    },
+    error => {
+      console.error(error);
+    }
+    );
+
   }
 
   favorito() {
@@ -54,17 +69,15 @@ export class ItemPage implements OnInit {
     console.log('TOKEN:', this.usuarioService.token); // Verificar el valor del token
     
     this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
-      (res: any) => {
-        console.log('Petición al servidor de favoritos:', res); // Verificar la respuesta del servidor
-        this.esFavorito = true;
-        this.storage.cambiaFavorito();
-        this.esFavorito = this.storage.getFavorito();
-        console.log('FAVORITO EN ARTICULO.TS', this.esFavorito);
-      },
       (err: any) => {
         console.error(err);
       }
     );
   }
+
+  goBack() {
+    this.location.back();
+  }
+  
 
 }

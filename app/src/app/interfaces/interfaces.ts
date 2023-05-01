@@ -11,6 +11,7 @@ export interface Usuario {
   localidad?: string;
   pais?: string;
   cp?: number;
+  favoritos?: Articulo[];
   avatar?: string;
 }
 
