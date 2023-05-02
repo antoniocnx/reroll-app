@@ -13,24 +13,10 @@ export class ArticulosComponent implements OnInit {
 
   @Input() articulos: Articulo[] = [];
 
-  // esFavorito: boolean = false;
-
-  constructor(/*private storage: StorageService,
-              private router: Router*/) { }
+  constructor() { }
 
   ngOnInit() { 
-    // this.esFavorito = this.storage.getFavorito(); 
+
   }
-
-  // favorito() {
-  //   this.storage.cambiaFavorito();
-    
-  //   this.esFavorito = this.storage.getFavorito();
-
-  // }
-
-  // irAlArticulo(id: string) {
-  //   this.router.navigate(['/user/item/' + id]);
-  // }
 
 }

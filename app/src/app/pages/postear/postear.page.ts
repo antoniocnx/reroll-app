@@ -7,6 +7,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
 import { Articulo } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -15,6 +16,18 @@ import { ArticulosService } from 'src/app/services/articulos.service';
   styleUrls: ['./postear.page.scss'],
 })
 export class PostearPage implements OnInit {
+
+  formPost: FormGroup = this.formBuilder.group({
+    fecha: [new Date()],
+    nombre: ['', Validators.required],
+    precio: ['', Validators.required],
+    categoria: ['', Validators.required],
+    descripcion: ['', [Validators.required, Validators.maxLength(200)] ],
+    localizacion: [''],
+    estado: ['En venta', Validators.required],
+    envio: ['', Validators.required],
+    galeria: []
+  });
 
   articulo: Articulo ={
     fecha: new Date(),
@@ -58,9 +71,24 @@ export class PostearPage implements OnInit {
   }
 
   constructor(private articuloService: ArticulosService,
-              private route: Router,) { }
+              private route: Router,
+              private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+  }
+
+  async postear(formPost: FormGroup) {
+    if(formPost.invalid) {
+      return;
+    }
+
+    await this.articuloService.crearArticulo(this.formPost.value);
+    
+    this.articulo = {};
+
+    this.galeria = [];
+
+    this.route.navigateByUrl('/user/inicio');
   }
 
   async crearArticulo() {

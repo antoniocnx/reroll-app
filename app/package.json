@@ -39,6 +39,7 @@
     "ionicons": "^6.0.3",
     "mapbox-gl": "^2.13.0",
     "rxjs": "~7.5.0",
+    "socket.io-client": "^4.6.1",
     "swiper": "^8.4.7",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

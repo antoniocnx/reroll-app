@@ -18,14 +18,7 @@ export class FavoritosPage implements OnInit {
 
   estadoInfiniteScroll = false;
 
-  constructor(private usuarioService: UsuarioService,
-    
-    
-    
-    
-    
-    /*private auth: AuthService, 
-    private eventService: EventService*/) { }
+  constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit() {
     this.usuarioService.getFavoritos().subscribe(res => {
@@ -53,40 +46,15 @@ export class FavoritosPage implements OnInit {
 
       if (event) {
         event.target.complete();
-        if (res.favoritos.length === 0) {
+        if (res.favoritos.length === this.articulos.length) {
           this.estadoInfiniteScroll = true;
-          console.log('Todos los articulos favoritos se han cargado');
+          console.log('Todos los articulos favoritos se han cargado', this.estadoInfiniteScroll);
         }
       }
+
+      console.log('INFINTE SCROLL: ', res.favoritos.length);
     });
 
   }
-
-  // REFRECA LA PÁGINA PARA VER LOS CAMBIOS
-  // ionViewDidEnter() {
-
-  //   //refrescamos la página para que se muestren los datos del usuario
-  //   this.auth.getUser().subscribe({
-  //     next: (data) => {
-  //       this.currentUser = data;
-  //       console.log("refresco getuser");
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     }
-  //   });
-
-  //   //Refrescamos la página para que se muestren los eventos 
-  //   this.eventService.findEventsByAuthorId(this.userId).subscribe({
-  //     next: (data) => {
-  //       this.myEvents = Object.values(data);
-  //       this.myEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // ordenar los eventos por fecha
-  //       console.log("refresco eventos")
-  //       this.eventCount = this.myEvents.length;
-  //       return this.myEvents;
-  //     }
-  //   });
-
-  // }
 
 }

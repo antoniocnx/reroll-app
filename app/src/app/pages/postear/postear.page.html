@@ -9,15 +9,13 @@
         <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    
-    <!-- <ion-icon class="icon-cancel" slot="end" name="close-circle-outline" [routerLink]="['/user/inicio']"></ion-icon> -->
 
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding scrollY="true">
   <!-- ORDEN: Título, Precio, Descripción, Categoría, Envío, Galería -->
-  <ion-row>
+  <!-- <ion-row>
     <ion-col size="6">
       <ion-button expand="full" color="tertiary" shape="round" (click)="abrirCamara()">
         <ion-icon slot="start" name="camera"></ion-icon>
@@ -30,9 +28,9 @@
         Galería
       </ion-button>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
 
-  <ion-list>
+  <!-- <ion-list>
 
     <ion-item>
       <ion-label position="floating">Mensaje</ion-label>
@@ -48,7 +46,7 @@
     </ion-list>
 
 
-  </ion-list>
+  </ion-list> -->
 
   <ion-row>
     <ion-col size="3" *ngFor="let imagen of galeria">
@@ -59,12 +57,127 @@
     </ion-col>
   </ion-row>
 
-  <ion-row>
+  <!-- <ion-row>
     <ion-col class="ion-text-center">
       <ion-button type="submit" color="tertiary" shape="round" (click)="crearArticulo()">
         Compartir
-      </ion-button> <!-- [disabled]="post.mensaje.length < 1 || cargandoGeoLoc" -->
+      </ion-button> <!-- [disabled]="post.mensaje.length < 1 || cargandoGeoLoc" ->
     </ion-col>
-  </ion-row>
+  </ion-row> -->
+
+  <form [formGroup]="formPost" (ngSubmit)="postear(formPost)">
+    <ion-row>
+      <ion-col>
+        <ion-list>
+
+          <ion-row>
+            <ion-col size="6">
+              <ion-button expand="full" color="tertiary" shape="round" (click)="abrirCamara()">
+                <ion-icon slot="start" name="camera"></ion-icon>
+                Cámara
+              </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button expand="full" color="tertiary" shape="round" (click)="abrirGaleria()">
+                <ion-icon slot="start" name="images"></ion-icon>
+                Galería
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="3" *ngFor="let imagen of galeria">
+              <ion-card>
+                <!-- <ion-img *ngIf="fotoTomada" [src]="fotoTomada"></ion-img> -->
+                <ion-img [src]="imagen"></ion-img>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Nombre:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="nombre" placeholder="Nombre"></ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger"
+            *ngIf="!formPost.get('nombre')?.valid && formPost.get('nombre')?.touched">
+            <p class="error">* Por favor, indique el nombre del artículo</p>
+          </ion-text>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Precio:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="precio" placeholder="Precio"></ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger"
+            *ngIf="!formPost.get('precio')?.valid && formPost.get('precio')?.touched">
+            <p class="error">* Por favor, indique el precio del artículo</p>
+          </ion-text>
+
+          <ion-list>
+            <ion-item>
+              <ion-select class="form-control" formControlName="categoria" aria-label="Categoria" interface="popover" placeholder="Categoria">
+                <ion-label position="floating" slot="start">Categoría:</ion-label>
+                <ion-select-option value="Cartas">Cartas</ion-select-option>
+                <ion-select-option value="Creativo">Creativo</ion-select-option>
+                <ion-select-option value="Didactico">Didáctico</ion-select-option>
+                <ion-select-option value="Estrategia">Estrategia</ion-select-option>
+                <ion-select-option value="Familiar">Familiar</ion-select-option>
+                <ion-select-option value="Party">Party</ion-select-option>
+                <ion-select-option value="Rol">Rol</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formPost.get('categoria')?.valid && formPost.get('categoria')?.touched">
+              <p class="error">* Por favor, indique la categroía del artículo</p>
+            </ion-text>
+
+          </ion-list>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Descripción:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="descripcion" placeholder="Descripción"></ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger"
+            *ngIf="!formPost.get('descripcion')?.valid && formPost.get('descripcion')?.touched">
+            <p class="error">* Por favor, escriba una descripción para el artículo</p>
+          </ion-text>
+
+          <ion-list>
+            <ion-item>
+              <ion-select class="form-control" formControlName="envio" aria-label="Envío" interface="popover" placeholder="Envío">
+                <ion-label position="floating" slot="start">Categoría:</ion-label>
+                <ion-select-option value="Domicilio">Domicilio</ion-select-option>
+                <ion-select-option value="En mano">En mano</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formPost.get('envio')?.valid && formPost.get('envio')?.touched">
+              <p class="error">* Por favor, indique el método de envío</p>
+            </ion-text>
+
+          </ion-list>
+
+          <ion-item class="ion-align-items-center">
+            <ion-label position="floating">Localización:</ion-label>
+            <ion-input type="text" class="form-control" formControlName="localizacion" placeholder="Localización"></ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger"
+            *ngIf="!formPost.get('localizacion')?.valid && formPost.get('localizacion')?.touched">
+            <p class="error">* Por favor, indique su localización</p>
+          </ion-text>
+
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-button type="submit" color="tertiary" shape="round"> <!-- (click)="crearArticulo()" -->
+                Compartir
+              </ion-button> <!-- [disabled]="post.mensaje.length < 1 || cargandoGeoLoc" -->
+            </ion-col>
+          </ion-row>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </form>
 
 </ion-content>

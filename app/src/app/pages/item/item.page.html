@@ -86,7 +86,7 @@
     <ion-item lines="none">
       <ion-text color="dark">Envío:&nbsp;</ion-text>
       <ion-text
-        [ngClass]="{'disponible': articulo.envio === 'Disponible', 'no-disponible': articulo.envio === 'No disponible'}">{{
+        [ngClass]="{'domicilio': articulo.envio === 'Domicilio', 'en-mano': articulo.envio === 'En mano'}">{{
         articulo.envio }}</ion-text>
     </ion-item>
 

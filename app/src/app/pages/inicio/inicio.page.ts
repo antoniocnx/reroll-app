@@ -14,6 +14,11 @@ export class InicioPage implements OnInit {
   estadoInfiniteScroll = false;
 
   constructor(private articulosService: ArticulosService) { }
+  
+  ionViewDidEnter() {
+    this.articulosService.getArticulos();
+    console.log('ION VIEW');
+  }
 
   ngOnInit() {
     this.scroll();
@@ -21,6 +26,7 @@ export class InicioPage implements OnInit {
     this.articulosService.nuevoArticulo.subscribe(arti => {
       this.articulos.unshift(arti);
     });
+    console.log('OnInit');
   }
 
   // FUNCIÓN DEL REFRESHER
