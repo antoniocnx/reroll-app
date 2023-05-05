@@ -12,6 +12,7 @@ import { ComponentsModule } from './components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     AppRoutingModule,
     ComponentsModule,
     IonicStorageModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SwiperModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

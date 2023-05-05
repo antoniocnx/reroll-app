@@ -9,6 +9,7 @@ import { ItemPageRoutingModule } from './item-routing.module';
 import { ItemPage } from './item.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PipesModule } from "../../pipes/pipes.module";
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
     declarations: [ItemPage],
@@ -18,6 +19,7 @@ import { PipesModule } from "../../pipes/pipes.module";
         IonicModule,
         ItemPageRoutingModule,
         ComponentsModule,
+        SwiperModule,
         PipesModule
     ]
 })

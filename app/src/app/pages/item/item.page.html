@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button  defaultHref="" (click)="goBack()"></ion-back-button>
+      <ion-back-button defaultHref="" (click)="goBack()"></ion-back-button>
     </ion-buttons>
     <ion-title>
       <ion-icon name="dice-outline"></ion-icon>
@@ -11,36 +11,27 @@
 </ion-header>
 
 <ion-content *ngIf="articulo">
-  <!-- <app-articulo-ficha *ngIf="articulo" [articulo]="articulo"></app-articulo-ficha> -->
   <div class="articulo">
     <!-- Imágenes -->
-    <ion-slides pager="true" *ngIf="articulo && articulo.galeria && articulo.galeria.length > 1">
-      <!-- Variante usando la pipe DomSanitizer -->
-      <ion-slide class="image-slide" *ngFor="let img of articulo.galeria"
-        [style.background-image]="(img | imagen: articulo.usuario?._id ?? '') | domSanitazer">
-      </ion-slide>
+      <!-- <ion-item lines="none"> -->
+        <swiper [navigation]="true" [pagination]="{ clickable: true }">
+          <ng-container *ngIf="articulo && articulo.galeria">
+              <ng-template swiperSlide *ngFor="let imagen of articulo.galeria">
+                <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
+              </ng-template>
+          </ng-container>
+        </swiper>
+      <!-- </ion-item> -->
 
-    </ion-slides>
+    <!-- <ion-img *ngIf="articulo" [src]="articulo.galeria?.[0]"></ion-img> -->
 
-    <ion-slides *ngIf="articulo && articulo.galeria && articulo.galeria.length === 1" [options]="blockSlide">
-      <!-- Variante usando la pipe DomSanitizer -->
-      <ion-slide class="image-slide" *ngFor="let img of articulo.galeria"
-        [style.background-image]="(articulo.galeria[0] | imagen: articulo.usuario?._id ?? '') | domSanitazer">
-      </ion-slide>
-
-    </ion-slides>
-
-    <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+    <!-- <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" /> -->
 
     <ion-item [color]="articulo.estado === 'En venta' ? 'success' : 
                         (articulo.estado === 'Reservado' ? 'warning' : 
                         (articulo.estado === 'Vendido' ? 'danger' : ''))">
       <ion-text class="texto-estado">{{ articulo.estado }}</ion-text>
     </ion-item>
-
-    <!-- <ion-item lines="none">
-        <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
-      </ion-item> -->
 
     <ion-item lines="none">
       <ion-button shape="round" size="default" fill="clear" slot="end" color="light" (click)="favorito()">
@@ -85,8 +76,7 @@
 
     <ion-item lines="none">
       <ion-text color="dark">Envío:&nbsp;</ion-text>
-      <ion-text
-        [ngClass]="{'domicilio': articulo.envio === 'Domicilio', 'en-mano': articulo.envio === 'En mano'}">{{
+      <ion-text [ngClass]="{'domicilio': articulo.envio === 'Domicilio', 'en-mano': articulo.envio === 'En mano'}">{{
         articulo.envio }}</ion-text>
     </ion-item>
 

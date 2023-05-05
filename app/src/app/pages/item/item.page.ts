@@ -2,6 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { SwiperModule } from 'swiper/angular';
+import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
+
+SwiperCore.use([Navigation, Pagination, Autoplay]);
+
 import { Articulo, ArticuloFavorito } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -43,6 +49,7 @@ export class ItemPage implements OnInit {
       const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
       this.articulosService.getArticuloById(id).then(async res => {
         this.articulo = res;
+        console.log('ARTÍCULO: ', res);
       })
     });
 
