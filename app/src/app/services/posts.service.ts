@@ -4,9 +4,6 @@ import { environment } from 'src/environments/environment';
 import { Post, RespuestaCrearPost, RespuestaPost } from '../interfaces/interfaces';
 import { UsuarioService } from './usuario.service';
 
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@awesome-cordova-plugins/file-transfer';
-import { Filesystem, FilesystemDirectory } from '@capacitor/filesystem';
-
 const url = environment.heroku_url;
 
 @Injectable({

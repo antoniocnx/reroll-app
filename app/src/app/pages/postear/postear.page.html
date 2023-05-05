@@ -48,24 +48,23 @@
 
   </ion-list> -->
 
-  <ion-row>
-    <ion-col size="3" *ngFor="let imagen of galeria">
-      <ion-card>
-        <!-- <ion-img *ngIf="fotoTomada" [src]="fotoTomada"></ion-img> -->
-        <ion-img [src]="imagen"></ion-img>
-      </ion-card>
-    </ion-col>
-  </ion-row>
-
+  
   <!-- <ion-row>
     <ion-col class="ion-text-center">
       <ion-button type="submit" color="tertiary" shape="round" (click)="crearArticulo()">
         Compartir
       </ion-button> <!-- [disabled]="post.mensaje.length < 1 || cargandoGeoLoc" ->
-    </ion-col>
-  </ion-row> -->
-
-  <form [formGroup]="formPost" (ngSubmit)="postear(formPost)">
+      </ion-col>
+    </ion-row> -->
+    
+    <form [formGroup]="formPost" (ngSubmit)="postear(formPost)">
+    <!-- <ion-row>
+      <ion-col size="3" *ngFor="let imagen of galeria">
+        <ion-card>
+          <ion-img [src]="imagen.data"></ion-img>
+        </ion-card>
+      </ion-col>
+    </ion-row> -->
     <ion-row>
       <ion-col>
         <ion-list>

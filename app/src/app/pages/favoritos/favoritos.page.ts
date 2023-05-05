@@ -21,12 +21,15 @@ export class FavoritosPage implements OnInit {
   constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit() {
+    this.scroll();
+    
     this.usuarioService.getFavoritos().subscribe(res => {
       this.articulos = res.favoritos;
-    },
-      error => {
-        console.error(error);
-      }
+    }
+    // ,
+    //   error => {
+    //     console.error(error);
+    //   }
     );
 
   }

@@ -5,7 +5,7 @@ import { PostsService } from '../../services/posts.service';
 import { Geolocation } from '@capacitor/geolocation';
 
 import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
-import { Articulo } from 'src/app/interfaces/interfaces';
+import { Articulo, LocalFile } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -42,7 +42,7 @@ export class PostearPage implements OnInit {
     // usuario: 
   };
 
-  galeria: string[] = [];
+  galeria: LocalFile[] = [];
 
   cargandoGeoLoc = false;
 
@@ -75,6 +75,8 @@ export class PostearPage implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.galeria = this.articuloService.galeria;
+    console.log("GALERÍA: ", this.galeria);
   }
 
   async postear(formPost: FormGroup) {
@@ -83,16 +85,6 @@ export class PostearPage implements OnInit {
     }
 
     await this.articuloService.crearArticulo(this.formPost.value);
-    
-    this.articulo = {};
-
-    this.galeria = [];
-
-    this.route.navigateByUrl('/user/inicio');
-  }
-
-  async crearArticulo() {
-    await this.articuloService.crearArticulo(this.articulo);
     
     this.articulo = {};
 
@@ -133,13 +125,15 @@ export class PostearPage implements OnInit {
   async abrirCamara() {
     const permiso = await Camera.checkPermissions();
     if(permiso.camera) {
-      const image = await Camera.getPhoto(this.opcionesCamara);
-      this.fotoTomada = image.webPath;
-      if(this.fotoTomada) {
-        this.galeria.push(this.fotoTomada);
-        // this.articuloService.subirImagen(this.fotoTomada);
-      }
+      const imagen = await Camera.getPhoto(this.opcionesCamara);
 
+      this.articuloService.subirImagenes(imagen);
+
+      // this.fotoTomada = image.webPath;
+      // if(this.fotoTomada) {
+      //   this.galeria.push(this.fotoTomada);
+      //   this.articuloService.subirImagen(this.fotoTomada);
+      // }
 
     } else {
       console.log('Sin permiso para acceder a la cámara');
@@ -149,12 +143,15 @@ export class PostearPage implements OnInit {
   async abrirGaleria() {
     const permiso = await Camera.checkPermissions();
     if(permiso.photos) {
-      const image = await Camera.getPhoto(this.opcionesGaleria);
-      this.fotoTomada = image.webPath;
-      if(this.fotoTomada) {
-        this.galeria.push(this.fotoTomada);
-        // this.articuloService.subirImagen(this.fotoTomada);
-      }
+      const imagen = await Camera.getPhoto(this.opcionesGaleria);
+
+      this.articuloService.subirImagenes(imagen);
+
+      // this.fotoTomada = image.webPath;
+      // if(this.fotoTomada) {
+      //   this.galeria.push(this.fotoTomada);
+      //   this.articuloService.subirImagen(this.fotoTomada);
+      // }
 
     } else {
       console.log('Sin permiso para acceder a la galería');

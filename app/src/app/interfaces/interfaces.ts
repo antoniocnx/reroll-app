@@ -46,6 +46,12 @@ export interface Articulo {
   usuario?: Usuario;
 }
 
+export interface LocalFile {
+  name: string;
+  path: string;
+  data: string;
+}
+
 export interface RespuestaArticulo {
   ok: boolean;
   pagina: number;
