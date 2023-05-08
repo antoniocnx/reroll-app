@@ -1,5 +1,4 @@
 <ion-card (click)="articulo._id !== undefined && irAlArticulo(articulo._id)"> 
-  <!-- <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" /> -->
   <ion-img *ngIf="articulo" [src]="articulo.galeria?.[0]"></ion-img>
   <ion-grid>
     <ion-row align-items-center>
@@ -10,7 +9,7 @@
         </ion-card-header>
       </ion-col>
       <ion-col size="3" class="ion-text-end">
-        <ion-button shape="round" size="large" fill="clear" color="light" (click)="favorito()">
+        <ion-button shape="round" size="large" fill="clear" color="light" (click)="favorito($event)">
           <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'"
             [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
         </ion-button>

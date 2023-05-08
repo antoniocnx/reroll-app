@@ -46,7 +46,9 @@ export class ArticuloComponent implements OnInit {
 
   }
 
-  favorito() {
+  favorito(event: Event) {
+    event.stopPropagation();
+    
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
