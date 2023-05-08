@@ -53,27 +53,38 @@ export class ArticulosService {
     const res: any = await firstValueFrom(this.http.get(`${url}/articulo/${id} `));
     return res.articulo;
   }
+  
+  // FUNCIONA PERO SIN IMÁGENES
+  // crearArticulo(articulo: any) {
+  //   const headers = new HttpHeaders({
+  //     'x-token': this.usuarioService.token
+  //   })
 
-  crearArticulo(articulo: any) {
+  //   return new Promise(resolve => {
+  //     this.http.post<RespuestaCrearArticulo>(`${url}/articulo/post`, articulo, { headers })
+  //       .subscribe(resp => {
+  //         this.nuevoArticulo.emit(resp['articulo']);
+  //         resolve(true);
+  //       });
+  //   });
+
+  // }
+
+  crearArticulo(formData: FormData) {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
-    })
-
+    });
+  
     return new Promise(resolve => {
-      this.http.post<RespuestaCrearArticulo>(`${url}/articulo/post`, articulo, { headers })
+      this.http.post<RespuestaCrearArticulo>(`${url}/articulo/post`, formData, { headers })
         .subscribe(resp => {
           this.nuevoArticulo.emit(resp['articulo']);
           resolve(true);
         });
     });
-
   }
-
-  subirImagenes(event: any) {
-    if(event.target.files.length > 0) {
-      this.galeria = event.target.files;
-    }
-  }
+  
+  
 
   // async subirImagen(photo: Photo) {
   //   const base64Data = await this.readAsBase64(photo);

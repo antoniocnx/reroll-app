@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PostsService } from '../../services/posts.service';
+import { environment } from 'src/environments/environment';
 
 import { Geolocation } from '@capacitor/geolocation';
 
-import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
+import { Camera, CameraPhoto, CameraResultType, CameraSource, ImageOptions, Photo } from '@capacitor/camera';
 import { Articulo, LocalFile } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Filesystem } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
+import { HttpClient } from '@angular/common/http';
 
+const url = environment.heroku_url;
 
 @Component({
   selector: 'app-postear',
@@ -16,6 +20,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./postear.page.scss'],
 })
 export class PostearPage implements OnInit {
+  
+  galeria: string[] = [];
 
   formPost: FormGroup = this.formBuilder.group({
     fecha: [new Date()],
@@ -26,9 +32,10 @@ export class PostearPage implements OnInit {
     localizacion: [''],
     estado: ['En venta', Validators.required],
     envio: ['', Validators.required],
-    galeria: []
+    galeria: this.formBuilder.array([])
+    // galeria: []
   });
-
+  
   articulo: Articulo ={
     fecha: new Date(),
     nombre: '',
@@ -42,7 +49,9 @@ export class PostearPage implements OnInit {
     // usuario: 
   };
 
-  galeria: LocalFile[] = [];
+  valorFormulario() {
+    console.log(this.formPost.value);
+  }
 
   cargandoGeoLoc = false;
 
@@ -70,14 +79,11 @@ export class PostearPage implements OnInit {
     source: CameraSource.Photos
   }
 
-  constructor(private articuloService: ArticulosService,
+  constructor(private http: HttpClient, private articuloService: ArticulosService,
               private route: Router,
               private formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-    this.galeria = this.articuloService.galeria;
-    console.log("GALERÍA: ", this.galeria);
-  }
+  ngOnInit() { }
 
   async postear(formPost: FormGroup) {
     if(formPost.invalid) {
@@ -85,6 +91,8 @@ export class PostearPage implements OnInit {
     }
 
     await this.articuloService.crearArticulo(this.formPost.value);
+
+    // await this.crearArticulos(this.formPost);
     
     this.articulo = {};
 
@@ -127,13 +135,16 @@ export class PostearPage implements OnInit {
     if(permiso.camera) {
       const imagen = await Camera.getPhoto(this.opcionesCamara);
 
-      this.articuloService.subirImagenes(imagen);
-
-      // this.fotoTomada = image.webPath;
-      // if(this.fotoTomada) {
-      //   this.galeria.push(this.fotoTomada);
-      //   this.articuloService.subirImagen(this.fotoTomada);
-      // }
+      if(imagen.webPath) {
+        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
+      
+        // Obtener el FormArray de 'galeria'
+        const galeria = this.formPost.get('galeria') as FormArray;
+        
+        // Agregar el archivo a 'galeria'
+        galeria.push(this.formBuilder.control(imageFile));
+      }
 
     } else {
       console.log('Sin permiso para acceder a la cámara');
@@ -144,35 +155,48 @@ export class PostearPage implements OnInit {
     const permiso = await Camera.checkPermissions();
     if(permiso.photos) {
       const imagen = await Camera.getPhoto(this.opcionesGaleria);
-
-      this.articuloService.subirImagenes(imagen);
-
-      // this.fotoTomada = image.webPath;
-      // if(this.fotoTomada) {
-      //   this.galeria.push(this.fotoTomada);
-      //   this.articuloService.subirImagen(this.fotoTomada);
-      // }
-
+      
+      if(imagen.webPath) {
+        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
+      
+        // Obtener el FormArray de 'galeria'
+        const galeria = this.formPost.get('galeria') as FormArray;
+        
+        // Agregar el archivo a 'galeria'
+        galeria.push(this.formBuilder.control(imageFile));
+      }
+      
     } else {
       console.log('Sin permiso para acceder a la galería');
     }
   }
 
-  // procesarImg(options: CameraOptions) {
-  //   this.camera.getPicture(options).then((imageData) => {
-  //     // imageData is either a base64 encoded string or a file URI
-  //     // If it's base64 (DATA_URL):
-  //    //  let base64Image = 'data:image/jpeg;base64,' + imageData;
-  //    console.log(imageData);
- 
-  //    const img = window.Ionic.WebView.convertFileSrc(imageData);
-  //    this.verKImg = img;
-  //    console.log(img);
-  //    this.postService.subirImagen(imageData);
-  //    this.tempImages.push( img );
-  //    }, (err) => {
-  //     // Handle error
-  //    });
-  // }
+  async crearArticulo() {
+    const formData = new FormData();
+    formData.append('fecha', this.formPost.get('fecha')?.value);
+    formData.append('nombre', this.formPost.get('nombre')?.value);
+    formData.append('precio', this.formPost.get('precio')?.value);
+    formData.append('categoria', this.formPost.get('categoria')?.value);
+    formData.append('descripcion', this.formPost.get('descripcion')?.value);
+    formData.append('localizacion', this.formPost.get('localizacion')?.value);
+    formData.append('estado', this.formPost.get('estado')?.value);
+    formData.append('envio', this.formPost.get('envio')?.value);
+  
+    // Agregar las imágenes capturadas al objeto FormData
+    const galeria = this.formPost.get('galeria')?.value;
+    for (let i = 0; i < galeria.length; i++) {
+      formData.append('files', galeria[i], galeria[i].name);
+    }
+  
+    try {
+      const result = await this.articuloService.crearArticulo(formData);
+      if (result) {
+        this.route.navigateByUrl('/user/inicio');;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 }
