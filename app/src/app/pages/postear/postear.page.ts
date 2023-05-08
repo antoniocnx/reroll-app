@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Geolocation } from '@capacitor/geolocation';
+import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
 
-import { Camera, CameraPhoto, CameraResultType, CameraSource, ImageOptions, Photo } from '@capacitor/camera';
 import { Articulo, LocalFile } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Filesystem } from '@capacitor/filesystem';
-import { Capacitor } from '@capacitor/core';
-import { HttpClient } from '@angular/common/http';
-
-const url = environment.heroku_url;
 
 @Component({
   selector: 'app-postear',
@@ -22,6 +16,8 @@ const url = environment.heroku_url;
 export class PostearPage implements OnInit {
   
   galeria: string[] = [];
+ 
+  formData = new FormData();
 
   formPost: FormGroup = this.formBuilder.group({
     fecha: [new Date()],
@@ -31,9 +27,7 @@ export class PostearPage implements OnInit {
     descripcion: ['', [Validators.required, Validators.maxLength(200)] ],
     localizacion: [''],
     estado: ['En venta', Validators.required],
-    envio: ['', Validators.required],
-    galeria: this.formBuilder.array([])
-    // galeria: []
+    envio: ['', Validators.required]
   });
   
   articulo: Articulo ={
@@ -49,13 +43,7 @@ export class PostearPage implements OnInit {
     // usuario: 
   };
 
-  valorFormulario() {
-    console.log(this.formPost.value);
-  }
-
   cargandoGeoLoc = false;
-
-  fotoTomada: string | undefined;
 
   post = {
     mensaje: '',
@@ -79,28 +67,79 @@ export class PostearPage implements OnInit {
     source: CameraSource.Photos
   }
 
-  constructor(private http: HttpClient, private articuloService: ArticulosService,
+  constructor(private articuloService: ArticulosService,
               private route: Router,
               private formBuilder: FormBuilder) { }
 
   ngOnInit() { }
 
-  async postear(formPost: FormGroup) {
-    if(formPost.invalid) {
-      return;
-    }
+  async postear() {
+    console.log(this.formData);
 
-    await this.articuloService.crearArticulo(this.formPost.value);
+    this.formData.append('fecha', this.formPost.get('fecha')?.value);
+    this.formData.append('nombre', this.formPost.get('nombre')?.value);
+    this.formData.append('precio', this.formPost.get('precio')?.value);
+    this.formData.append('categoria', this.formPost.get('categoria')?.value);
+    this.formData.append('descripcion', this.formPost.get('descripcion')?.value);
+    this.formData.append('localizacion', this.formPost.get('localizacion')?.value);
+    this.formData.append('estado', this.formPost.get('estado')?.value);
+    this.formData.append('envio', this.formPost.get('envio')?.value);
 
-    // await this.crearArticulos(this.formPost);
-    
-    this.articulo = {};
-
-    this.galeria = [];
-
-    this.route.navigateByUrl('/user/inicio');
+    await this.articuloService.crearArticulo(this.formData)
+      .then((result) => {
+        console.log(result);
+        this.formData.delete
+        this.route.navigateByUrl('/user/inicio');;
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
+  async abrirCamara() {
+    const permiso = await Camera.checkPermissions();
+    if(permiso.camera) {
+      const imagen = await Camera.getPhoto(this.opcionesCamara);
+
+      if(imagen.webPath) {
+        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
+      
+        // Obtener el FormArray de 'galeria'
+        const galeria = this.formPost.get('galeria') as FormArray;
+        
+        // Agregar el archivo a 'galeria'
+        galeria.push(this.formBuilder.control(imageFile));
+        this.formData.append('files', imageFile)
+      }
+
+    } else {
+      console.log('Sin permiso para acceder a la cámara');
+    }
+  }
+
+  async abrirGaleria() {
+    const permiso = await Camera.checkPermissions();
+    if(permiso.photos) {
+      const imagen = await Camera.getPhoto(this.opcionesGaleria);
+      
+      if(imagen.webPath) {
+        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
+      
+        // Obtener el FormArray de 'galeria'
+        const galeria = this.formPost.get('galeria') as FormArray;
+        
+        // // Agregar el archivo a 'galeria'
+        galeria.push(this.formBuilder.control(imageFile));
+        this.formData.append('files', imageFile)
+      }
+      
+    } else {
+      console.log('Sin permiso para acceder a la galería');
+    }
+  }
+
+  
   async getPosicion() {
     // if(!this.articulo.posicion) {
     //   this.articulo.localizacion = null;
@@ -128,75 +167,6 @@ export class PostearPage implements OnInit {
   
     console.log('Current position:', coordenadas);
 
-  }
-
-  async abrirCamara() {
-    const permiso = await Camera.checkPermissions();
-    if(permiso.camera) {
-      const imagen = await Camera.getPhoto(this.opcionesCamara);
-
-      if(imagen.webPath) {
-        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
-        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
-      
-        // Obtener el FormArray de 'galeria'
-        const galeria = this.formPost.get('galeria') as FormArray;
-        
-        // Agregar el archivo a 'galeria'
-        galeria.push(this.formBuilder.control(imageFile));
-      }
-
-    } else {
-      console.log('Sin permiso para acceder a la cámara');
-    }
-  }
-
-  async abrirGaleria() {
-    const permiso = await Camera.checkPermissions();
-    if(permiso.photos) {
-      const imagen = await Camera.getPhoto(this.opcionesGaleria);
-      
-      if(imagen.webPath) {
-        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
-        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
-      
-        // Obtener el FormArray de 'galeria'
-        const galeria = this.formPost.get('galeria') as FormArray;
-        
-        // Agregar el archivo a 'galeria'
-        galeria.push(this.formBuilder.control(imageFile));
-      }
-      
-    } else {
-      console.log('Sin permiso para acceder a la galería');
-    }
-  }
-
-  async crearArticulo() {
-    const formData = new FormData();
-    formData.append('fecha', this.formPost.get('fecha')?.value);
-    formData.append('nombre', this.formPost.get('nombre')?.value);
-    formData.append('precio', this.formPost.get('precio')?.value);
-    formData.append('categoria', this.formPost.get('categoria')?.value);
-    formData.append('descripcion', this.formPost.get('descripcion')?.value);
-    formData.append('localizacion', this.formPost.get('localizacion')?.value);
-    formData.append('estado', this.formPost.get('estado')?.value);
-    formData.append('envio', this.formPost.get('envio')?.value);
-  
-    // Agregar las imágenes capturadas al objeto FormData
-    const galeria = this.formPost.get('galeria')?.value;
-    for (let i = 0; i < galeria.length; i++) {
-      formData.append('files', galeria[i], galeria[i].name);
-    }
-  
-    try {
-      const result = await this.articuloService.crearArticulo(formData);
-      if (result) {
-        this.route.navigateByUrl('/user/inicio');;
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
 }
