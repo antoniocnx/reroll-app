@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { SwiperModule } from 'swiper/angular';
@@ -8,7 +8,7 @@ import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
-import { Articulo, ArticuloFavorito } from 'src/app/interfaces/interfaces';
+import { Articulo, ArticuloFavorito, Usuario } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -26,6 +26,8 @@ export class ItemPage implements OnInit {
 
   token: string = '';
 
+  usuarioActual: Usuario = {}
+
   articulo: Articulo = {};
 
   articulosFavoritos: Articulo[] = [];
@@ -38,6 +40,7 @@ export class ItemPage implements OnInit {
   }
   
   constructor(private route: ActivatedRoute,
+              private ruta: Router,
               private usuarioService: UsuarioService,
               private articulosService: ArticulosService, 
               private storage: StorageService,
@@ -45,6 +48,8 @@ export class ItemPage implements OnInit {
               private location: Location) { }
   
   ngOnInit() {
+    this.usuarioActual = this.usuarioService.getUsuario();
+    console.log(this.usuarioActual);
     this.route.paramMap.subscribe(params => {
       const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
       this.articulosService.getArticuloById(id).then(async res => {
@@ -81,6 +86,21 @@ export class ItemPage implements OnInit {
   goBack() {
     this.location.back();
   }
+
+  
+  eliminar() {
+
+    if(this.articulo._id) {
+      this.articulosService.eliminarArticulo(this.articulo._id).subscribe(
+        response => {
+          console.log('Respuesta del backend:', response);
+          this.ruta.navigateByUrl('/user/inicio');
+        },
+        error => console.log(error)
+      );
+    }
+  }
+  
   
 
 }

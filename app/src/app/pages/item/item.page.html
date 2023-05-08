@@ -1,31 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="" (click)="goBack()"></ion-back-button>
+    <ion-buttons>
+      <ion-back-button defaultHref="" (click)="goBack()" slot="start"></ion-back-button>
+      <ion-button *ngIf="usuarioActual._id === articulo.usuario?._id" defaultHref="" (click)="eliminar()"
+        slot="end">Eliminar</ion-button>
     </ion-buttons>
-    <!-- <ion-title>
-      <ion-icon name="dice-outline"></ion-icon>
-      REROLL
-    </ion-title> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="articulo">
   <div class="articulo">
-    <!-- Imágenes -->
-      <!-- <ion-item lines="none"> -->
-        <swiper [navigation]="true" [pagination]="{ clickable: true }">
-          <ng-container *ngIf="articulo && articulo.galeria">
-              <ng-template swiperSlide *ngFor="let imagen of articulo.galeria">
-                <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
-              </ng-template>
-          </ng-container>
-        </swiper>
-      <!-- </ion-item> -->
 
-    <!-- <ion-img *ngIf="articulo" [src]="articulo.galeria?.[0]"></ion-img> -->
-
-    <!-- <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" /> -->
+    <swiper [navigation]="true" [pagination]="{ clickable: true }">
+      <ng-container *ngIf="articulo && articulo.galeria">
+        <ng-template swiperSlide *ngFor="let imagen of articulo.galeria">
+          <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
+        </ng-template>
+      </ng-container>
+    </swiper>
 
     <ion-item [color]="articulo.estado === 'En venta' ? 'success' : 
                         (articulo.estado === 'Reservado' ? 'warning' : 

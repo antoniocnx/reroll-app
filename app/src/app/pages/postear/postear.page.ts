@@ -89,7 +89,7 @@ export class PostearPage implements OnInit {
       .then((result) => {
         console.log(result);
         this.formData.delete
-        this.route.navigateByUrl('/user/inicio');;
+        this.route.navigateByUrl('/user/inicio');
       }).catch((err) => {
         console.log(err);
       });
