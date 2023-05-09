@@ -105,10 +105,11 @@ export class PostearPage implements OnInit {
         const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
       
         // Obtener el FormArray de 'galeria'
-        const galeria = this.formPost.get('galeria') as FormArray;
+        // const galeria = this.formPost.get('galeria') as FormArray;
         
         // Agregar el archivo a 'galeria'
-        galeria.push(this.formBuilder.control(imageFile));
+        // galeria.push(this.formBuilder.control(imageFile));
+
         this.formData.append('files', imageFile)
       }
 
@@ -127,10 +128,11 @@ export class PostearPage implements OnInit {
         const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
       
         // Obtener el FormArray de 'galeria'
-        const galeria = this.formPost.get('galeria') as FormArray;
+        // const galeria = this.formPost.get('galeria') as FormArray;
         
         // // Agregar el archivo a 'galeria'
-        galeria.push(this.formBuilder.control(imageFile));
+        // galeria.push(this.formBuilder.control(imageFile));
+        
         this.formData.append('files', imageFile)
       }
       

@@ -165,14 +165,20 @@
 
             <ion-row style="margin-top: 30px;">
               <ion-col class="ion-text-center">
-                <ion-button type="submit" color="tertiary" shape="round" class="btn">
-                  Guardar
+                <ion-button (click)="alertaCancelar()" 
+                            color="tertiary" 
+                            shape="round" 
+                            class="btn">
+                  Cancelar
                 </ion-button>
               </ion-col>
 
               <ion-col class="ion-text-center">
-                <ion-button type="submit" color="tertiary" shape="round" [routerLink]="['/user/perfil']" class="btn">
-                  Cancelar
+                <ion-button type="submit"  
+                            color="tertiary" 
+                            shape="round" 
+                            class="btn">
+                  Guardar
                 </ion-button>
               </ion-col>
             </ion-row>

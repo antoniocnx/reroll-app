@@ -13,6 +13,7 @@ import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
+import { AlertController } from '@ionic/angular';
 
 const url = environment.heroku_url;
 const url_local = environment.url;
@@ -43,7 +44,7 @@ export class ItemPage implements OnInit {
               private ruta: Router,
               private usuarioService: UsuarioService,
               private articulosService: ArticulosService, 
-              private storage: StorageService,
+              private alertController: AlertController,
               private http: HttpClient,
               private location: Location) { }
   
@@ -87,19 +88,48 @@ export class ItemPage implements OnInit {
     this.location.back();
   }
 
+  async eliminar() {
+    const alert = await this.alertController.create({
+      header: '¿Quieres eliminar este artículo?',
+      message: 'Una vez eliminado el artículo no se podrá recuperar.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, 
+        {
+          text: 'Eliminar',
+          handler: () => {
+            if(this.articulo._id) {
+              this.articulosService.eliminarArticulo(this.articulo._id).subscribe(
+                response => {
+                  console.log(response.message);
+                  this.ruta.navigateByUrl('/user/inicio');
+                },
+                error => console.log(error)
+              );
+            }
+          }
+        }
+      ]
+    });
   
-  eliminar() {
-
-    if(this.articulo._id) {
-      this.articulosService.eliminarArticulo(this.articulo._id).subscribe(
-        response => {
-          console.log('Respuesta del backend:', response);
-          this.ruta.navigateByUrl('/user/inicio');
-        },
-        error => console.log(error)
-      );
-    }
+    await alert.present();
   }
+  
+  
+  // eliminar() {
+
+  //   if(this.articulo._id) {
+  //     this.articulosService.eliminarArticulo(this.articulo._id).subscribe(
+  //       response => {
+  //         console.log('Respuesta del backend:', response);
+  //         this.ruta.navigateByUrl('/user/inicio');
+  //       },
+  //       error => console.log(error)
+  //     );
+  //   }
+  // }
   
   
 

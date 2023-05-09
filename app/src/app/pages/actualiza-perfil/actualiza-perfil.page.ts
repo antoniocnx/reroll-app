@@ -3,7 +3,7 @@ import { Usuario } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AbstractControl, FormBuilder, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-actualiza-perfil',
@@ -50,7 +50,8 @@ export class ActualizaPerfilPage implements OnInit {
   constructor(private usuarioService: UsuarioService,
               private interfazUsuario: InterfazUsuarioService,
               private navCrtl: NavController,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder, 
+              private alertController: AlertController) { }
 
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
@@ -60,38 +61,60 @@ export class ActualizaPerfilPage implements OnInit {
   valorForm(form: FormGroup) {
     console.log(form.value)
   }
-
+  
   async actualizar(formUpdate: FormGroup) {
-    console.log(formUpdate.value);
-    
-    const actualizado = await this.usuarioService.actualizarUsuario(formUpdate.value);
-    console.log(actualizado);
 
-    if(actualizado) {
-      // Toast con el mensaje
-      this.interfazUsuario.presentToast('Usuario actualizado correctamente');
-    } else {
-      // Toast con el error
-      this.interfazUsuario.presentToast('Error al actualizar el usuario');
-    }
+    const alert = await this.alertController.create({
+      header: 'Editar perfil',
+      message: '¿Está seguro de que desea guardar los cambios?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, 
+        {
+          text: 'Confirmar',
+          handler: async () => {
+            const actualizado = await this.usuarioService.actualizarUsuario(formUpdate.value);
 
-    this.navCrtl.navigateRoot('/user/perfil', {animated: true});
+            if(actualizado) {
+              // Toast con el mensaje
+              this.interfazUsuario.presentToast('Usuario actualizado correctamente');
+              this.navCrtl.navigateRoot('/user/perfil', {animated: true});
+            } else {
+              // Toast con el error
+              this.interfazUsuario.presentToast('Error al actualizar el usuario');
+            }
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+
   }
 
-  // async actualizar(formUpdate: FormGroup) {
-  //   console.log(formUpdate.value);
+  async alertaCancelar() {
+    const alert = await this.alertController.create({
+      header: 'Editar perfil',
+      message: '¿Está seguro de que desea salir sin guardar los cambios?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, 
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.formUpdate.reset();
+            this.navCrtl.navigateRoot('/user/perfil', {animated: true});
+          }
+        }
+      ]
+    });
   
-  //   const usuarioActualizado: Usuario = { ...this.usuario, ...formUpdate.value };
-  
-  //   await this.usuarioService.actualizarUsuario(usuarioActualizado).then((exito) => {
-  //     if (exito) {
-  //       this.interfazUsuario.presentToast('Perfil actualizado correctamente');
-  //     } else {
-  //       this.interfazUsuario.presentToast('Error al actualizar el perfil. Por favor, inténtalo de nuevo');
-  //     }
-  //   });
-  // }
-
+    await alert.present();
+  }
 
   emailAdminNoValido(): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
