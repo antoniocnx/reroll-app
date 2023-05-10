@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizerPipe } from './dom-sanitizer.pipe';
 import { ImagenPipe } from './imagen.pipe';
 import { ImageSanitizerPipe } from './image-sanitizer.pipe';
+import { BusquedaPipe } from './busqueda.pipe';
 
 
 
@@ -10,7 +11,8 @@ import { ImageSanitizerPipe } from './image-sanitizer.pipe';
   declarations: [
     DomSanitizerPipe,
     ImagenPipe,
-    ImageSanitizerPipe
+    ImageSanitizerPipe,
+    BusquedaPipe
   ],
   imports: [
     CommonModule
@@ -18,7 +20,8 @@ import { ImageSanitizerPipe } from './image-sanitizer.pipe';
   exports: [
     DomSanitizerPipe,
     ImagenPipe,
-    ImageSanitizerPipe
+    ImageSanitizerPipe,
+    BusquedaPipe
   ]
 })
 export class PipesModule { }

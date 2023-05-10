@@ -8,6 +8,10 @@ import { ArticulosService } from 'src/app/services/articulos.service';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
+  
+  textoBusqueda: string = '';
+
+  categoriaBusqueda: string = 'nombre';
 
   articulos: Articulo[] = [];
 
@@ -53,6 +57,10 @@ export class InicioPage implements OnInit {
       }
     })
     
+  }
+
+  onCategoriaChange(event: any) {
+    this.categoriaBusqueda = event.target.value;
   }
 
 }
