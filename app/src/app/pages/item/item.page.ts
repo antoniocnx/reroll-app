@@ -50,7 +50,7 @@ export class ItemPage implements OnInit {
   
   ngOnInit() {
     this.usuarioActual = this.usuarioService.getUsuario();
-    console.log(this.usuarioActual);
+
     this.route.paramMap.subscribe(params => {
       const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
       this.articulosService.getArticuloById(id).then(async res => {
@@ -115,6 +115,16 @@ export class ItemPage implements OnInit {
     });
   
     await alert.present();
+  }
+
+  irAUsuario(usuario: Usuario) {
+    const navigationExtras = {
+      state: {
+        articulo: this.articulo
+      }
+    };
+  
+    this.ruta.navigate(['/user', usuario._id], navigationExtras);
   }
   
   

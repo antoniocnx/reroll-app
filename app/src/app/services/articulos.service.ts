@@ -29,6 +29,10 @@ export class ArticulosService {
     this.articuloSeleccionado = articulo;
   }
 
+  getArticulo() {
+    return {...this.articuloSeleccionado};
+  }
+
   getArticulos(pull: boolean = false) {
     if (pull) {
       this.paginaArticulos = 0;

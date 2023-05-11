@@ -44,6 +44,7 @@ export class ArticuloComponent implements OnInit {
 
     });
 
+    // this.compruebaFavorito();
   }
 
   favorito(event: Event) {
@@ -62,10 +63,17 @@ export class ArticuloComponent implements OnInit {
         console.error(err);
       }
     );
+
+    this.esFavorito != this.esFavorito;
+    console.log(this.esFavorito);
   }
   
   irAlArticulo(id: string) {
     this.router.navigate(['/user/item/' + id]);
   }
+
+  // compruebaFavorito() {
+  //   return this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
+  // }
 
 }

@@ -18,7 +18,7 @@ const routes: Routes = [
       },
       {
         path: 'item/:id',
-        loadChildren: () => import('../item/item.module').then( m => m.ItemPageModule)
+        loadChildren: () => import('../item/item.module').then(m => m.ItemPageModule)
       },
       {
         path: 'postear',
@@ -30,11 +30,15 @@ const routes: Routes = [
       },
       {
         path: 'perfil',
-        loadChildren: () => import('../perfil/perfil.module').then( m => m.PerfilPageModule)
+        loadChildren: () => import('../perfil/perfil.module').then(m => m.PerfilPageModule)
       },
       {
         path: 'perfil/actualiza-perfil',
-        loadChildren: () => import('../actualiza-perfil/actualiza-perfil.module').then( m => m.ActualizaPerfilPageModule)
+        loadChildren: () => import('../actualiza-perfil/actualiza-perfil.module').then(m => m.ActualizaPerfilPageModule)
+      },
+      {
+        path: ':id',
+        loadChildren: () => import('../usuario/usuario.module').then(m => m.UsuarioPageModule)
       },
       {
         path: '',
@@ -53,4 +57,4 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }

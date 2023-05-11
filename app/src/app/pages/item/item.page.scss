@@ -10,6 +10,15 @@ ion-buttons {
 //     height: 325px;
 // }
 
+a {
+    color: var(--ion-color-dark);
+    text-decoration: none;
+}
+
+.usuarioArticulo {
+    margin-left: 15px;
+}
+
 .domicilio {
     color: rgb(0, 255, 0);
 }

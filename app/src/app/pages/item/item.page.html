@@ -46,28 +46,34 @@
       <ion-button shape="round" size="default" fill="clear" slot="end" color="light">
         <ion-icon slot="icon-only" name="chatbubble" color="dark"></ion-icon>
       </ion-button>
-
-      <ion-avatar slot="start">
-        <img src="/assets/avatars/{{ articulo.usuario?.avatar }}">
-      </ion-avatar>
-
-      <ion-label>
-        <ion-text color="dark">
-          <h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2>
-        </ion-text>
-      </ion-label>
+      <!-- <a [routerLink]="['/user', articulo.usuario?._id]"> -->
+      <a (click)="articulo.usuario && irAUsuario(articulo.usuario)">
+        <ion-avatar slot="start">
+          <img src="/assets/avatars/{{ articulo.usuario?.avatar }}">
+        </ion-avatar>
+      </a>
+      <!-- <a [routerLink]="['/user', articulo.usuario?._id]"> -->
+      <a (click)="articulo.usuario && irAUsuario(articulo.usuario)">
+        <ion-label class="usuarioArticulo">
+          <ion-text>
+            <h2>{{ articulo.usuario?.nombre }} {{ articulo.usuario?.apellidos }}</h2>
+          </ion-text>
+        </ion-label>
+      </a>
     </ion-item>
 
     <ion-item lines="none">
+      <ion-text>Categoría: &nbsp;</ion-text>
       <ion-text color="dark">{{ articulo.categoria }}</ion-text>
     </ion-item>
 
     <ion-item lines="none">
+      <ion-text>Descripción: &nbsp;</ion-text>
       <ion-text color="dark">{{ articulo.descripcion }}</ion-text>
     </ion-item>
 
     <ion-item lines="none">
-      <ion-text color="dark">Envío:&nbsp;</ion-text>
+      <ion-text>Envío: &nbsp;</ion-text>
       <ion-text [ngClass]="{'domicilio': articulo.envio === 'Domicilio', 'en-mano': articulo.envio === 'En mano'}">{{
         articulo.envio }}</ion-text>
     </ion-item>

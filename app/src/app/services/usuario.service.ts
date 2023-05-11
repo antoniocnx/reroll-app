@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
-import { Articulo, RespuestaFavoritos, RespuestaLogin, RespuestaSignUp, RespuestaUsuario, Usuario } from '../interfaces/interfaces';
+import { Articulo, RespuestaFavoritos, RespuestaLogin, RespuestaSignUp, RespuestaUsuario, Usuario, ValoracionUsuario } from '../interfaces/interfaces';
 import { NavController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 
 const url = environment.heroku_url;
 
@@ -89,6 +89,34 @@ export class UsuarioService {
     });
   }
 
+  actualizarUsuario(usuario: Usuario) {
+    const headers = new HttpHeaders({
+      'x-token': this.token
+    });
+
+    return new Promise(resolve => {
+      this.http.post<RespuestaLogin>(`${url}/usuario/update`, usuario, { headers })
+                .subscribe(resp => {
+                  if(resp['ok']) {
+                    this.guardarToken(resp['token']);
+                    resolve(true);
+                  } else {
+                    resolve(false);
+                  }
+                })
+    })
+
+  }
+
+  getFavoritos() {
+    const headers = new HttpHeaders({
+      'x-token': this.token
+    });
+
+    return this.http.get<RespuestaFavoritos>(`${ url }/usuario/favoritos`, { headers });
+    
+  }
+  
   async guardarToken(token: string) {
     this.token = token;
     await this.storage.set('token', token);
@@ -127,33 +155,12 @@ export class UsuarioService {
     });
   }
 
-  actualizarUsuario(usuario: Usuario) {
+  getValoraciones() {
     const headers = new HttpHeaders({
       'x-token': this.token
     });
 
-    return new Promise(resolve => {
-      this.http.post<RespuestaLogin>(`${url}/usuario/update`, usuario, { headers })
-                .subscribe(resp => {
-                  if(resp['ok']) {
-                    this.guardarToken(resp['token']);
-                    resolve(true);
-                  } else {
-                    resolve(false);
-                  }
-                })
-    })
-
+    return this.http.get<ValoracionUsuario>(`${ url }/usuario/valoraciones`, { headers });
   }
-
-  getFavoritos() {
-    const headers = new HttpHeaders({
-      'x-token': this.token
-    });
-
-    return this.http.get<RespuestaFavoritos>(`${ url }/usuario/favoritos`, { headers });
-    
-  }
-
 
 }

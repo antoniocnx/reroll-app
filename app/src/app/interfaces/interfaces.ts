@@ -13,6 +13,13 @@ export interface Usuario {
   cp?: number;
   favoritos?: Articulo[];
   avatar?: string;
+  valoracion?: Valoracion[];
+}
+
+export interface Valoracion {
+  usuario: Usuario;
+  puntuacion: number;
+  comentario: string;
 }
 
 export interface Administrador {
@@ -111,6 +118,11 @@ export interface RespuestaFavoritos {
 }
 
 export interface ArticuloFavorito {
+  ok: boolean;
+  mensaje: string;
+}
+
+export interface ValoracionUsuario {
   ok: boolean;
   mensaje: string;
 }
