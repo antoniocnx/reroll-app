@@ -35,7 +35,8 @@ export class SignupAdminPage implements OnInit {
     localidad: ['', Validators.required],
     pais: ['', Validators.required],
     cp: [Validators.required],
-    avatar: ['av-chopper.png']
+    avatar: ['av-chopper.png'],
+    checkbox: [false, Validators.requiredTrue]
   })
 
   isTypePassword: boolean = true;
