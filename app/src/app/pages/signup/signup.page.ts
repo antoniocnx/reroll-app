@@ -25,12 +25,12 @@ export class SignupPage implements OnInit {
   //
 
   formSignup: FormGroup = this.formBuilder.group({
-    nombre: ['Test 2', Validators.required],
-    apellidos: ['Test', Validators.required],
-    email: ['test2@test.com', [Validators.required, Validators.email, this.emailAdminNoValido()]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]],
+    nombre: ['', Validators.required],
+    apellidos: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
     nacimiento: [(new Date('2000-01-01')), Validators.required],
-    sexo: ['Mujer', Validators.required],
+    sexo: ['', Validators.required],
     direccion: ['', Validators.required],
     ciudad: ['', Validators.required],
     localidad: ['', Validators.required],
