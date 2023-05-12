@@ -54,5 +54,12 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To store images</string>
 
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We want to track you</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We want your current positon</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>To show your location</string>
+
 </dict>
 </plist>
