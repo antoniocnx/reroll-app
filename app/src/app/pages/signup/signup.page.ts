@@ -36,7 +36,8 @@ export class SignupPage implements OnInit {
     localidad: ['', Validators.required],
     pais: ['', Validators.required],
     cp: [Validators.required],
-    avatar: ['av-robin.png']
+    avatar: ['av-robin.png'],
+    checkbox: [false, Validators.requiredTrue]
   })
 
   isTypePassword: boolean = true;
@@ -111,6 +112,8 @@ export class SignupPage implements OnInit {
           // Actualizar campo de dirección
           const streetComponent = place.address_components.find((c: { types: string | string[]; }) => c.types.includes('route'));
           const streetNumberComponent = place.address_components.find((c: { types: string[]; }) => c.types.includes('street_number'));
+          const postalCodeComponent = place.address_components.find((c: { types: string[]; }) => c.types.includes('postal_code'));
+          
           let streetName = '';
           if (streetComponent) {
             streetName += streetComponent.long_name;
@@ -120,12 +123,16 @@ export class SignupPage implements OnInit {
             this.autocompleteAddres.value = `${streetName} ${streetNumber}`;
           } else {
             const formattedAddress = place.formatted_address;
-            // const regex = new RegExp(`${this.autocompleteCity.value}|${this.autocompleteCountry.value}|^,\\s*|\\s*,\\s*$`, 'gi');
             const regex = new RegExp(`${this.autocompleteCity.value}|${this.autocompleteCountry.value}|,\\s*$|\\s*,\\s*`, 'gi');
-            const modifiedFormattedAddress = formattedAddress.replace(regex, '').trim();
+            let modifiedFormattedAddress = formattedAddress.replace(regex, '').trim();
+            if (postalCodeComponent) {
+              const postalCode = postalCodeComponent.long_name;
+              modifiedFormattedAddress = modifiedFormattedAddress.replace(postalCode, '').trim();
+            }
             const modifiedStreetName = modifiedFormattedAddress.replace(streetName, '').trim();
             this.autocompleteAddres.value = modifiedStreetName;
           }
+          
 
 
         }

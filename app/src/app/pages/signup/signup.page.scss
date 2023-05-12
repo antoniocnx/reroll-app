@@ -32,11 +32,12 @@ ion-list {
     }
   }
 
-  ion-col {
-    ion-note {
-      font-size: 0.85rem;
-    }
-  }
+  // ion-col {
+  //   ion-note {
+  //     font-size: 0.85rem;
+      
+  //   }
+  // }
 }
 
 .form-container {
@@ -115,23 +116,32 @@ ion-list {
   font-size: 0.75rem;
 }
 
-ion-radio-group ion-item {
-  border: none !important;
-}
+// ion-radio-group ion-item {
+//   border: none !important;
+// }
 
-ion-radio-group ion-item ion-label {
-  margin-left: 10px !important;
-}
+// ion-radio-group ion-item ion-label {
+//   margin-left: 10px !important;
+// }
 
 .btn-crear-usuario {
   text-align: center;
 }
 
-.label-form {
-  font-weight: bold;
+.label-form-fecha {
+  color: #A9A9A9;
 }
 
 .label-form-sex {
-  font-weight: bold;
+  color: #A9A9A9;
   margin-top: 15px;
+}
+
+.note-error {
+  color: red;
+}
+
+.terminos {
+  max-width: 80%;
+  display: inline-block;
 }
