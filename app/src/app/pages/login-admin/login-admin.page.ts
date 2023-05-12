@@ -40,7 +40,7 @@ export class LoginAdminPage implements OnInit {
 
     if(valido) {
       // Ir a tabs
-      this.navCrtl.navigateRoot('/admin/perfil-admin', { animated: true });
+      this.navCrtl.navigateRoot('/admin/reportes', { animated: true });
     } else {
       // Alerta de error
       this.interfazUsuario.alertaLogin('Administrador o contraseña incorrecto.');

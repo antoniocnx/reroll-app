@@ -20,7 +20,8 @@
         </ion-icon>
         <ion-input 
           formControlName="email" 
-          placeholder="Email">
+          placeholder="Email"
+          [clearInput]="true">
         </ion-input>
       </ion-item>
       <ion-text 
@@ -39,7 +40,8 @@
         <ion-input 
           formControlName="password" 
           [type]="isTypePassword ? 'password' : 'text'"
-          placeholder="Contraseña">
+          placeholder="Contraseña"
+          [clearInput]="true">
         </ion-input>
       </ion-item>
       <ion-text 

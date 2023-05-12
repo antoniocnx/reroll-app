@@ -66,7 +66,6 @@ export class SignupPage implements OnInit {
 
   ngOnInit() { }
 
-
   // Autocompletado de la dirección
 
   ionViewDidEnter() {
@@ -132,15 +131,12 @@ export class SignupPage implements OnInit {
             const modifiedStreetName = modifiedFormattedAddress.replace(streetName, '').trim();
             this.autocompleteAddres.value = modifiedStreetName;
           }
-          
-
 
         }
       });
     });
 
   }
-
 
   // Registro con login automático
   async signup(formSignup: FormGroup) {

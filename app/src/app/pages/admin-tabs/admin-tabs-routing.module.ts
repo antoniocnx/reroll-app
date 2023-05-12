@@ -19,12 +19,16 @@ const routes: Routes = [
       {
         path: 'perfil-admin',
         loadChildren: () => import('../perfil-admin/perfil-admin.module').then( m => m.PerfilAdminPageModule)
+      },
+      {
+        path: 'perfil-admin/actualiza-perfil-admin',
+        loadChildren: () => import('../actualiza-perfil-admin/actualiza-perfil-admin.module').then( m => m.ActualizaPerfilAdminPageModule)
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/perfil-admin',
+    redirectTo: '/reportes',
     pathMatch: 'full'
   }
 ];

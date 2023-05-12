@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { Administrador } from 'src/app/interfaces/interfaces';
 import { AdministradorService } from 'src/app/services/administrador.service';
-import { PostsService } from 'src/app/services/posts.service';
+import { ArticulosService } from 'src/app/services/articulos.service';
 
 @Component({
   selector: 'app-perfil-admin',
@@ -13,18 +14,34 @@ export class PerfilAdminPage implements OnInit {
   admin: Administrador = {};
 
   constructor(private adminService: AdministradorService,
-              private postsService: PostsService) { }
+    private articuloService: ArticulosService,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.admin = this.adminService.getAdmin();
   }
 
-  logout() {
-    this.adminService.logout();
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Seguro que quieres cerrar la sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Cerrar sesión',
+          handler: () => {
+            this.adminService.logout();
 
-    // Hace falta restablecer el valor de paginaPost a 0 para que al hacer logout y luego ingresar con otro usuario
-    // se muestren los posts. De lo contrario empieza a buscar en la página 1.
-    this.postsService.paginaPosts = 0;
+            this.articuloService.paginaArticulos = 0;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

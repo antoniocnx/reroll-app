@@ -63,7 +63,7 @@ export class AdministradorService {
     this.token = '';
     this.admin = {};
     this.storage.clear();
-    this.navCrtl.navigateRoot('login', {animated: true});
+    this.navCrtl.navigateRoot('login-admin', {animated: true});
   }
 
   registro(admin: Administrador) {

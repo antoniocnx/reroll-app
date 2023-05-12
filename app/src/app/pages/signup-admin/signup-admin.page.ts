@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { IonInput, NavController } from '@ionic/angular';
 import { AdministradorService } from 'src/app/services/administrador.service';
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
+
+declare const google: any;
 
 @Component({
   selector: 'app-signup-admin',
@@ -11,18 +13,28 @@ import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.servic
 })
 export class SignupAdminPage implements OnInit {
 
-  formSignup: FormGroup = this.formBuilder.group ({
-    nombre: ['Admin 2', Validators.required],
-    apellidos: ['Admin', Validators.required],
-    email: ['admin2@admin.com', [Validators.required, Validators.email, this.emailAdminNoValido()] ],
-    password: ['123456', [ Validators.required, Validators.minLength(6) ] ],
+  // Google Maps
+
+  @ViewChild('autocompleteAddres') autocompleteAddres!: IonInput;
+  @ViewChild('autocompleteCity') autocompleteCity!: IonInput;
+  @ViewChild('autocompleteTown') autocompleteTown!: IonInput;
+  @ViewChild('autocompleteCountry') autocompleteCountry!: IonInput;
+  @ViewChild('autocompletePostal') autocompletePostal!: IonInput;
+
+  //
+
+  formSignup: FormGroup = this.formBuilder.group({
+    nombre: ['', Validators.required],
+    apellidos: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
     nacimiento: [(new Date('2000-01-01')), Validators.required],
-    sexo: ['Mujer', Validators.required],
-    direccion: ['Calle Prueba', Validators.required],
-    ciudad: ['Prueba', Validators.required],
-    localidad: ['Prueba', Validators.required],
-    pais: ['Prueba', Validators.required],
-    cp: [101010, Validators.required],
+    sexo: ['', Validators.required],
+    direccion: ['', Validators.required],
+    ciudad: ['', Validators.required],
+    localidad: ['', Validators.required],
+    pais: ['', Validators.required],
+    cp: [Validators.required],
     avatar: ['av-chopper.png']
   })
 
@@ -51,15 +63,87 @@ export class SignupAdminPage implements OnInit {
 
   ngOnInit() { }
 
+  // Autocompletado de la dirección
+
+  ionViewDidEnter() {
+    // Calle
+    this.autocompleteAddres.getInputElement().then((res: any) => {
+      const auto = new google.maps.places.Autocomplete(res);
+      auto.addListener('place_changed', () => {
+        const place = auto.getPlace();
+        console.log(place);
+        if (place && place.address_components) {
+          // Actualizar campo de localidad
+          const townComponent = place.address_components.find((c: { types: string | string[]; }) => c.types.includes('locality'));
+          if (townComponent) {
+            this.autocompleteTown.value = townComponent.long_name;
+          } else {
+            this.autocompleteTown.value = '';
+          }
+
+          // Actualizar campo de ciudad
+          const cityComponent = place.address_components.find((c: { types: string | string[]; }) => c.types.includes('administrative_area_level_2'));
+          if (cityComponent) {
+            this.autocompleteCity.value = cityComponent.long_name;
+          } else {
+            this.autocompleteCity.value = '';
+          }
+
+          // Actualizar campo de país
+          const countryComponent = place.address_components.find((c: { types: string | string[]; }) => c.types.includes('country'));
+          if (countryComponent) {
+            this.autocompleteCountry.value = countryComponent.long_name;
+          } else {
+            this.autocompleteCountry.value = '';
+          }
+
+          // Actualizar campo de código postal
+          const postalComponent = place.address_components.find((c: { types: string | string[]; }) => c.types.includes('postal_code'));
+          if (postalComponent) {
+            this.autocompletePostal.value = postalComponent.long_name;
+          } else {
+            this.autocompletePostal.value = '';
+          }
+
+          // Actualizar campo de dirección
+          const streetComponent = place.address_components.find((c: { types: string | string[]; }) => c.types.includes('route'));
+          const streetNumberComponent = place.address_components.find((c: { types: string[]; }) => c.types.includes('street_number'));
+          const postalCodeComponent = place.address_components.find((c: { types: string[]; }) => c.types.includes('postal_code'));
+
+          let streetName = '';
+          if (streetComponent) {
+            streetName += streetComponent.long_name;
+          }
+          if (streetNumberComponent) {
+            const streetNumber = streetNumberComponent.long_name;
+            this.autocompleteAddres.value = `${streetName} ${streetNumber}`;
+          } else {
+            const formattedAddress = place.formatted_address;
+            const regex = new RegExp(`${this.autocompleteCity.value}|${this.autocompleteCountry.value}|,\\s*$|\\s*,\\s*`, 'gi');
+            let modifiedFormattedAddress = formattedAddress.replace(regex, '').trim();
+            if (postalCodeComponent) {
+              const postalCode = postalCodeComponent.long_name;
+              modifiedFormattedAddress = modifiedFormattedAddress.replace(postalCode, '').trim();
+            }
+            const modifiedStreetName = modifiedFormattedAddress.replace(streetName, '').trim();
+            this.autocompleteAddres.value = modifiedStreetName;
+          }
+
+        }
+      });
+    });
+
+  }
+
   async signup(formSignup: FormGroup) {
-    if(formSignup.invalid) {
+    if (formSignup.invalid) {
       return;
     }
 
     const valido = await this.adminService.registro(formSignup.value);
     console.log('Valor de VALIDO: ', valido);
-      
-    if(valido) {
+
+    if (valido) {
       // Alerta de error
       this.interfazUsuario.alertaLogin('Administrador registrado con éxito.');
     } else {
@@ -68,7 +152,7 @@ export class SignupAdminPage implements OnInit {
   }
 
   emailAdminNoValido(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const email = control.value;
       if (email && !(email.toLowerCase().endsWith('@admin.com'))) {
         return { 'emailNoPermitido': true };
