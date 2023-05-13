@@ -98,7 +98,7 @@
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">Dirección:</ion-label> -->
                 <ion-icon name="location-outline" slot="end" color="medium"></ion-icon>
-                <ion-input type="text" placeholder="Dirección" class="form-control" formControlName="direccion" [clearInput]="true" #autocompleteAddres></ion-input>
+                <ion-input type="text" placeholder="Dirección" class="form-control" formControlName="direccion" [clearInput]="true" #autocompleteAddress></ion-input>
               </ion-item>
               <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('direccion')?.valid && formSignup.get('direccion')?.touched">
                 <p class="error">* Por favor, indique su dirección</p>

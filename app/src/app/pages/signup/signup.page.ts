@@ -16,7 +16,7 @@ export class SignupPage implements OnInit {
 
   // Google Maps
 
-  @ViewChild('autocompleteAddres') autocompleteAddres!: IonInput;
+  @ViewChild('autocompleteAddress') autocompleteAddress!: IonInput;
   @ViewChild('autocompleteCity') autocompleteCity!: IonInput;
   @ViewChild('autocompleteTown') autocompleteTown!: IonInput;
   @ViewChild('autocompleteCountry') autocompleteCountry!: IonInput;
@@ -70,7 +70,7 @@ export class SignupPage implements OnInit {
 
   ionViewDidEnter() {
     // Calle
-    this.autocompleteAddres.getInputElement().then((res: any) => {
+    this.autocompleteAddress.getInputElement().then((res: any) => {
       const auto = new google.maps.places.Autocomplete(res);
       auto.addListener('place_changed', () => {
         const place = auto.getPlace();
@@ -119,7 +119,7 @@ export class SignupPage implements OnInit {
           }
           if (streetNumberComponent) {
             const streetNumber = streetNumberComponent.long_name;
-            this.autocompleteAddres.value = `${streetName} ${streetNumber}`;
+            this.autocompleteAddress.value = `${streetName} ${streetNumber}`;
           } else {
             const formattedAddress = place.formatted_address;
             const regex = new RegExp(`${this.autocompleteCity.value}|${this.autocompleteCountry.value}|,\\s*$|\\s*,\\s*`, 'gi');
@@ -129,7 +129,7 @@ export class SignupPage implements OnInit {
               modifiedFormattedAddress = modifiedFormattedAddress.replace(postalCode, '').trim();
             }
             const modifiedStreetName = modifiedFormattedAddress.replace(streetName, '').trim();
-            this.autocompleteAddres.value = modifiedStreetName;
+            this.autocompleteAddress.value = modifiedStreetName;
           }
 
         }

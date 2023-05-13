@@ -42,17 +42,22 @@ export class ItemPage implements OnInit {
     allowSlidePrev: false
   }
 
+  // Google Maps
+
   lat: Number = 0;
   lng: Number = 0;
-  
+  // circle: google.maps.Circle;
+
+  //
+
   constructor(private route: ActivatedRoute,
-              private ruta: Router,
-              private usuarioService: UsuarioService,
-              private articulosService: ArticulosService, 
-              private alertController: AlertController,
-              private http: HttpClient,
-              private location: Location) { }
-  
+    private ruta: Router,
+    private usuarioService: UsuarioService,
+    private articulosService: ArticulosService,
+    private alertController: AlertController,
+    private http: HttpClient,
+    private location: Location) { }
+
   ngOnInit() {
     this.usuarioActual = this.usuarioService.getUsuario();
 
@@ -60,6 +65,23 @@ export class ItemPage implements OnInit {
       const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
       this.articulosService.getArticuloById(id).then(async res => {
         this.articulo = res;
+
+
+        const geocoder = new google.maps.Geocoder();
+        const address = ` ${this.articulo.usuario?.direccion}, 
+                      ${this.articulo.usuario?.ciudad}, 
+                      ${this.articulo.usuario?.localidad}, 
+                      ${this.articulo.usuario?.pais}, 
+                      ${this.articulo.usuario?.cp}`;
+
+        geocoder.geocode({ address: address }, (results: any, status: any) => {
+          if (status === 'OK') {
+            this.lat = results[0].geometry.location.lat();
+            this.lng = results[0].geometry.location.lng();
+            // Inicializar el mapa de Google Maps
+            this.initMap();
+          }
+        });
       })
     });
 
@@ -70,32 +92,16 @@ export class ItemPage implements OnInit {
 
     });
 
-    const geocoder = new google.maps.Geocoder();
-    const address = ` ${this.usuarioActual.direccion}, 
-                      ${this.usuarioActual.ciudad}, 
-                      ${this.usuarioActual.localidad}, 
-                      ${this.usuarioActual.pais}, 
-                      ${this.usuarioActual.cp}`;
-                      
-    geocoder.geocode({ address: address }, (results: any, status: any) => {
-      if (status === 'OK') {
-        this.lat = results[0].geometry.location.lat();
-        this.lng = results[0].geometry.location.lng();
-        // Inicializar el mapa de Google Maps
-        this.initMap();
-      }
-    });
-
   }
 
   favorito() {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
-    
+
     const articuloId = this.articulo._id;
-    
-    this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
+
+    this.http.post(`${url}/usuario/favoritos/${articuloId}`, {}, { headers }).subscribe(
       (err: any) => {
         console.error(err);
       }
@@ -114,11 +120,11 @@ export class ItemPage implements OnInit {
         {
           text: 'Cancelar',
           role: 'cancel'
-        }, 
+        },
         {
           text: 'Eliminar',
           handler: () => {
-            if(this.articulo._id) {
+            if (this.articulo._id) {
               this.articulosService.eliminarArticulo(this.articulo._id).subscribe(
                 response => {
                   console.log(response.message);
@@ -131,7 +137,7 @@ export class ItemPage implements OnInit {
         }
       ]
     });
-  
+
     await alert.present();
   }
 
@@ -141,22 +147,35 @@ export class ItemPage implements OnInit {
         articulo: this.articulo
       }
     };
-  
+
     this.ruta.navigate(['/user', usuario._id], navigationExtras);
   }
-  
+
   // Google Maps
 
   initMap() {
     const map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: this.lat, lng: this.lng},
-      zoom: 18
+      center: { lat: this.lat, lng: this.lng },
+      zoom: 12
     });
-    
-    const marker = new google.maps.Marker({
-      position: {lat: this.lat, lng: this.lng},
+
+    // Marcador de la ubicación
+    // const marker = new google.maps.Marker({
+    //   position: {lat: this.lat, lng: this.lng},
+    //   map: map,
+    //   title: 'Ubicación del usuario'
+    // });
+
+    // Radio de la ubicación
+    const circle = new google.maps.Circle({
+      strokeColor: '#00FFD2',
+      strokeOpacity: 0.8,
+      strokeWeight: 0,
+      fillColor: '#00FFD2',
+      fillOpacity: 0.35,
       map: map,
-      title: 'Ubicación del usuario'
+      center: { lat: this.lat, lng: this.lng },
+      radius: 2000
     });
   }
 
