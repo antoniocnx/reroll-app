@@ -28,7 +28,7 @@ export class SignupAdminPage implements OnInit {
     apellidos: ['', Validators.required],
     email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    nacimiento: [(new Date('2000-01-01')), Validators.required],
+    nacimiento: [(new Date('2000-01-01')), [ Validators.required, this.mayorDeEdad ]],
     sexo: ['', Validators.required],
     direccion: ['', Validators.required],
     ciudad: ['', Validators.required],
@@ -160,6 +160,22 @@ export class SignupAdminPage implements OnInit {
       }
       return null;
     };
+  }
+
+  mayorDeEdad(control: AbstractControl): { [key: string]: boolean } | null {
+    const fechaNacimiento = new Date(control.value);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+
+    if (hoy.getMonth() < fechaNacimiento.getMonth() || (hoy.getMonth() == fechaNacimiento.getMonth() && hoy.getDate() < fechaNacimiento.getDate())) {
+      edad--;
+    }
+
+    if (edad < 18) {
+      return { 'menorDeEdad': true };
+    }
+
+    return null;
   }
 
   onChange() {

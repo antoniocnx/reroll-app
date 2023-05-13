@@ -15,6 +15,8 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
 import { AlertController } from '@ionic/angular';
 
+declare const google: any;
+
 const url = environment.heroku_url;
 const url_local = environment.url;
 
@@ -39,6 +41,9 @@ export class ItemPage implements OnInit {
     allowSlideNext: false,
     allowSlidePrev: false
   }
+
+  lat: Number = 0;
+  lng: Number = 0;
   
   constructor(private route: ActivatedRoute,
               private ruta: Router,
@@ -55,7 +60,6 @@ export class ItemPage implements OnInit {
       const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
       this.articulosService.getArticuloById(id).then(async res => {
         this.articulo = res;
-        console.log('ARTÍCULO: ', res);
       })
     });
 
@@ -66,6 +70,22 @@ export class ItemPage implements OnInit {
 
     });
 
+    const geocoder = new google.maps.Geocoder();
+    const address = ` ${this.usuarioActual.direccion}, 
+                      ${this.usuarioActual.ciudad}, 
+                      ${this.usuarioActual.localidad}, 
+                      ${this.usuarioActual.pais}, 
+                      ${this.usuarioActual.cp}`;
+                      
+    geocoder.geocode({ address: address }, (results: any, status: any) => {
+      if (status === 'OK') {
+        this.lat = results[0].geometry.location.lat();
+        this.lng = results[0].geometry.location.lng();
+        // Inicializar el mapa de Google Maps
+        this.initMap();
+      }
+    });
+
   }
 
   favorito() {
@@ -74,8 +94,6 @@ export class ItemPage implements OnInit {
     });
     
     const articuloId = this.articulo._id;
-  
-    console.log('TOKEN:', this.usuarioService.token); // Verificar el valor del token
     
     this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
       (err: any) => {
@@ -127,20 +145,19 @@ export class ItemPage implements OnInit {
     this.ruta.navigate(['/user', usuario._id], navigationExtras);
   }
   
-  
-  // eliminar() {
+  // Google Maps
 
-  //   if(this.articulo._id) {
-  //     this.articulosService.eliminarArticulo(this.articulo._id).subscribe(
-  //       response => {
-  //         console.log('Respuesta del backend:', response);
-  //         this.ruta.navigateByUrl('/user/inicio');
-  //       },
-  //       error => console.log(error)
-  //     );
-  //   }
-  // }
-  
-  
+  initMap() {
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: this.lat, lng: this.lng},
+      zoom: 18
+    });
+    
+    const marker = new google.maps.Marker({
+      position: {lat: this.lat, lng: this.lng},
+      map: map,
+      title: 'Ubicación del usuario'
+    });
+  }
 
 }

@@ -31,7 +31,7 @@ export class ActualizaPerfilAdminPage implements OnInit {
     apellidos: ['', Validators.required],
     email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
     password: ['', [Validators.minLength(6)]],
-    nacimiento: ['', Validators.required],
+    nacimiento: ['', [ Validators.required, this.mayorDeEdad ]],
     sexo: ['', Validators.required],
     direccion: ['', Validators.required],
     ciudad: ['', Validators.required],
@@ -202,6 +202,22 @@ export class ActualizaPerfilAdminPage implements OnInit {
       }
       return null;
     };
+  }
+
+  mayorDeEdad(control: AbstractControl): { [key: string]: boolean } | null {
+    const fechaNacimiento = new Date(control.value);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+
+    if (hoy.getMonth() < fechaNacimiento.getMonth() || (hoy.getMonth() == fechaNacimiento.getMonth() && hoy.getDate() < fechaNacimiento.getDate())) {
+      edad--;
+    }
+
+    if (edad < 18) {
+      return { 'menorDeEdad': true };
+    }
+
+    return null;
   }
 
   onChange() {
