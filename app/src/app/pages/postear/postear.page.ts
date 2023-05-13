@@ -74,8 +74,6 @@ export class PostearPage implements OnInit {
   ngOnInit() { }
 
   async postear() {
-    console.log(this.formData);
-
     this.formData.append('fecha', this.formPost.get('fecha')?.value);
     this.formData.append('nombre', this.formPost.get('nombre')?.value);
     this.formData.append('precio', this.formPost.get('precio')?.value);

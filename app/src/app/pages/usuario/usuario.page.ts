@@ -30,7 +30,6 @@ export class UsuarioPage implements OnInit {
         this.articuloActual = res;
         
         this.usuarioActual = res.usuario;
-        console.log(this.usuarioActual);
       });
     }
   }

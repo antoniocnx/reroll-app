@@ -21,7 +21,6 @@ export class InicioPage implements OnInit {
   
   ionViewDidEnter() {
     this.articulosService.getArticulos();
-    console.log('ION VIEW');
   }
 
   ngOnInit() {
@@ -30,7 +29,6 @@ export class InicioPage implements OnInit {
     this.articulosService.nuevoArticulo.subscribe(arti => {
       this.articulos.unshift(arti);
     });
-    console.log('OnInit');
   }
 
   // FUNCIÓN DEL REFRESHER
@@ -45,14 +43,12 @@ export class InicioPage implements OnInit {
 
     this.articulosService.getArticulos(pull)
       .subscribe(resp => {
-      console.log(resp);
       this.articulos.push(...resp.articulos);
       
       if(event) {
         event.target.complete();
         if(resp.articulos.length === 0) {
           this.estadoInfiniteScroll = true;
-          console.log('Todos los articulos se han cargado');
         }
       }
     })

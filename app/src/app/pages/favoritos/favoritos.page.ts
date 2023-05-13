@@ -51,11 +51,9 @@ export class FavoritosPage implements OnInit {
         event.target.complete();
         if (res.favoritos.length === this.articulos.length) {
           this.estadoInfiniteScroll = true;
-          console.log('Todos los articulos favoritos se han cargado', this.estadoInfiniteScroll);
         }
       }
 
-      console.log('INFINTE SCROLL: ', res.favoritos.length);
     });
 
   }

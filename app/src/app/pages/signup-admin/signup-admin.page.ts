@@ -142,7 +142,6 @@ export class SignupAdminPage implements OnInit {
     }
 
     const valido = await this.adminService.registro(formSignup.value);
-    console.log('Valor de VALIDO: ', valido);
 
     if (valido) {
       // Alerta de error

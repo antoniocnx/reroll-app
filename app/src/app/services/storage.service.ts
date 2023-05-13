@@ -31,7 +31,6 @@ export class StorageService {
 
   cambiaFavorito() {
     this.esFavorito = !this.esFavorito;
-    console.log('FAVORITO EN STORAGE', this.esFavorito);
   }
 
 

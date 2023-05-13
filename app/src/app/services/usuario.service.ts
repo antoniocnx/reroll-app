@@ -70,7 +70,6 @@ export class UsuarioService {
   }
 
   registro(usuario: Usuario) {
-    console.log(usuario);
     return new Promise( resolve => {
       this.http.post<RespuestaSignUp>(`${url}/usuario/create`, usuario)
                 .subscribe( resp => {

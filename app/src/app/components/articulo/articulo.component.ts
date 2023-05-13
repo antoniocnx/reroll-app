@@ -55,8 +55,6 @@ export class ArticuloComponent implements OnInit {
     });
     
     const articuloId = this.articulo._id;
-  
-    console.log('TOKEN:', this.usuarioService.token); // Verificar el valor del token
     
     this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
       (err: any) => {
@@ -65,7 +63,7 @@ export class ArticuloComponent implements OnInit {
     );
 
     this.esFavorito != this.esFavorito;
-    console.log(this.esFavorito);
+
   }
   
   irAlArticulo(id: string) {
