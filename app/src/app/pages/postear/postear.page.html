@@ -15,23 +15,18 @@
 
 <ion-content padding scrollY="true">
 
-  <!-- <ion-list>
-      <ion-item>
-        <ion-label>Añadir ubicación actual</ion-label>
-        <ion-spinner name="lines-small" *ngIf="cargandoGeoLoc"></ion-spinner>
-        <ion-toggle slot="end" [(ngModel)]="post.posicion" (ionChange)="getPosicion()"></ion-toggle>
-      </ion-item>
-    </ion-list> -->
-
   <form [formGroup]="formPost" (ngSubmit)="postear()">
     <ion-row>
       <ion-col>
         <ion-list>
 
           <ion-row>
-            <ion-col size="3" *ngFor="let imagen of formPost.get('galeria')?.value">
+            <ion-col size="3" *ngFor="let imagen of galeria; let i = index">
               <ion-card>
                 <ion-img [src]="imagen"></ion-img>
+                <ion-button fill="clear" color="danger" size="small" (click)="eliminarImagen(i)">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
               </ion-card>
             </ion-col>
           </ion-row>

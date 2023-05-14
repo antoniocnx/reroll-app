@@ -75,11 +75,13 @@ export class PostearPage implements OnInit {
     await this.articuloService.crearArticulo(this.formData)
       .then((result) => {
         console.log(result);
-        this.formData.delete
+        this.formData.delete;
+        this.formData.delete('files');
         this.route.navigateByUrl('/user/inicio');
       }).catch((err) => {
         console.log(err);
       });
+
   }
 
   async abrirCamara() {
@@ -88,16 +90,15 @@ export class PostearPage implements OnInit {
       const imagen = await Camera.getPhoto(this.opcionesCamara);
 
       if (imagen.webPath) {
-        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
-        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
+        // Verificar si la imagen ya existe en la matriz galeria
+        if (!this.galeria.includes(imagen.webPath)) {
+          const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+          const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
 
-        // Obtener el FormArray de 'galeria'
-        // const galeria = this.formPost.get('galeria') as FormArray;
+          this.formData.append('files', imageFile);
 
-        // Agregar el archivo a 'galeria'
-        // galeria.push(this.formBuilder.control(imageFile));
-
-        this.formData.append('files', imageFile)
+          this.galeria.push(imagen.webPath);
+        }
       }
 
     } else {
@@ -111,21 +112,27 @@ export class PostearPage implements OnInit {
       const imagen = await Camera.getPhoto(this.opcionesGaleria);
 
       if (imagen.webPath) {
-        const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
-        const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
-
-        // Obtener el FormArray de 'galeria'
-        // const galeria = this.formPost.get('galeria') as FormArray;
-
-        // // Agregar el archivo a 'galeria'
-        // galeria.push(this.formBuilder.control(imageFile));
-
-        this.formData.append('files', imageFile)
+        // Verificar si la imagen ya existe en la matriz galeria
+        if (!this.galeria.includes(imagen.webPath)) {
+          const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+          // Obtener el nombre del archivo original
+          const nombreArchivo = imagen.webPath.split('/').pop();
+          if (nombreArchivo) {
+            const imageFile = new File([imageBlob], nombreArchivo, { type: "image/jpeg" });
+            this.formData.append('files', imageFile);
+            this.galeria.push(imagen.webPath);
+          }
+        }
       }
 
     } else {
       console.log('Sin permiso para acceder a la galería');
     }
   }
-  
+
+  eliminarImagen(index: number) {
+    this.galeria.splice(index, 1); // Eliminar imagen del array galeria
+    this.formData.delete(`files[${index}]`); // Elimina la imagen del formulario
+  }
+
 }
