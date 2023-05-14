@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Geolocation } from '@capacitor/geolocation';
+
 import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
 
 import { Articulo, LocalFile } from 'src/app/interfaces/interfaces';
@@ -14,9 +14,9 @@ import { ArticulosService } from 'src/app/services/articulos.service';
   styleUrls: ['./postear.page.scss'],
 })
 export class PostearPage implements OnInit {
-  
+
   galeria: string[] = [];
- 
+
   formData = new FormData();
 
   formPost: FormGroup = this.formBuilder.group({
@@ -24,32 +24,21 @@ export class PostearPage implements OnInit {
     nombre: ['', Validators.required],
     precio: ['', Validators.required],
     categoria: ['', Validators.required],
-    descripcion: ['', [Validators.required, Validators.maxLength(200)] ],
-    localizacion: [''],
+    descripcion: ['', [Validators.required, Validators.maxLength(200)]],
     estado: ['En venta', Validators.required],
     envio: ['', Validators.required]
   });
-  
-  articulo: Articulo ={
+
+  articulo: Articulo = {
     fecha: new Date(),
     nombre: '',
     precio: 0,
     categoria: '',
     descripcion: '',
-    localizacion: '',
     estado: 'En venta',
     envio: '',
     galeria: [],
-    // usuario: 
   };
-
-  cargandoGeoLoc = false;
-
-  post = {
-    mensaje: '',
-    coords: null as null | string,
-    posicion: false
-  }
 
   opcionesCamara: ImageOptions = {
     quality: 90,
@@ -68,8 +57,8 @@ export class PostearPage implements OnInit {
   }
 
   constructor(private articuloService: ArticulosService,
-              private route: Router,
-              private formBuilder: FormBuilder) { }
+    private route: Router,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() { }
 
@@ -95,16 +84,16 @@ export class PostearPage implements OnInit {
 
   async abrirCamara() {
     const permiso = await Camera.checkPermissions();
-    if(permiso.camera) {
+    if (permiso.camera) {
       const imagen = await Camera.getPhoto(this.opcionesCamara);
 
-      if(imagen.webPath) {
+      if (imagen.webPath) {
         const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
         const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
-      
+
         // Obtener el FormArray de 'galeria'
         // const galeria = this.formPost.get('galeria') as FormArray;
-        
+
         // Agregar el archivo a 'galeria'
         // galeria.push(this.formBuilder.control(imageFile));
 
@@ -118,55 +107,25 @@ export class PostearPage implements OnInit {
 
   async abrirGaleria() {
     const permiso = await Camera.checkPermissions();
-    if(permiso.photos) {
+    if (permiso.photos) {
       const imagen = await Camera.getPhoto(this.opcionesGaleria);
-      
-      if(imagen.webPath) {
+
+      if (imagen.webPath) {
         const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
         const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
-      
+
         // Obtener el FormArray de 'galeria'
         // const galeria = this.formPost.get('galeria') as FormArray;
-        
+
         // // Agregar el archivo a 'galeria'
         // galeria.push(this.formBuilder.control(imageFile));
-        
+
         this.formData.append('files', imageFile)
       }
-      
+
     } else {
       console.log('Sin permiso para acceder a la galería');
     }
   }
-
   
-  async getPosicion() {
-    // if(!this.articulo.posicion) {
-    //   this.articulo.localizacion = null;
-    //   return;
-    // }
-
-    this.cargandoGeoLoc = true;
-
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
-
-    const coordenadas = await Geolocation.getCurrentPosition();
-
-    if(coordenadas) {
-      const localizacion = `${coordenadas.coords.latitude}, ${coordenadas.coords.longitude}`;
-      this.articulo.localizacion = localizacion;
-      this.cargandoGeoLoc = false;
-    } else {
-      console.log('Error al obtener la localización');
-    }
-
-  
-    console.log('Current position:', coordenadas);
-
-  }
-
 }

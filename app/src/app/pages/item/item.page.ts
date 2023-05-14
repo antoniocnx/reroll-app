@@ -175,7 +175,7 @@ export class ItemPage implements OnInit {
       fillOpacity: 0.35,
       map: map,
       center: { lat: this.lat, lng: this.lng },
-      radius: 2000
+      radius: 3000
     });
   }
 

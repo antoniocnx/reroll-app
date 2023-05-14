@@ -27,7 +27,8 @@
                 <!-- <ion-label class="label-form">Nombre:</ion-label> -->
                 <ion-icon name="person-outline" slot="end" color="medium">
                 </ion-icon>
-                <ion-input type="text" placeholder="Nombre" class="form-control" formControlName="nombre" [clearInput]="true"></ion-input>
+                <ion-input type="text" placeholder="Nombre" class="form-control" formControlName="nombre"
+                  [clearInput]="true"></ion-input>
               </ion-item>
               <ion-text class="ion-text-left" color="danger"
                 *ngIf="!formSignup.get('nombre')?.valid && formSignup.get('nombre')?.touched">
@@ -38,7 +39,8 @@
                 <!-- <ion-label class="label-form">Apellidos:</ion-label> -->
                 <ion-icon name="person-outline" slot="end" color="medium">
                 </ion-icon>
-                <ion-input type="text" placeholder="Apellidos" class="form-control" formControlName="apellidos" [clearInput]="true"></ion-input>
+                <ion-input type="text" placeholder="Apellidos" class="form-control" formControlName="apellidos"
+                  [clearInput]="true"></ion-input>
               </ion-item>
               <ion-text class="ion-text-left" color="danger"
                 *ngIf="!formSignup.get('apeliidos')?.valid && formSignup.get('apeliidos')?.touched">
@@ -49,7 +51,8 @@
                 <!-- <ion-label class="label-form">Email:</ion-label> -->
                 <ion-icon name="mail-outline" slot="end" color="medium">
                 </ion-icon>
-                <ion-input type="email" placeholder="Email" class="form-control" formControlName="email" [clearInput]="true"></ion-input>
+                <ion-input type="email" placeholder="Email" class="form-control" formControlName="email"
+                  [clearInput]="true"></ion-input>
               </ion-item>
               <ion-text class="ion-text-left" color="danger"
                 *ngIf="!formSignup.get('email')?.valid && formSignup.get('email')?.touched">
@@ -65,7 +68,8 @@
                 <ion-icon (click)="onChange()" [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'"
                   slot="end" [color]="isTypePassword ? 'medium' : 'primary'">
                 </ion-icon>
-                <ion-input type="password" placeholder="Contraseña" class="form-control" formControlName="password" [type]="isTypePassword ? 'password' : 'text'" [clearInput]="true"></ion-input>
+                <ion-input type="password" placeholder="Contraseña" class="form-control" formControlName="password"
+                  [type]="isTypePassword ? 'password' : 'text'" [clearInput]="true"></ion-input>
                 <!-- <ion-input 
                 formControlName="password" 
                 [type]="isTypePassword ? 'password' : 'text'"
@@ -81,7 +85,8 @@
 
               <ion-item class="ion-align-items-center">
                 <ion-label class="label-form" class="label-form-fecha">Fecha de nacimiento:</ion-label>
-                <ion-input type="date" placeholder="Fecha de nacimiento" class="form-control" formControlName="nacimiento"></ion-input>
+                <ion-input type="date" placeholder="Fecha de nacimiento" class="form-control"
+                  formControlName="nacimiento"></ion-input>
               </ion-item>
               <ion-text class="ion-text-left" color="danger"
                 *ngIf="!formSignup.get('nacimiento')?.valid && formSignup.get('nacimiento')?.touched">
@@ -95,46 +100,62 @@
                 </ion-select>
               </ion-item>
 
+              <ion-item>
+                <ion-label class="label-toggle">Usar mi ubicación actual</ion-label>
+                <ion-spinner name="circular" *ngIf="cargandoGeoloc"></ion-spinner>
+                <ion-toggle color="tertiary" (ionChange)="geolocalizar()"></ion-toggle>
+              </ion-item>
+
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">Dirección:</ion-label> -->
                 <ion-icon name="location-outline" slot="end" color="medium"></ion-icon>
-                <ion-input type="text" placeholder="Dirección" class="form-control" formControlName="direccion" [clearInput]="true" #autocompleteAddress></ion-input>
+                <ion-input type="text" placeholder="Calle" class="form-control" formControlName="direccion"
+                  [clearInput]="true" #autocompleteAddress></ion-input>
               </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('direccion')?.valid && formSignup.get('direccion')?.touched">
+              <ion-text class="ion-text-left" color="danger"
+                *ngIf="!formSignup.get('direccion')?.valid && formSignup.get('direccion')?.touched">
                 <p class="error">* Por favor, indique su dirección</p>
               </ion-text>
-              
+
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">Ciudad:</ion-label> -->
-                <ion-input type="text" placeholder="Ciudad" class="form-control" formControlName="ciudad" [clearInput]="true" #autocompleteCity></ion-input>
+                <ion-input type="text" placeholder="Ciudad" class="form-control" formControlName="ciudad"
+                  [clearInput]="true" #autocompleteCity></ion-input>
               </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('ciudad')?.valid && formSignup.get('ciudad')?.touched">
+              <ion-text class="ion-text-left" color="danger"
+                *ngIf="!formSignup.get('ciudad')?.valid && formSignup.get('ciudad')?.touched">
                 <p class="error">* Por favor, indique su ciudad</p>
               </ion-text>
-              
+
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">Localidad:</ion-label> -->
-                <ion-input type="text" placeholder="Localidad" class="form-control" formControlName="localidad" [clearInput]="true" #autocompleteTown></ion-input>
+                <ion-input type="text" placeholder="Localidad" class="form-control" formControlName="localidad"
+                  [clearInput]="true" #autocompleteTown></ion-input>
               </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('localidad')?.valid && formSignup.get('localidad')?.touched">
+              <ion-text class="ion-text-left" color="danger"
+                *ngIf="!formSignup.get('localidad')?.valid && formSignup.get('localidad')?.touched">
                 <p class="error">* Por favor, indique su localidad</p>
               </ion-text>
-              
+
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">País:</ion-label> -->
-                <ion-input type="text" placeholder="País" class="form-control" formControlName="pais" [clearInput]="true" #autocompleteCountry></ion-input>
+                <ion-input type="text" placeholder="País" class="form-control" formControlName="pais"
+                  [clearInput]="true" #autocompleteCountry></ion-input>
               </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('pais')?.valid && formSignup.get('pais')?.touched">
+              <ion-text class="ion-text-left" color="danger"
+                *ngIf="!formSignup.get('pais')?.valid && formSignup.get('pais')?.touched">
                 <p class="error">* Por favor, indique su país</p>
               </ion-text>
-              
+
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">Código postal:</ion-label> -->
-                <ion-input type="number" placeholder="Código postal" class="form-control" formControlName="cp" [clearInput]="true" #autocompletePostal></ion-input>
+                <ion-input type="number" placeholder="Código postal" class="form-control" formControlName="cp"
+                  [clearInput]="true" #autocompletePostal></ion-input>
               </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('cp')?.valid && formSignup.get('cp')?.touched">
+              <ion-text class="ion-text-left" color="danger"
+                *ngIf="!formSignup.get('cp')?.valid && formSignup.get('cp')?.touched">
                 <p class="error">* Por favor, indique su código postal</p>
-              </ion-text>              
+              </ion-text>
 
               <ion-row class="ion-margin-vertical">
                 <ion-col size="12" class="alignItems">
@@ -147,7 +168,7 @@
                     </ion-label>
                     <ion-text class="ion-text-left" color="danger" *ngIf="!formSignup.get('checkbox')?.valid">
                       <p class="error">* Es obligatorio aceptar la política de privacidad y las condiciones de uso</p>
-                    </ion-text>   
+                    </ion-text>
                   </div>
                 </ion-col>
               </ion-row>

@@ -1,11 +1,14 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { IonInput, NavController } from '@ionic/angular';
+import { IonInput, LoadingController, NavController } from '@ionic/angular';
+import { Geolocation } from '@capacitor/geolocation';
 
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { environment } from 'src/environments/environment';
 
 declare const google: any;
+const mapsKey = environment.googleMapsKey;
 
 @Component({
   selector: 'app-signup',
@@ -29,7 +32,7 @@ export class SignupPage implements OnInit {
     apellidos: ['', Validators.required],
     email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    nacimiento: [(new Date('2000-01-01')), [ Validators.required, this.mayorDeEdad ]],
+    nacimiento: [(new Date('2000-01-01')), [Validators.required, this.mayorDeEdad]],
     sexo: ['', Validators.required],
     direccion: ['', Validators.required],
     ciudad: ['', Validators.required],
@@ -41,30 +44,39 @@ export class SignupPage implements OnInit {
   })
 
   isTypePassword: boolean = true;
-  isLoading: boolean = false;
 
-  // formSignup: FormGroup = new FormGroup ({
-  //     nombre: new FormControl('Test 4'),
-  //     apellidos: new FormControl('Apellidos'),
-  //     email: new FormControl('test3@test.com'),
-  //     password: new FormControl('123456'),
-  //     nacimiento: new FormControl(new Date('01-01-2000')),
-  //     sexo: new FormControl('Mujer'),
-  //     direccion: new FormControl('Madrid'),
-  //     ciudad: new FormControl('Madrid'),
-  //     localidad: new FormControl('Madrid'),
-  //     pais: new FormControl('España'),
-  //     cp: new FormControl(10227),
-  //     avatar: new FormControl('av-3.png')
-  // })
+  cargandoGeoloc = false;
 
   constructor(private usuarioService: UsuarioService,
     private navCrtl: NavController,
     private interfazUsuario: InterfazUsuarioService,
     private formBuilder: FormBuilder,
-    private zone: NgZone) { }
+    private spinner: LoadingController) { }
 
   ngOnInit() { }
+
+  // Registro con login automático
+  async signup(formSignup: FormGroup) {
+    if (formSignup.invalid) {
+      return;
+    }
+
+    const valido = await this.usuarioService.registro(formSignup.value);
+
+    if (!valido) {
+      // Ir a tabs
+      const ok = await this.usuarioService.login(this.formSignup.value.email, this.formSignup.value.password);
+
+      if (ok) {
+        // Ir a tabs
+        this.navCrtl.navigateRoot('/user/inicio', { animated: true });
+      }
+
+    } else {
+      // Alerta de error
+      this.interfazUsuario.alertaLogin('Ya existe ese usuario.');
+    }
+  }
 
   // Autocompletado de la dirección
 
@@ -138,26 +150,44 @@ export class SignupPage implements OnInit {
 
   }
 
-  // Registro con login automático
-  async signup(formSignup: FormGroup) {
-    if (formSignup.invalid) {
-      return;
-    }
+  async geolocalizar() {
+    this.cargandoGeoloc = true;
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
 
-    const valido = await this.usuarioService.registro(formSignup.value);
+      const geocoder = new google.maps.Geocoder();
+      const latlng = new google.maps.LatLng(latitude, longitude);
+      const request = { latLng: latlng };
+      geocoder.geocode(request, (results: any, status: any) => {
+        if (status == google.maps.GeocoderStatus.OK) {
+          this.cargandoGeoloc = false;
+          if (results[0] != null) {
+            const address = results[0].address_components;
+            const streetNumber = address.find((component: { types: string | string[]; }) => component.types.includes('street_number'))?.long_name ?? '';
+            const streetName = address.find((component: { types: string | string[]; }) => component.types.includes('route'))?.long_name ?? '';
+            const city = address.find((component: { types: string | string[]; }) => component.types.includes('locality'))?.long_name ?? '';
+            const state = address.find((component: { types: string | string[]; }) => component.types.includes('administrative_area_level_1'))?.long_name ?? '';
+            const country = address.find((component: { types: string | string[]; }) => component.types.includes('country'))?.long_name ?? '';
+            const postalCode = address.find((component: { types: string | string[]; }) => component.types.includes('postal_code'))?.long_name ?? '';
 
-    if (!valido) {
-      // Ir a tabs
-      const ok = await this.usuarioService.login(this.formSignup.value.email, this.formSignup.value.password);
-
-      if (ok) {
-        // Ir a tabs
-        this.navCrtl.navigateRoot('/user/inicio', { animated: true });
-      }
-
-    } else {
-      // Alerta de error
-      this.interfazUsuario.alertaLogin('Ya existe ese usuario.');
+            this.formSignup.patchValue({
+              direccion: `${streetName} ${streetNumber}`,
+              ciudad: city,
+              localidad: state,
+              pais: country,
+              cp: postalCode
+            });
+          } else {
+            console.log('No se encontraron resultados');
+          }
+        } else {
+          console.log('La geolocalización falló debido a: ' + status);
+        }
+      });
+    } catch (error) {
+      console.log('Error obtienendo la geolocalización', error);
     }
   }
 
