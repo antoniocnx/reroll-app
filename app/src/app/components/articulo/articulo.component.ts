@@ -57,6 +57,9 @@ export class ArticuloComponent implements OnInit {
     const articuloId = this.articulo._id;
     
     this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
+      (res: any) => {
+        this.esFavorito = !this.esFavorito;
+      },
       (err: any) => {
         console.error(err);
       }
