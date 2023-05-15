@@ -16,8 +16,11 @@ export class UsuarioPage implements OnInit {
 
   articuloActual: Articulo = {};
 
+  valoraciones: Valoracion[] = [];
+
   constructor(private location: Location,
               private route: ActivatedRoute,
+              private usuarioService: UsuarioService,
               private articulosService: ArticulosService) { }
 
   ngOnInit() {
@@ -28,8 +31,16 @@ export class UsuarioPage implements OnInit {
     if(idArticulo) {
       this.articulosService.getArticuloById(idArticulo).then(res => {
         this.articuloActual = res;
-        
+    
         this.usuarioActual = res.usuario;
+        if(this.usuarioActual._id) {
+          this.usuarioService.getValoraciones(this.usuarioActual._id).subscribe(
+            valoraciones => {
+              this.valoraciones = valoraciones;
+              console.log(this.valoraciones);
+            }
+          );
+        }
       });
     }
   }

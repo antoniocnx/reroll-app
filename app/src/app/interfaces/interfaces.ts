@@ -124,5 +124,6 @@ export interface ArticuloFavorito {
 
 export interface ValoracionUsuario {
   ok: boolean;
-  mensaje: string;
+  valoraciones: Valoracion[];
+  mensaje?: string;
 }
