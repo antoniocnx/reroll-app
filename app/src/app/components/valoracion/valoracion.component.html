@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="toolbar-title">Valoración</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label class="label-puntuacion">Puntuación</ion-label>
+      <ion-range class="range-puntuacion" min="1" max="5" step="1" ticks="true" snaps="treu" pin="true" [(ngModel)]="puntuacion" >
+        <ion-icon size="large" slot="end" name="star" color="warning"></ion-icon>
+      </ion-range>
+    </ion-item>
+    <ion-item>
+      <!-- <ion-label>Comentario:</ion-label> -->
+      <ion-textarea placeholder="Comentario" rows="4" [(ngModel)]="comentario"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="full" color="tertiary" (click)="enviarValoracion()">Enviar</ion-button>
+</ion-content>
+

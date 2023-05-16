@@ -8,6 +8,8 @@ import { SwiperModule } from 'swiper/angular';
 import { ChatBoxComponent } from './chat-box/chat-box.component';
 import { ArticuloComponent } from './articulo/articulo.component';
 import { ArticulosComponent } from './articulos/articulos.component';
+import { ValoracionComponent } from './valoracion/valoracion.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -16,20 +18,23 @@ import { ArticulosComponent } from './articulos/articulos.component';
     ArticulosComponent,
     AvatarSelectorComponent,
     MapaComponent,
-    ChatBoxComponent
+    ChatBoxComponent,
+    ValoracionComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     PipesModule,
-    SwiperModule
+    SwiperModule,
+    FormsModule
   ],
   exports: [
     ArticuloComponent,
     ArticulosComponent,
     AvatarSelectorComponent,
     MapaComponent,
-    ChatBoxComponent
+    ChatBoxComponent,
+    ValoracionComponent
   ]
 })
 export class ComponentsModule { }

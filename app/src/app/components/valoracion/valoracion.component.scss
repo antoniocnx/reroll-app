@@ -1,0 +1,54 @@
+.label-puntuacion {
+    color: #A9A9A9;
+    padding-top: 20px;
+}
+
+.range-puntuacion {
+    padding-left: 20px;
+}
+
+.toolbar-title {
+    margin-left: 140px;
+}
+
+ion-range::part(tick) {
+    background: var(--ion-color-dark);
+}
+
+ion-range::part(tick-active) {
+    background: var(--ion-color-dark);
+}
+
+ion-range::part(pin) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--ion-color-tertiary);
+    color: white;
+
+    border-radius: 50%;
+    transform: scale(1.01);
+
+    top: -20px;
+
+    min-width: 28px;
+    height: 28px;
+    transition: transform 120ms ease, background 120ms ease;
+}
+
+ion-range::part(pin)::before {
+    content: none;
+}
+
+ion-range::part(knob) {
+    background: var(--ion-color-tertiary);
+}
+
+ion-range::part(bar) {
+    background: var(--ion-color-dark);
+}
+
+ion-range::part(bar-active) {
+    background: var(--ion-color-dark);
+}
