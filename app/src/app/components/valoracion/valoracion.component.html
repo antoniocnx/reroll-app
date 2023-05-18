@@ -19,10 +19,10 @@
     </ion-item>
     <ion-item>
       <!-- <ion-label>Comentario:</ion-label> -->
-      <ion-textarea placeholder="Comentario" rows="4" [(ngModel)]="comentario"></ion-textarea>
+      <ion-textarea placeholder="Comentario" rows="4" [(ngModel)]="comentario" maxlength="200"></ion-textarea>
     </ion-item>
   </ion-list>
 
-  <ion-button expand="full" color="tertiary" (click)="enviarValoracion()">Enviar</ion-button>
+  <ion-button expand="full" color="tertiary" (click)="enviarValoracion()" [disabled]="!comentario">Enviar</ion-button>
 </ion-content>
 

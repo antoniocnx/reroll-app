@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage-angular';
 //import { Juego } from '../interfaces/interfaces';
 
 import { ToastController } from '@ionic/angular';
-import { Post, RespuestaFavoritos } from '../interfaces/interfaces';
+import { RespuestaFavoritos } from '../interfaces/interfaces';
 // import { url } from 'inspector';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -16,8 +16,6 @@ const url = environment.heroku_url;
   providedIn: 'root'
 })
 export class StorageService {
-
-  postsFavoritos: Post[] = [];
 
   esFavorito: boolean = false;
 

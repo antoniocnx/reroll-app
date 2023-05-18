@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="toolbar-title">Reporte</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-textarea placeholder="Motivo" [(ngModel)]="motivo" maxlength="200"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="full" color="tertiary" (click)="enviarReporte()" [disabled]="!motivo">Reportar</ion-button>
+</ion-content>

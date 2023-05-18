@@ -10,6 +10,7 @@ import { ArticuloComponent } from './articulo/articulo.component';
 import { ArticulosComponent } from './articulos/articulos.component';
 import { ValoracionComponent } from './valoracion/valoracion.component';
 import { FormsModule } from '@angular/forms';
+import { ReporteComponent } from './reporte/reporte.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     AvatarSelectorComponent,
     MapaComponent,
     ChatBoxComponent,
-    ValoracionComponent
+    ValoracionComponent,
+    ReporteComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { FormsModule } from '@angular/forms';
     AvatarSelectorComponent,
     MapaComponent,
     ChatBoxComponent,
-    ValoracionComponent
+    ValoracionComponent,
+    ReporteComponent
   ]
 })
 export class ComponentsModule { }

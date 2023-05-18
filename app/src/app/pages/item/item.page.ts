@@ -13,7 +13,8 @@ import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { ReporteComponent } from 'src/app/components/reporte/reporte.component';
 
 declare const google: any;
 
@@ -55,7 +56,8 @@ export class ItemPage implements OnInit {
     private articulosService: ArticulosService,
     private alertController: AlertController,
     private http: HttpClient,
-    private location: Location) { }
+    private location: Location,
+    private modalController: ModalController) { }
 
   ngOnInit() {
     this.usuarioActual = this.usuarioService.getUsuario();
@@ -180,6 +182,17 @@ export class ItemPage implements OnInit {
       center: { lat: this.lat, lng: this.lng },
       radius: 3000
     });
+  }
+
+  async hacerReporte() {
+    const modal = await this.modalController.create({
+      component: ReporteComponent,
+      componentProps: {
+        articuloId: this.articulo._id
+      }
+    });
+  
+    await modal.present();
   }
 
 }

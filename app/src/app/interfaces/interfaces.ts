@@ -53,6 +53,13 @@ export interface Articulo {
   usuario?: Usuario;
 }
 
+export interface Reporte {
+  _id?: string;
+  usuario?: Usuario;
+  articulo?: Articulo;
+  motivo?: string;
+}
+
 export interface LocalFile {
   name: string;
   path: string;
@@ -68,26 +75,6 @@ export interface RespuestaArticulo {
 export interface RespuestaCrearArticulo {
   ok: boolean;
   articulo: Articulo;
-}
-
-export interface Post {
-  _id?: string;
-  mensaje?: string;
-  imgs?: string[];
-  coords?: string;
-  usuario?: Usuario;
-  created?: string;
-}
-
-export interface RespuestaPost {
-  ok: boolean;
-  pagina: number;
-  posts: Post[];
-}
-
-export interface RespuestaCrearPost {
-  ok: boolean;
-  post: Post;
 }
 
 export interface RespuestaLogin {

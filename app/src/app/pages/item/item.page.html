@@ -74,7 +74,8 @@
 
     <ion-item lines="none">
       <ion-text>Envío: &nbsp;</ion-text>
-      <ion-text [ngClass]="{'domicilio': articulo.envio === 'Domicilio', 'en-mano': articulo.envio === 'En mano'}">{{ articulo.envio }}</ion-text>
+      <ion-text [ngClass]="{'domicilio': articulo.envio === 'Domicilio', 'en-mano': articulo.envio === 'En mano'}">{{
+        articulo.envio }}</ion-text>
     </ion-item>
 
     <ion-item lines="none">
@@ -82,6 +83,10 @@
       <div id="map" style="width: 100%; height: 300px;"></div>
     </ion-item>
 
+    <ion-button class="btn-reportar" color="danger" size="default" shape="round" expand="full" (click)="hacerReporte()">
+      Reportar
+      <ion-icon slot="start" name="flag"></ion-icon>
+    </ion-button>
 
   </div>
 </ion-content>
