@@ -10,7 +10,7 @@
 <ion-content>
 
   <ion-row class="top-20">
-    
+
     <ion-col size="12" class="ion-text-center">
       <img src="assets/avatars/{{usuario.avatar}}" class="img-avatar">
     </ion-col>
@@ -20,12 +20,12 @@
   <ion-row class="top-20">
     <ion-col size="12" class="ion-text-center">
       <ion-label>
-        <h1>Mi perfil</h1>
+        <h1>{{ usuario.nombre }} {{ usuario.apellidos }}</h1>
       </ion-label>
     </ion-col>
   </ion-row>
-      
-  <ion-row style="margin-top: 30px;">
+
+  <!-- <ion-row style="margin-top: 30px;">
     <ion-col class="ion-text-center">
       <ion-button type="submit"
                   color="tertiary"
@@ -43,8 +43,18 @@
         Cerrar sesión
       </ion-button>
     </ion-col>
-  </ion-row>
-    
+  </ion-row> -->
 
+    <ion-button type="submit" color="tertiary" expand="full" class="btn-perfil" [routerLink]="['/user/perfil/actualiza-perfil']">
+      Editar perfil
+    </ion-button>
+
+    <ion-button type="submit" color="tertiary" expand="full" class="btn-perfil">
+      Mis artículos
+    </ion-button>
+
+    <ion-button type="submit" color="danger" expand="full" class="btn-perfil" (click)="logout()">
+      Cerrar sesión
+    </ion-button>
 
 </ion-content>

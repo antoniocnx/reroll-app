@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { SwiperModule } from 'swiper/angular';
 
 import { ReportesPageRoutingModule } from './reportes-routing.module';
 
@@ -15,7 +16,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     ReportesPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    SwiperModule
   ],
   declarations: [ReportesPage]
 })

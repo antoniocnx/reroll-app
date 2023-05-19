@@ -79,13 +79,17 @@ export class ArticulosService {
     });
   }
 
+  // eliminarArticulo(articuloId: string) {
+
+  //   const headers = new HttpHeaders({
+  //     'x-token': this.usuarioService.token
+  //   });
+
+  //   return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`, { headers });
+  // }
+
   eliminarArticulo(articuloId: string) {
-
-    const headers = new HttpHeaders({
-      'x-token': this.usuarioService.token
-    });
-
-    return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`, { headers });
+    return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`);
   }
 
 }

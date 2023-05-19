@@ -6,6 +6,114 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
+  <ion-grid fixed>
+    <ion-row>
+        <ion-col size="12" sizeLg="3" sizeMd="4" sizeSm="6" sizeXs="12" *ngFor="let reporte of reportes">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Artículo: {{ reporte.articulo?.nombre }}</ion-card-title>
+              <ion-card-subtitle>Reportado por: {{ reporte.usuario?.nombre }} {{ reporte.usuario?.apellidos }}</ion-card-subtitle>
+            </ion-card-header>
+          
+            <ion-card-content>
+              <ion-text color="dark">
+                {{ reporte.motivo }}
+              </ion-text>
+            </ion-card-content>
+          
+            <ion-button fill="clear" color="secondary" (click)="irAlArticulo(reporte.articulo?._id)">Ir al artículo</ion-button>
+            <ion-button fill="clear" color="danger" (click)="eliminarReporte(reporte._id)">Eliminar reporte</ion-button>
+          </ion-card>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content> -->
+
+<ion-content scrollY="true">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" sizeLg="3" sizeMd="4" sizeSm="6" sizeXs="12" *ngFor="let reporte of reportes">
+        <ion-card>
+          <ion-card-header class="card-header">
+            <ion-button fill="clear" color="dark" class="card-header-button" (click)="eliminarReporte(reporte._id)">
+              <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+            <ion-card-title>Reportado por: {{ reporte.usuario?.nombre }} {{ reporte.usuario?.apellidos }}</ion-card-title>
+            <ion-card-subtitle>{{ reporte.motivo }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-button expand="full" color="tertiary" (click)="mostrarArticulo()">
+            Ver artículo
+          </ion-button>
+          <div *ngIf="articuloInfo">
+              <ion-card-content>
+            <swiper [navigation]="true" [pagination]="{ clickable: true }">
+              <ng-container *ngIf="reporte.articulo && reporte.articulo.galeria">
+                <ng-template swiperSlide *ngFor="let imagen of reporte.articulo.galeria">
+                  <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
+                </ng-template>
+              </ng-container>
+            </swiper>
+
+            <ion-item [color]="reporte.articulo?.estado === 'En venta' ? 'success' : 
+                                  (reporte.articulo?.estado === 'Reservado' ? 'warning' : 
+                                  (reporte.articulo?.estado === 'Vendido' ? 'danger' : ''))">
+              <ion-text class="texto-estado">{{ reporte.articulo?.estado }}</ion-text>
+            </ion-item>
+
+            <ion-item lines="none">
+
+              <ion-text color="dark">
+                <h1>{{ reporte.articulo?.precio }}€</h1>
+              </ion-text>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-text color="dark">
+                <h4>{{ reporte.articulo?.nombre }}</h4>
+              </ion-text>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-avatar slot="start">
+                <img src="/assets/avatars/{{ reporte.articulo?.usuario?.avatar }}">
+              </ion-avatar>
+              <ion-label class="usuarioArticulo">
+                <ion-text>
+                  <h2>{{ reporte.articulo?.usuario?.nombre }} {{ reporte.articulo?.usuario?.apellidos }}</h2>
+                </ion-text>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-text>Categoría: &nbsp;</ion-text>
+              <ion-text color="dark">{{ reporte.articulo?.categoria }}</ion-text>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-text>Descripción: &nbsp;</ion-text>
+              <ion-text color="dark">{{ reporte.articulo?.descripcion }}</ion-text>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-text>Envío: &nbsp;</ion-text>
+              <ion-text
+                [ngClass]="{'domicilio': reporte.articulo?.envio === 'Domicilio', 'en-mano': reporte.articulo?.envio === 'En mano'}">{{
+                reporte.articulo?.envio }}</ion-text>
+            </ion-item>
+          </ion-card-content>
+          
+          <ion-button expand="full" color="danger" (click)="eliminarArticulo(reporte.articulo?._id)">Eliminar artículo</ion-button>
+        </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- REFRESHER -->
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
 </ion-content>

@@ -10,10 +10,6 @@ const routes: Routes = [
     canLoad: [UsuarioGuard]
   },
   {
-    path: 'buscador',
-    loadChildren: () => import('./pages/buscador/buscador.module').then( m => m.BuscadorPageModule)
-  },
-  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
