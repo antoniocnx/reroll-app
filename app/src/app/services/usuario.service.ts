@@ -39,6 +39,10 @@ export class UsuarioService {
     return { ...this.usuario };
   }
 
+  getNumUsuarios() {
+    return this.http.get<Usuario[]>(`${url}/usuario`);
+  }
+
   async getUsuarioById(id: string) {
     const res: any = await firstValueFrom(this.http.get(`${url}/usuario/${id}`));
     return res.usuario;

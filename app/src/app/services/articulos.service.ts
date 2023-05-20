@@ -43,6 +43,10 @@ export class ArticulosService {
     return this.http.get<RespuestaArticulo>(`${url}/articulo/get?pagina=${this.paginaArticulos}`);
   }
 
+  getNumArticulos() {
+    return this.http.get<RespuestaArticulo>(`${url}/articulo/get`);
+  }
+
   async getArticuloById(id: string) {
     const res: any = await firstValueFrom(this.http.get(`${url}/articulo/${id} `));
     return res.articulo;

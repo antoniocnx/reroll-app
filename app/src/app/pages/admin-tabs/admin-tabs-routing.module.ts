@@ -9,20 +9,24 @@ const routes: Routes = [
     component: AdminTabsPage,
     children: [
       {
+        path: 'estadisticas',
+        loadChildren: () => import('../estadisticas/estadisticas.module').then(m => m.EstadisticasPageModule)
+      },
+      {
         path: 'reportes',
-        loadChildren: () => import('../reportes/reportes.module').then( m => m.ReportesPageModule)
+        loadChildren: () => import('../reportes/reportes.module').then(m => m.ReportesPageModule)
       },
       {
         path: 'signup-admin',
-        loadChildren: () => import('../signup-admin/signup-admin.module').then( m => m.SignupAdminPageModule)
+        loadChildren: () => import('../signup-admin/signup-admin.module').then(m => m.SignupAdminPageModule)
       },
       {
         path: 'perfil-admin',
-        loadChildren: () => import('../perfil-admin/perfil-admin.module').then( m => m.PerfilAdminPageModule)
+        loadChildren: () => import('../perfil-admin/perfil-admin.module').then(m => m.PerfilAdminPageModule)
       },
       {
         path: 'perfil-admin/actualiza-perfil-admin',
-        loadChildren: () => import('../actualiza-perfil-admin/actualiza-perfil-admin.module').then( m => m.ActualizaPerfilAdminPageModule)
+        loadChildren: () => import('../actualiza-perfil-admin/actualiza-perfil-admin.module').then(m => m.ActualizaPerfilAdminPageModule)
       }
     ]
   },
@@ -37,4 +41,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AdminTabsPageRoutingModule {}
+export class AdminTabsPageRoutingModule { }

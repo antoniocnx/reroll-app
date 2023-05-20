@@ -35,6 +35,10 @@ export class AdministradorService {
     return {...this.admin};
   }
 
+  getNumAdmins() {
+    return this.http.get<Administrador[]>(`${url}/administrador`);
+  }
+
   login(email: string, password: string) {
     const data = { email, password };
     

@@ -1,0 +1,11 @@
+ion-header ion-toolbar ion-title {
+    text-align: center;
+}
+
+ion-badge {
+    color: white;
+    --padding-end: 20px;
+    --padding-start: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }

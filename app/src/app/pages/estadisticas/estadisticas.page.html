@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>
+      Estadísticas de uso
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Usuarios</ion-label>
+      <ion-badge color="tertiary">{{ usuariosTotales.length }}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>Artículos</ion-label>
+      <ion-badge color="primary">{{ articulosTotales.length }}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>Artículos por usuario</ion-label>
+      <ion-badge color="secondary">{{ articulosTotales.length / usuariosTotales.length }}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>Administradores</ion-label>
+      <ion-badge color="success">{{ administradoresTotales.length }}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>Reportes</ion-label>
+      <ion-badge color="danger">{{ reportesTotales.length }}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>Reportes por articulo</ion-label>
+      <ion-badge color="warning">{{ reportesTotales.length / articulosTotales.length }}</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>
