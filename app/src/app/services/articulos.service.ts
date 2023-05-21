@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoadingController, Platform } from '@ionic/angular';
 
 import { environment } from 'src/environments/environment';
-import { Articulo, LocalFile, RespuestaArticulo, RespuestaCrearArticulo } from '../interfaces/interfaces';
+import { Articulo, LocalFile, RespuestaArticulo, RespuestaCrearArticulo, RespuestaEditarArticulo } from '../interfaces/interfaces';
 import { UsuarioService } from './usuario.service';
 import { firstValueFrom } from 'rxjs';
 
@@ -69,7 +69,7 @@ export class ArticulosService {
   // }
 
   // Crea artículos con imágenes
-  crearArticulo(formData:FormData) {
+  crearArticulo(formData: FormData) {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
@@ -83,6 +83,20 @@ export class ArticulosService {
     });
   }
 
+  // Actualizar artículo
+  actualizarArticulo(articuloId: string, articulo: any) {
+    const headers = new HttpHeaders({
+      'x-token': this.usuarioService.token
+    });
+
+    const res = this.http.put<RespuestaEditarArticulo>(`${url}/articulo/${articuloId}`,  articulo, { headers });
+    return res;
+  }
+  
+  eliminarArticulo(articuloId: string) {
+    return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`);
+  }
+
   // eliminarArticulo(articuloId: string) {
 
   //   const headers = new HttpHeaders({
@@ -91,9 +105,5 @@ export class ArticulosService {
 
   //   return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`, { headers });
   // }
-
-  eliminarArticulo(articuloId: string) {
-    return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`);
-  }
 
 }

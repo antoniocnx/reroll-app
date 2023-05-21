@@ -27,10 +27,6 @@ const routes: Routes = [
     path: 'login-admin',
     loadChildren: () => import('./pages/login-admin/login-admin.module').then( m => m.LoginAdminPageModule)
   },
-  // {
-  //   path: 'item',
-  //   loadChildren: () => import('./pages/item/item.module').then( m => m.ItemPageModule)
-  // },
   {
     path: '',
     redirectTo: 'login',

@@ -15,6 +15,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ReporteComponent } from 'src/app/components/reporte/reporte.component';
+import { EditarArticuloComponent } from 'src/app/components/editar-articulo/editar-articulo.component';
 
 declare const google: any;
 
@@ -184,6 +185,17 @@ export class ItemPage implements OnInit {
     });
   }
 
+  async editarArticulo() {
+    const modal = await this.modalController.create({
+      component: EditarArticuloComponent,
+      componentProps: {
+        articuloId: this.articulo._id
+      }
+    });
+
+    await modal.present();
+  }
+
   async hacerReporte() {
     const modal = await this.modalController.create({
       component: ReporteComponent,
@@ -191,7 +203,7 @@ export class ItemPage implements OnInit {
         articuloId: this.articulo._id
       }
     });
-  
+
     await modal.present();
   }
 

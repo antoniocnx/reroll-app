@@ -1,8 +1,8 @@
-import { CapacitorConfig } from '@capacitor/cli';
+  import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'reroll',
+  appId: 'com.reroll',
+  appName: 'Reroll',
   webDir: 'www',
   bundledWebRuntime: false
 };

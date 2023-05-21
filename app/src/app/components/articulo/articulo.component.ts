@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Articulo } from 'src/app/interfaces/interfaces';
+import { Articulo, Usuario } from 'src/app/interfaces/interfaces';
 import { ArticulosService } from 'src/app/services/articulos.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -21,6 +21,10 @@ export class ArticuloComponent implements OnInit {
   
   articulosFavoritos: Articulo[] = [];
 
+  usuario: Usuario = {};
+
+  deshabilitado: boolean = true;
+
   esFavorito: boolean = false;
   
   constructor(private router: Router,
@@ -36,6 +40,8 @@ export class ArticuloComponent implements OnInit {
     //     this.articulo = res;
     //   })
     // });
+
+    this.usuario = this.usuarioService.getUsuario();
 
     this.usuarioService.getFavoritos().subscribe(res => {
       this.articulosFavoritos = res.favoritos;

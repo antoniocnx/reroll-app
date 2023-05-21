@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    namespace 'com.reroll'
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "io.ionic.starter"
+        applicationId "com.reroll"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

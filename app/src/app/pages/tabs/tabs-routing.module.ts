@@ -40,6 +40,11 @@ const routes: Routes = [
         path: ':id',
         loadChildren: () => import('../usuario/usuario.module').then(m => m.UsuarioPageModule)
       },
+
+      {
+        path: 'perfil/mis-articulos',
+        loadChildren: () => import('../mis-articulos/mis-articulos.module').then(m => m.MisArticulosPageModule)
+      },
       {
         path: '',
         redirectTo: '/inicio',

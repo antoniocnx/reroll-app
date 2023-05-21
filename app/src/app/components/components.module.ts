@@ -9,8 +9,9 @@ import { ChatBoxComponent } from './chat-box/chat-box.component';
 import { ArticuloComponent } from './articulo/articulo.component';
 import { ArticulosComponent } from './articulos/articulos.component';
 import { ValoracionComponent } from './valoracion/valoracion.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReporteComponent } from './reporte/reporte.component';
+import { EditarArticuloComponent } from './editar-articulo/editar-articulo.component';
 
 
 @NgModule({
@@ -21,14 +22,16 @@ import { ReporteComponent } from './reporte/reporte.component';
     MapaComponent,
     ChatBoxComponent,
     ValoracionComponent,
-    ReporteComponent
+    ReporteComponent,
+    EditarArticuloComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     PipesModule,
     SwiperModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     ArticuloComponent,
@@ -37,7 +40,8 @@ import { ReporteComponent } from './reporte/reporte.component';
     MapaComponent,
     ChatBoxComponent,
     ValoracionComponent,
-    ReporteComponent
+    ReporteComponent,
+    EditarArticuloComponent
   ]
 })
 export class ComponentsModule { }

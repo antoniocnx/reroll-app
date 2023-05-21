@@ -68,7 +68,6 @@ export class PostearPage implements OnInit {
     this.formData.append('precio', this.formPost.get('precio')?.value);
     this.formData.append('categoria', this.formPost.get('categoria')?.value);
     this.formData.append('descripcion', this.formPost.get('descripcion')?.value);
-    this.formData.append('localizacion', this.formPost.get('localizacion')?.value);
     this.formData.append('estado', this.formPost.get('estado')?.value);
     this.formData.append('envio', this.formPost.get('envio')?.value);
 

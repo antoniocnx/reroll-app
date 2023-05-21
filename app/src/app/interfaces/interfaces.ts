@@ -77,6 +77,12 @@ export interface RespuestaCrearArticulo {
   articulo: Articulo;
 }
 
+export interface RespuestaEditarArticulo {
+  ok: boolean;
+  mensaje: string;
+  articulo: Articulo;
+}
+
 export interface RespuestaLogin {
   ok: boolean;
   token: string;
