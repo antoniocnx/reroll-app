@@ -21,6 +21,11 @@ export class LoginAdminPage implements OnInit {
     password: ['123456', [ Validators.required ] ]
   })
 
+  // formLogin: FormGroup = this.formBuilder.group ({
+  //   email: ['', [ Validators.required, Validators.email] ],
+  //   password: ['', [ Validators.required ] ]
+  // })
+
   isTypePassword: boolean = true;
   isLogin = false;
 

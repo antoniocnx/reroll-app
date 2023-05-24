@@ -32,8 +32,7 @@
       </ion-button>
 
       <ion-button *ngIf="usuarioActual._id !== articulo.usuario?._id" shape="round" size="default" fill="clear" slot="end" color="light" (click)="favorito()">
-        <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'"
-          [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
+        <ion-icon slot="icon-only" [name]="esFavorito ? 'heart' : 'heart-outline'" [color]="esFavorito ? 'danger' : 'dark'"></ion-icon>
       </ion-button>
 
       <ion-text color="dark">
@@ -68,14 +67,24 @@
     </ion-item>
 
     <ion-item lines="none">
+      <ion-grid>
       <ion-text>Categoría: &nbsp;</ion-text>
       <ion-text color="dark">{{ articulo.categoria }}</ion-text>
+    </ion-grid>
     </ion-item>
 
     <ion-item lines="none">
-      <ion-text>Descripción: &nbsp;</ion-text>
-      <ion-text color="dark">{{ articulo.descripcion }}</ion-text>
+      <ion-grid>
+       <ion-row>  <!-- class="block-descripcion" -->
+            <ion-label>Descripción:</ion-label>
+        </ion-row>
+        <br>
+        <ion-row class="ion-row-start">
+            <ion-text color="dark">{{ articulo.descripcion }}</ion-text>
+        </ion-row>
+      </ion-grid>
     </ion-item>
+    
 
     <ion-item lines="none">
       <ion-text>Envío: &nbsp;</ion-text>

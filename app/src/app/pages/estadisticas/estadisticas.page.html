@@ -18,7 +18,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Artículos por usuario</ion-label>
-      <ion-badge color="secondary">{{ articulosTotales.length / usuariosTotales.length }}</ion-badge>
+      <ion-badge color="secondary">{{ (articulosTotales.length / usuariosTotales.length).toFixed(2) }}</ion-badge>
     </ion-item>
     <ion-item>
       <ion-label>Administradores</ion-label>
@@ -30,7 +30,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Reportes por articulo</ion-label>
-      <ion-badge color="warning">{{ reportesTotales.length / articulosTotales.length }}</ion-badge>
+      <ion-badge color="warning">{{ (reportesTotales.length / articulosTotales.length).toFixed(2) }}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

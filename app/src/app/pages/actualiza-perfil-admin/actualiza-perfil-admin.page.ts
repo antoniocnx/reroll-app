@@ -4,6 +4,8 @@ import { NavController, AlertController, IonInput } from '@ionic/angular';
 import { Administrador } from 'src/app/interfaces/interfaces';
 import { AdministradorService } from 'src/app/services/administrador.service';
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
+import { Geolocation } from '@capacitor/geolocation';
+
 
 declare const google: any;
 
@@ -58,6 +60,8 @@ export class ActualizaPerfilAdminPage implements OnInit {
 
   isTypePassword: boolean = true;
   isLoading: boolean = false;
+
+  cargandoGeoloc = false;
 
   constructor(private adminService: AdministradorService,
     private interfazUsuario: InterfazUsuarioService,
@@ -220,8 +224,53 @@ export class ActualizaPerfilAdminPage implements OnInit {
     return null;
   }
 
+  async geolocalizar() {
+    this.cargandoGeoloc = true;
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const geocoder = new google.maps.Geocoder();
+      const latlng = new google.maps.LatLng(latitude, longitude);
+      const request = { latLng: latlng };
+      geocoder.geocode(request, (results: any, status: any) => {
+        if (status == google.maps.GeocoderStatus.OK) {
+          this.cargandoGeoloc = false;
+          if (results[0] != null) {
+            const address = results[0].address_components;
+            const streetNumber = address.find((component: { types: string | string[]; }) => component.types.includes('street_number'))?.long_name ?? '';
+            const streetName = address.find((component: { types: string | string[]; }) => component.types.includes('route'))?.long_name ?? '';
+            const city = address.find((component: { types: string | string[]; }) => component.types.includes('locality'))?.long_name ?? '';
+            const state = address.find((component: { types: string | string[]; }) => component.types.includes('administrative_area_level_1'))?.long_name ?? '';
+            const country = address.find((component: { types: string | string[]; }) => component.types.includes('country'))?.long_name ?? '';
+            const postalCode = address.find((component: { types: string | string[]; }) => component.types.includes('postal_code'))?.long_name ?? '';
+
+            this.formUpdate.patchValue({
+              direccion: `${streetName} ${streetNumber}`,
+              ciudad: city,
+              localidad: state,
+              pais: country,
+              cp: postalCode
+            });
+          } else {
+            console.log('No se encontraron resultados');
+          }
+        } else {
+          console.log('La geolocalización falló debido a: ' + status);
+        }
+      });
+    } catch (error) {
+      console.log('Error obtienendo la geolocalización', error);
+    }
+  }
+
   onChange() {
     this.isTypePassword = !this.isTypePassword;
+  }
+
+  eliminarCuenta() {
+    
   }
 
 }

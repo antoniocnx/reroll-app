@@ -89,6 +89,12 @@
                 </ion-select>
               </ion-item>
 
+              <ion-item>
+                <ion-label class="label-toggle">Usar mi ubicación actual</ion-label>
+                <ion-spinner name="circular" *ngIf="cargandoGeoloc"></ion-spinner>
+                <ion-toggle color="tertiary" (ionChange)="geolocalizar()"></ion-toggle>
+              </ion-item>
+
               <ion-item class="ion-align-items-center">
                 <!-- <ion-label class="label-form">Dirección:</ion-label> -->
                 <ion-icon name="location-outline" slot="end" color="medium"></ion-icon>
@@ -150,6 +156,11 @@
               </ion-col>
             </ion-row>
           </ion-list>
+
+          <ion-button type="submit" color="danger" expand="full" class="btn-perfil" (click)="eliminarCuenta()">
+            Eliminar cuenta
+          </ion-button>
+          
         </ion-col>
       </ion-row>
     </ion-grid>
