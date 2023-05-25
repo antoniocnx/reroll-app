@@ -12,10 +12,10 @@
 <ion-content *ngIf="articulo">
   <div class="articulo">
 
-    <swiper [navigation]="true" [pagination]="{ clickable: true }">
+    <swiper class="swiper-container" [navigation]="true" [pagination]="{ clickable: true }">
       <ng-container *ngIf="articulo && articulo.galeria">
         <ng-template swiperSlide *ngFor="let imagen of articulo.galeria">
-          <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
+          <ion-img class="swiper-slide" [src]="imagen" alt="Imagen del artículo"></ion-img>
         </ng-template>
       </ng-container>
     </swiper>
