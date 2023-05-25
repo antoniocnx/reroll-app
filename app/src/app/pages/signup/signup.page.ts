@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -28,19 +28,19 @@ export class SignupPage implements OnInit {
   //
 
   formSignup: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellidos: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    nacimiento: [(new Date('2000-01-01')), [Validators.required, this.mayorDeEdad]],
+    nombre: ['', [Validators.required, this.noScriptValidator]],
+    apellidos: ['', [Validators.required, this.noScriptValidator]],
+    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.required, Validators.minLength(6), this.noScriptValidator]],
+    nacimiento: [(new Date('2000-01-01')), [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
     sexo: ['', Validators.required],
-    direccion: ['', Validators.required],
-    ciudad: ['', Validators.required],
-    localidad: ['', Validators.required],
-    pais: ['', Validators.required],
-    cp: [Validators.required],
+    direccion: ['', [Validators.required, this.noScriptValidator]],
+    ciudad: ['', [Validators.required, this.noScriptValidator]],
+    localidad: ['', [Validators.required, this.noScriptValidator]],
+    pais: ['', [Validators.required, this.noScriptValidator]],
+    cp: [[Validators.required, this.noScriptValidator]],
     avatar: ['av-robin.png'],
-    checkbox: [false, Validators.requiredTrue]
+    checkbox: [false, [Validators.requiredTrue, this.noScriptValidator]]
   })
 
   isTypePassword: boolean = true;
@@ -50,8 +50,7 @@ export class SignupPage implements OnInit {
   constructor(private usuarioService: UsuarioService,
     private navCrtl: NavController,
     private interfazUsuario: InterfazUsuarioService,
-    private formBuilder: FormBuilder,
-    private spinner: LoadingController) { }
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() { }
 
@@ -76,6 +75,21 @@ export class SignupPage implements OnInit {
       // Alerta de error
       this.interfazUsuario.alertaLogin('Ya existe ese usuario.');
     }
+  }
+
+  // Verificar si el valor contiene scripts maliciosos
+  noScriptValidator(control: FormControl) {
+    const value = control.value;
+
+    if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
+      return { noHTML: true };
+    }
+
+    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
+    //   return { noScript: true };
+    // }
+
+    return null;
   }
 
   // Autocompletado de la dirección

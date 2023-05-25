@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera';
@@ -21,12 +21,12 @@ export class PostearPage implements OnInit {
 
   formPost: FormGroup = this.formBuilder.group({
     fecha: [new Date()],
-    nombre: ['', Validators.required],
-    precio: ['', Validators.required],
-    categoria: ['', Validators.required],
-    descripcion: ['', [Validators.required, Validators.maxLength(200)]],
-    estado: ['En venta', Validators.required],
-    envio: ['', Validators.required]
+    nombre: ['', [Validators.required, this.noScriptValidator]],
+    precio: ['', [Validators.required, this.noScriptValidator]],
+    categoria: ['', [Validators.required, this.noScriptValidator]],
+    descripcion: ['', [Validators.required, Validators.maxLength(200), this.noScriptValidator]],
+    estado: ['En venta', [Validators.required, this.noScriptValidator]],
+    envio: ['', [Validators.required, this.noScriptValidator]]
   });
 
   articulo: Articulo = {
@@ -81,6 +81,21 @@ export class PostearPage implements OnInit {
         console.log(err);
       });
 
+  }
+
+  // Verificar si el valor contiene scripts maliciosos
+  noScriptValidator(control: FormControl) {
+    const value = control.value;
+
+    if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
+      return { noHTML: true };
+    }
+
+    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
+    //   return { noScript: true };
+    // }
+
+    return null;
   }
 
   async abrirCamara() {

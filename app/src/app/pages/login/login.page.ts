@@ -11,9 +11,9 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class LoginPage implements OnInit {
 
-  formLogin: FormGroup = this.formBuilder.group ({
-    email: ['test1@test.com', [ Validators.required, Validators.email] ],
-    password: ['123456', [ Validators.required ] ]
+  formLogin: FormGroup = this.formBuilder.group({
+    email: ['test1@test.com', [Validators.required, Validators.email, this.noScriptValidator]],
+    password: ['123456', [Validators.required, this.noScriptValidator]]
   })
 
   isTypePassword: boolean = true;
@@ -23,26 +23,41 @@ export class LoginPage implements OnInit {
     private navCrtl: NavController,
     private interfazUsuario: InterfazUsuarioService,
     private formBuilder: FormBuilder) { }
-  
+
 
   ngOnInit() { }
 
   async login(formLogin: FormGroup) {
-    if(formLogin.invalid) {
+    if (formLogin.invalid) {
       return;
     }
 
     // const valido = await this.usuarioService.login(this.loginUsuario.email, this.loginUsuario.password);
     const valido = await this.usuarioService.login(this.formLogin.value.email, this.formLogin.value.password);
 
-    if(valido) {
+    if (valido) {
       // Ir a tabs
       this.navCrtl.navigateRoot('/user/inicio', { animated: true });
     } else {
       // Alerta de error
       this.interfazUsuario.alertaLogin('Usuario o contraseña incorrecto.');
     }
-    
+
+  }
+
+  // Verificar si el valor contiene scripts maliciosos
+  noScriptValidator(control: FormControl) {
+    const value = control.value;
+
+    if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
+      return { noHTML: true };
+    }
+
+    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
+    //   return { noScript: true };
+    // }
+
+    return null;
   }
 
   onChange() {

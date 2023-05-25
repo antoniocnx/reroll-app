@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
@@ -19,7 +20,8 @@ export class ValoracionComponent implements OnInit {
 
   constructor(private usuarioService: UsuarioService,
               private modalController: ModalController,
-              private http: HttpClient) { }
+              private http: HttpClient,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit() { }
 
@@ -31,10 +33,12 @@ export class ValoracionComponent implements OnInit {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
+
+    const comentarioSanitizer = this.sanitizer.sanitize(SecurityContext.HTML, this.comentario);
     
     const valoracion = {
       puntuacion: this.puntuacion,
-      comentario: this.comentario,
+      comentario: comentarioSanitizer,
     };
   
     // Realiza la llamada al servidor

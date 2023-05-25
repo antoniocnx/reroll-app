@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
 import { NavController, AlertController, IonInput } from '@ionic/angular';
 import { Administrador } from 'src/app/interfaces/interfaces';
 import { AdministradorService } from 'src/app/services/administrador.service';
@@ -29,17 +29,17 @@ export class ActualizaPerfilAdminPage implements OnInit {
   admin: Administrador = {};
 
   formUpdate: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellidos: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
-    password: ['', [Validators.minLength(6)]],
-    nacimiento: ['', [ Validators.required, this.mayorDeEdad ]],
-    sexo: ['', Validators.required],
-    direccion: ['', Validators.required],
-    ciudad: ['', Validators.required],
-    localidad: ['', Validators.required],
-    pais: ['', Validators.required],
-    cp: [Validators.required],
+    nombre: ['', [Validators.required, this.noScriptValidator]],
+    apellidos: ['', [Validators.required, this.noScriptValidator]],
+    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.minLength(6), this.noScriptValidator]],
+    nacimiento: ['', [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
+    sexo: ['', [Validators.required, this.noScriptValidator]],
+    direccion: ['', [Validators.required, this.noScriptValidator]],
+    ciudad: ['', [Validators.required, this.noScriptValidator]],
+    localidad: ['', [Validators.required, this.noScriptValidator]],
+    pais: ['', [Validators.required, this.noScriptValidator]],
+    cp: [[Validators.required, this.noScriptValidator]],
     avatar: ['']
   })
 
@@ -72,6 +72,21 @@ export class ActualizaPerfilAdminPage implements OnInit {
   ngOnInit() {
     this.admin = this.adminService.getAdmin();
     this.formUpdate.patchValue(this.admin);
+  }
+
+  // Verificar si el valor contiene scripts maliciosos
+  noScriptValidator(control: FormControl) {
+    const value = control.value;
+
+    if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
+      return { noHTML: true };
+    }
+
+    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
+    //   return { noScript: true };
+    // }
+
+    return null;
   }
 
   ionViewDidEnter() {

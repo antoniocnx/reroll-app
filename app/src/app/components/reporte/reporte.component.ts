@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SecurityContext } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
@@ -20,7 +21,8 @@ export class ReporteComponent implements OnInit {
   constructor(private usuarioService: UsuarioService,
     private modalController: ModalController,
     private http: HttpClient,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit() { }
 
@@ -32,9 +34,11 @@ export class ReporteComponent implements OnInit {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
+
+    const motivoSanitizer = this.sanitizer.sanitize(SecurityContext.HTML, this.motivo);
   
     const mensaje = {
-      motivo: this.motivo
+      motivo: motivoSanitizer
     };
   
     const alert = await this.alertController.create({

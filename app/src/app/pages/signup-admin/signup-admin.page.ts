@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
 import { IonInput, NavController } from '@ionic/angular';
 import { AdministradorService } from 'src/app/services/administrador.service';
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
@@ -25,19 +25,19 @@ export class SignupAdminPage implements OnInit {
   //
 
   formSignup: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellidos: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    nacimiento: [(new Date('2000-01-01')), [ Validators.required, this.mayorDeEdad ]],
-    sexo: ['', Validators.required],
-    direccion: ['', Validators.required],
-    ciudad: ['', Validators.required],
-    localidad: ['', Validators.required],
-    pais: ['', Validators.required],
-    cp: [Validators.required],
+    nombre: ['',[Validators.required, this.noScriptValidator]],
+    apellidos: ['', [Validators.required, this.noScriptValidator]],
+    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.required, Validators.minLength(6), this.noScriptValidator]],
+    nacimiento: [(new Date('2000-01-01')), [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
+    sexo: ['', [Validators.required, this.noScriptValidator]],
+    direccion: ['', [Validators.required, this.noScriptValidator]],
+    ciudad: ['', [Validators.required, this.noScriptValidator]],
+    localidad: ['', [Validators.required, this.noScriptValidator]],
+    pais: ['', [Validators.required, this.noScriptValidator]],
+    cp: [[Validators.required, this.noScriptValidator]],
     avatar: ['av-chopper.png'],
-    checkbox: [false, Validators.requiredTrue]
+    checkbox: [false, [Validators.requiredTrue, this.noScriptValidator]]
   })
 
   isTypePassword: boolean = true;
@@ -66,6 +66,21 @@ export class SignupAdminPage implements OnInit {
     private formBuilder: FormBuilder) { }
 
   ngOnInit() { }
+
+  // Verificar si el valor contiene scripts maliciosos
+  noScriptValidator(control: FormControl) {
+    const value = control.value;
+
+    if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
+      return { noHTML: true };
+    }
+
+    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
+    //   return { noScript: true };
+    // }
+
+    return null;
+  }
 
   // Autocompletado de la dirección
 

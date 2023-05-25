@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { AbstractControl, FormBuilder, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
 import { AlertController, IonInput, NavController } from '@ionic/angular';
 import { Geolocation } from '@capacitor/geolocation';
@@ -29,17 +29,17 @@ export class ActualizaPerfilPage implements OnInit {
   usuario: Usuario = {};
 
   formUpdate: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellidos: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido()]],
-    password: ['', [Validators.minLength(6)]],
-    nacimiento: ['', [ Validators.required, this.mayorDeEdad ]],
-    sexo: ['', Validators.required],
-    direccion: ['', Validators.required],
-    ciudad: ['', Validators.required],
-    localidad: ['', Validators.required],
-    pais: ['', Validators.required],
-    cp: ['', Validators.required],
+    nombre: ['', [Validators.required, this.noScriptValidator]],
+    apellidos: ['', [Validators.required, this.noScriptValidator]],
+    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.minLength(6), this.noScriptValidator]],
+    nacimiento: ['', [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
+    sexo: ['', [Validators.required, this.noScriptValidator]],
+    direccion: ['', [Validators.required, this.noScriptValidator]],
+    ciudad: ['', [Validators.required, this.noScriptValidator]],
+    localidad: ['', [Validators.required, this.noScriptValidator]],
+    pais: ['', [Validators.required, this.noScriptValidator]],
+    cp: ['', [Validators.required, this.noScriptValidator]],
     avatar: ['']
   })
 
@@ -72,6 +72,21 @@ export class ActualizaPerfilPage implements OnInit {
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
     this.formUpdate.patchValue(this.usuario);
+  }
+
+  // Verificar si el valor contiene scripts maliciosos
+  noScriptValidator(control: FormControl) {
+    const value = control.value;
+
+    if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
+      return { noHTML: true };
+    }
+
+    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
+    //   return { noScript: true };
+    // }
+
+    return null;
   }
 
   ionViewDidEnter() {
