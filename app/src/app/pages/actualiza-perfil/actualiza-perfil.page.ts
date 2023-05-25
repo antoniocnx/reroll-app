@@ -269,8 +269,30 @@ export class ActualizaPerfilPage implements OnInit {
     }
   }
 
-  eliminarCuenta() {
-    
+  async eliminarCuenta() {
+    const alert = await this.alertController.create({
+      header: 'Eliminar cuenta',
+      message: '¿Está seguro de que desea eliminar su cuenta?. Después de esto no podrá recuperarla.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.usuarioService.eliminarUsuario().subscribe(
+              () => {
+                // Caso de éxito: redirigir al login
+                this.navCrtl.navigateRoot('/login', { animated: true });
+              }
+            );
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

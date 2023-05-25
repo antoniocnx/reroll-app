@@ -145,4 +145,15 @@ export class AdministradorService {
     })
 
   }
+
+  eliminarAdministrador() {
+    const headers = new HttpHeaders({
+      'y-token': this.token
+    });
+
+    return this.http.delete(`${ url }/administrador`, { headers });
+
+  }
+
+
 }

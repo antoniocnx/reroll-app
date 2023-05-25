@@ -17,148 +17,156 @@
             <app-avatar-selector
               (avatarSeleccionado)="formUpdate.get('avatar')?.setValue($event)"></app-avatar-selector>
 
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Nombre:</ion-label> -->
-                <ion-icon name="person-outline" slot="end" color="medium">
-                </ion-icon>
-                <ion-input type="text" placeholder="Nombre" class="form-control" formControlName="nombre" [clearInput]="true"></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger"
-                *ngIf="!formUpdate.get('nombre')?.valid && formUpdate.get('nombre')?.touched">
-                <p class="error">* Por favor, indique su nombre</p>
-              </ion-text>
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Nombre:</ion-label> -->
+              <ion-icon name="person-outline" slot="end" color="medium">
+              </ion-icon>
+              <ion-input type="text" placeholder="Nombre" class="form-control" formControlName="nombre"
+                [clearInput]="true"></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('nombre')?.valid && formUpdate.get('nombre')?.touched">
+              <p class="error">* Por favor, indique su nombre</p>
+            </ion-text>
 
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Apellidos:</ion-label> -->
-                <ion-icon name="person-outline" slot="end" color="medium">
-                </ion-icon>
-                <ion-input type="text" placeholder="Apellidos" class="form-control" formControlName="apellidos" [clearInput]="true"></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger"
-                *ngIf="!formUpdate.get('apeliidos')?.valid && formUpdate.get('apeliidos')?.touched">
-                <p class="error">* Por favor, indique sus apeliidos</p>
-              </ion-text>
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Apellidos:</ion-label> -->
+              <ion-icon name="person-outline" slot="end" color="medium">
+              </ion-icon>
+              <ion-input type="text" placeholder="Apellidos" class="form-control" formControlName="apellidos"
+                [clearInput]="true"></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('apeliidos')?.valid && formUpdate.get('apeliidos')?.touched">
+              <p class="error">* Por favor, indique sus apeliidos</p>
+            </ion-text>
 
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Email:</ion-label> -->
-                <ion-icon name="mail-outline" slot="end" color="medium">
-                </ion-icon>
-                <ion-input type="email" placeholder="Email" class="form-control" formControlName="email" [clearInput]="true"></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger"
-                *ngIf="!formUpdate.get('email')?.valid && formUpdate.get('email')?.touched">
-                <p class="error">* Por favor, indique un email válido</p>
-              </ion-text>
-              <ion-text class="ion-text-left" color="danger"
-                *ngIf="formUpdate.get('email')?.hasError('emailAdminNoValido')">
-                <p class="error">* Email inválido. No se permiten direcciones de correo que terminen en "@admin.com"</p>
-              </ion-text>
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Email:</ion-label> -->
+              <ion-icon name="mail-outline" slot="end" color="medium">
+              </ion-icon>
+              <ion-input type="email" placeholder="Email" class="form-control" formControlName="email"
+                [clearInput]="true"></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('email')?.valid && formUpdate.get('email')?.touched">
+              <p class="error">* Por favor, indique un email válido</p>
+            </ion-text>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="formUpdate.get('email')?.hasError('emailAdminNoValido')">
+              <p class="error">* Email inválido. No se permiten direcciones de correo que terminen en "@admin.com"</p>
+            </ion-text>
 
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Contraseña:</ion-label> -->
-                <ion-icon (click)="onChange()" [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'"
-                  slot="end" [color]="isTypePassword ? 'medium' : 'primary'">
-                </ion-icon>
-                <ion-input type="password" placeholder="Contraseña" class="form-control" formControlName="password" [type]="isTypePassword ? 'password' : 'text'" [clearInput]="true"></ion-input>
-                <!-- <ion-input 
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Contraseña:</ion-label> -->
+              <ion-icon (click)="onChange()" [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'"
+                slot="end" [color]="isTypePassword ? 'medium' : 'primary'">
+              </ion-icon>
+              <ion-input type="password" placeholder="Contraseña" class="form-control" formControlName="password"
+                [type]="isTypePassword ? 'password' : 'text'" [clearInput]="true"></ion-input>
+              <!-- <ion-input 
                 formControlName="password" 
                 [type]="isTypePassword ? 'password' : 'text'"
                 placeholder="Enter Password">
               </ion-input> -->
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger"
-                *ngIf="!formUpdate.get('password')?.valid && formUpdate.get('password')?.touched">
-                <p class="error" *ngIf="formUpdate.get('password')?.invalid || formUpdate.get('password')?.dirty">
-                  * Por favor, introduce una contraseña de al menos 6 caracteres
-                </p>
-              </ion-text>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('password')?.valid && formUpdate.get('password')?.touched">
+              <p class="error" *ngIf="formUpdate.get('password')?.invalid || formUpdate.get('password')?.dirty">
+                * Por favor, introduce una contraseña de al menos 6 caracteres
+              </p>
+            </ion-text>
 
-              <ion-item class="ion-align-items-center">
-                <ion-label class="label-form" class="label-form-fecha">Fecha de nacimiento:</ion-label>
-                <ion-input type="date" placeholder="Fecha de nacimiento" class="form-control" formControlName="nacimiento"></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger"
-                *ngIf="!formUpdate.get('nacimiento')?.valid && formUpdate.get('nacimiento')?.touched">
-                <p class="error">* Es obligatorio tener más de 18 años</p>
-              </ion-text>
+            <ion-item class="ion-align-items-center">
+              <ion-label class="label-form" class="label-form-fecha">Fecha de nacimiento:</ion-label>
+              <ion-input type="date" placeholder="Fecha de nacimiento" class="form-control"
+                formControlName="nacimiento"></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('nacimiento')?.valid && formUpdate.get('nacimiento')?.touched">
+              <p class="error">* Es obligatorio tener más de 18 años</p>
+            </ion-text>
 
-              <ion-item>
-                <ion-select placeholder="Sexo" class="form-control" formControlName="sexo">
-                  <ion-select-option value="Hombre">Hombre</ion-select-option>
-                  <ion-select-option value="Mujer">Mujer</ion-select-option>
-                </ion-select>
-              </ion-item>
+            <ion-item>
+              <ion-select placeholder="Sexo" class="form-control" formControlName="sexo">
+                <ion-select-option value="Hombre">Hombre</ion-select-option>
+                <ion-select-option value="Mujer">Mujer</ion-select-option>
+              </ion-select>
+            </ion-item>
 
-              <ion-item>
-                <ion-label class="label-toggle">Usar mi ubicación actual</ion-label>
-                <ion-spinner name="circular" *ngIf="cargandoGeoloc"></ion-spinner>
-                <ion-toggle color="tertiary" (ionChange)="geolocalizar()"></ion-toggle>
-              </ion-item>
+            <ion-item>
+              <ion-label class="label-toggle">Usar mi ubicación actual</ion-label>
+              <ion-spinner name="circular" *ngIf="cargandoGeoloc"></ion-spinner>
+              <ion-toggle color="tertiary" (ionChange)="geolocalizar()"></ion-toggle>
+            </ion-item>
 
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Dirección:</ion-label> -->
-                <ion-icon name="location-outline" slot="end" color="medium"></ion-icon>
-                <ion-input type="text" placeholder="Dirección" class="form-control" formControlName="direccion" [clearInput]="true" #autocompleteAddress></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formUpdate.get('direccion')?.valid && formUpdate.get('direccion')?.touched">
-                <p class="error">* Por favor, indique su dirección</p>
-              </ion-text>
-              
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Ciudad:</ion-label> -->
-                <ion-input type="text" placeholder="Ciudad" class="form-control" formControlName="ciudad" [clearInput]="true" #autocompleteCity></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formUpdate.get('ciudad')?.valid && formUpdate.get('ciudad')?.touched">
-                <p class="error">* Por favor, indique su ciudad</p>
-              </ion-text>
-              
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Localidad:</ion-label> -->
-                <ion-input type="text" placeholder="Localidad" class="form-control" formControlName="localidad" [clearInput]="true" #autocompleteTown></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formUpdate.get('localidad')?.valid && formUpdate.get('localidad')?.touched">
-                <p class="error">* Por favor, indique su localidad</p>
-              </ion-text>
-              
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">País:</ion-label> -->
-                <ion-input type="text" placeholder="País" class="form-control" formControlName="pais" [clearInput]="true" #autocompleteCountry></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formUpdate.get('pais')?.valid && formUpdate.get('pais')?.touched">
-                <p class="error">* Por favor, indique su país</p>
-              </ion-text>
-              
-              <ion-item class="ion-align-items-center">
-                <!-- <ion-label class="label-form">Código postal:</ion-label> -->
-                <ion-input type="number" placeholder="Código postal" class="form-control" formControlName="cp" [clearInput]="true" #autocompletePostal></ion-input>
-              </ion-item>
-              <ion-text class="ion-text-left" color="danger" *ngIf="!formUpdate.get('cp')?.valid && formUpdate.get('cp')?.touched">
-                <p class="error">* Por favor, indique su código postal</p>
-              </ion-text>
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Dirección:</ion-label> -->
+              <ion-icon name="location-outline" slot="end" color="medium"></ion-icon>
+              <ion-input type="text" placeholder="Dirección" class="form-control" formControlName="direccion"
+                [clearInput]="true" #autocompleteAddress></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('direccion')?.valid && formUpdate.get('direccion')?.touched">
+              <p class="error">* Por favor, indique su dirección</p>
+            </ion-text>
+
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Ciudad:</ion-label> -->
+              <ion-input type="text" placeholder="Ciudad" class="form-control" formControlName="ciudad"
+                [clearInput]="true" #autocompleteCity></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('ciudad')?.valid && formUpdate.get('ciudad')?.touched">
+              <p class="error">* Por favor, indique su ciudad</p>
+            </ion-text>
+
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Localidad:</ion-label> -->
+              <ion-input type="text" placeholder="Localidad" class="form-control" formControlName="localidad"
+                [clearInput]="true" #autocompleteTown></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('localidad')?.valid && formUpdate.get('localidad')?.touched">
+              <p class="error">* Por favor, indique su localidad</p>
+            </ion-text>
+
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">País:</ion-label> -->
+              <ion-input type="text" placeholder="País" class="form-control" formControlName="pais" [clearInput]="true"
+                #autocompleteCountry></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('pais')?.valid && formUpdate.get('pais')?.touched">
+              <p class="error">* Por favor, indique su país</p>
+            </ion-text>
+
+            <ion-item class="ion-align-items-center">
+              <!-- <ion-label class="label-form">Código postal:</ion-label> -->
+              <ion-input type="number" placeholder="Código postal" class="form-control" formControlName="cp"
+                [clearInput]="true" #autocompletePostal></ion-input>
+            </ion-item>
+            <ion-text class="ion-text-left" color="danger"
+              *ngIf="!formUpdate.get('cp')?.valid && formUpdate.get('cp')?.touched">
+              <p class="error">* Por favor, indique su código postal</p>
+            </ion-text>
 
             <ion-row style="margin-top: 30px;">
               <ion-col class="ion-text-center">
-                <ion-button (click)="alertaCancelar()" 
-                            color="tertiary" 
-                            shape="round" 
-                            class="btn">
+                <ion-button (click)="alertaCancelar()" color="tertiary" shape="round" class="btn">
                   Cancelar
                 </ion-button>
               </ion-col>
 
               <ion-col class="ion-text-center">
-                <ion-button type="submit"  
-                            color="tertiary" 
-                            shape="round" 
-                            class="btn">
+                <ion-button type="submit" color="tertiary" shape="round" class="btn">
                   Guardar
                 </ion-button>
               </ion-col>
             </ion-row>
-
           </ion-list>
-            
-          <ion-button type="submit" color="danger" expand="full" class="btn-perfil" (click)="eliminarCuenta()">
+
+          <ion-button color="danger" expand="full" class="btn-delete" (click)="eliminarCuenta()">
             Eliminar cuenta
           </ion-button>
 

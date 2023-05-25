@@ -191,4 +191,13 @@ export class UsuarioService {
       }
   )};
 
+  eliminarUsuario() {
+    const headers = new HttpHeaders({
+      'x-token': this.token
+    });
+
+    return this.http.delete(`${ url }/usuario`, { headers });
+
+  }
+
 }
