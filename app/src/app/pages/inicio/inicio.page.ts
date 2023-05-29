@@ -8,6 +8,8 @@ import { ArticulosService } from 'src/app/services/articulos.service';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
+
+  rangoPrecio = { lower: 0, upper: 2000 };
   
   textoBusqueda: string = '';
 

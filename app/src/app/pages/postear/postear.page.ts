@@ -15,14 +15,15 @@ import { ArticulosService } from 'src/app/services/articulos.service';
 })
 export class PostearPage implements OnInit {
 
-  galeria: string[] = [];
+  // galeria: string[] = [];
+  galeria: { ruta: string, archivo: File }[] = [];
 
   formData = new FormData();
 
   formPost: FormGroup = this.formBuilder.group({
     fecha: [new Date()],
     nombre: ['', [Validators.required, this.noScriptValidator]],
-    precio: ['', [Validators.required, this.noScriptValidator]],
+    precio: [[Validators.required]],
     categoria: ['', [Validators.required, this.noScriptValidator]],
     descripcion: ['', [Validators.required, Validators.maxLength(200), this.noScriptValidator]],
     estado: ['En venta', [Validators.required, this.noScriptValidator]],
@@ -71,16 +72,29 @@ export class PostearPage implements OnInit {
     this.formData.append('estado', this.formPost.get('estado')?.value);
     this.formData.append('envio', this.formPost.get('envio')?.value);
 
+    // Agregar archivos de la galeria al FormData
+    for (const imagen of this.galeria) {
+      this.formData.append('files', imagen.archivo);
+    }
+
     await this.articuloService.crearArticulo(this.formData)
       .then((result) => {
         console.log(result);
-        this.formData.delete;
-        this.formData.delete('files');
+        // Reiniciar los valores de los campos del formulario
+        this.formPost.reset();
+        this.formPost.get('fecha')?.setValue('');
+        this.formPost.get('nombre')?.setValue('');
+        this.formPost.get('precio')?.setValue(null);
+        this.formPost.get('categoria')?.setValue('');
+        this.formPost.get('descripcion')?.setValue('');
+        this.formPost.get('envio')?.setValue('');
+
+        this.formData = new FormData();
+        this.galeria = [];
         this.route.navigateByUrl('/user/inicio');
       }).catch((err) => {
         console.log(err);
       });
-
   }
 
   // Verificar si el valor contiene scripts maliciosos
@@ -90,10 +104,6 @@ export class PostearPage implements OnInit {
     if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
       return { noHTML: true };
     }
-
-    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
-    //   return { noScript: true };
-    // }
 
     return null;
   }
@@ -105,14 +115,23 @@ export class PostearPage implements OnInit {
 
       if (imagen.webPath) {
         // Verificar si la imagen ya existe en la matriz galeria
-        if (!this.galeria.includes(imagen.webPath)) {
+
+        if (!this.galeria.some(img => img.ruta === imagen.webPath)) {
           const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
           const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
 
-          this.formData.append('files', imageFile);
-
-          this.galeria.push(imagen.webPath);
+          this.galeria.push({ ruta: imagen.webPath, archivo: imageFile });
         }
+
+        // if (!this.galeria.includes(imagen.webPath)) {
+        //   const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+        //   const imageFile = new File([imageBlob], "image", { type: "image/jpeg" });
+
+        //   // this.formData.append('files', imageFile);
+
+        //   this.galeria.push(imagen.webPath);
+        // }
+
       }
 
     } else {
@@ -127,17 +146,34 @@ export class PostearPage implements OnInit {
 
       if (imagen.webPath) {
         // Verificar si la imagen ya existe en la matriz galeria
-        if (!this.galeria.includes(imagen.webPath)) {
+        if (!this.galeria.some(img => img.ruta === imagen.webPath)) {
           const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
           // Obtener el nombre del archivo original
           const nombreArchivo = imagen.webPath.split('/').pop();
           if (nombreArchivo) {
             const imageFile = new File([imageBlob], nombreArchivo, { type: "image/jpeg" });
-            this.formData.append('files', imageFile);
-            this.galeria.push(imagen.webPath);
+
+            this.galeria.push({ ruta: imagen.webPath, archivo: imageFile });
           }
         }
       }
+
+      // if (imagen.webPath) {
+      //   // Verificar si la imagen ya existe en la matriz galeria
+      //   if (!this.galeria.includes(imagen.webPath)) {
+      //     const imageBlob = await fetch(imagen.webPath).then(r => r.blob());
+      //     // Obtener el nombre del archivo original
+      //     const nombreArchivo = imagen.webPath.split('/').pop();
+      //     if (nombreArchivo) {
+      //       const imageFile = new File([imageBlob], nombreArchivo, { type: "image/jpeg" });
+
+      //       // this.formData.append('files', imageFile);
+
+      //       // this.galeria.push(imagen.webPath);
+      //       this.galeria.push({ ruta: imagen.webPath, archivo: imageFile });
+      //     }
+      //   }
+      // }
 
     } else {
       console.log('Sin permiso para acceder a la galería');
@@ -145,8 +181,7 @@ export class PostearPage implements OnInit {
   }
 
   eliminarImagen(index: number) {
-    this.galeria.splice(index, 1); // Eliminar imagen del array galeria
-    this.formData.delete(`files[${index}]`); // Elimina la imagen del formulario
+    this.galeria.splice(index, 1);
   }
 
 }

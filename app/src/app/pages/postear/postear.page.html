@@ -23,7 +23,7 @@
           <ion-row>
             <ion-col size="3" *ngFor="let imagen of galeria; let i = index">
               <ion-card>
-                <ion-img [src]="imagen"></ion-img>
+                <ion-img [src]="imagen.ruta"></ion-img>
                 <ion-button fill="clear" color="danger" size="small" (click)="eliminarImagen(i)">
                   <ion-icon slot="icon-only" name="trash"></ion-icon>
                 </ion-button>
@@ -57,7 +57,7 @@
 
           <ion-item class="ion-align-items-center">
             <!-- <ion-label position="floating">Precio:</ion-label> -->
-            <ion-input type="text" class="form-control" formControlName="precio" placeholder="Precio"></ion-input>
+            <ion-input type="number" class="form-control" formControlName="precio" placeholder="Precio"></ion-input>
           </ion-item>
           <ion-text class="ion-text-left" color="danger"
             *ngIf="!formPost.get('precio')?.valid && formPost.get('precio')?.touched">

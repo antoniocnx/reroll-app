@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Articulo, Usuario } from 'src/app/interfaces/interfaces';
@@ -28,9 +28,7 @@ export class ArticuloComponent implements OnInit {
   esFavorito: boolean = false;
   
   constructor(private router: Router,
-    private route: ActivatedRoute,
     private usuarioService: UsuarioService,
-    private articulosService: ArticulosService, 
     private http: HttpClient) { }
   
   ngOnInit() {
