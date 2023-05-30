@@ -1,5 +1,37 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
+    <ion-title>Chat</ion-title>
+    <ion-back-button defaultHref="" (click)="goBack()" slot="start"></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let mensaje of mensajes">
+      <ion-label>{{ mensaje.texto }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input [(ngModel)]="nuevoMensaje" placeholder="Escribe un mensaje"></ion-input>
+    <ion-fab-button slot="end" size="small" color="tertiary" (click)="enviarMensaje()">
+      <ion-icon name="send"></ion-icon>
+    </ion-fab-button>
+  </ion-toolbar>
+</ion-footer>
+
+<!-- <ion-footer>
+  <ion-toolbar>
+    <ion-input [(ngModel)]="nuevoMensaje" placeholder="Escribe un mensaje"></ion-input>
+    <ion-button expand="block" (click)="enviarMensaje()">Enviar</ion-button>
+  </ion-toolbar>
+</ion-footer> -->
+
+
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/user/chats"></ion-back-button>
     </ion-buttons>
@@ -12,28 +44,27 @@
   <ion-list 
     lines="none" 
     *ngIf="(chats) as chat$">
-    <ion-item-group class="chats-group" *ngFor="let chat of chat$">
+    <ion-item-group class="chats-group" *ngFor="let chat of chats">
       <app-chat-box [chat]="chat" [current_user_id]="currentUserId"></app-chat-box>
     </ion-item-group>
   </ion-list>
 
-</ion-content>
+</ion-content> -->
 
-<ion-footer>
+<!-- <ion-footer>
   <ion-toolbar color="light">
     <ion-textarea 
       autoGrow 
       rows="1" 
-      placeholder="Mensaje" 
-      [(ngModel)]="message">
+      placeholder="Mensaje" >
     </ion-textarea>
     <ion-buttons slot="end">
-      <ion-fab-button *ngIf="!isLoading" size="small" color="tertiary" (click)="sendMessage()">
+      <ion-fab-button size="small" color="tertiary" (click)="sendMessage()">
         <ion-icon name="send"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="isLoading" size="small" color="primary">
+      <ion-fab-button size="small" color="primary">
         <ion-spinner name="crescent" color="white"></ion-spinner>
       </ion-fab-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->

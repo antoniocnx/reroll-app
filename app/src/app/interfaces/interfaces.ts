@@ -60,6 +60,18 @@ export interface Reporte {
   motivo?: string;
 }
 
+export interface Chat {
+  _id?: string;
+  usuario1?: Usuario;
+  usuario2?: Usuario;
+  mensajes?: [{
+    usuario: Usuario;
+    texto: string;
+    fechaMsg: Date;
+  }];
+  fehcaChat?: Date;
+}
+
 export interface LocalFile {
   name: string;
   path: string;

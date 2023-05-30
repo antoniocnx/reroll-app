@@ -6,7 +6,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="light">
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let chat of chats" (click)=" irAChat(chat._id)">
+      <ion-avatar slot="start">
+        <img src="/assets/avatars/{{ chat.usuario2?.avatar }}">
+      </ion-avatar>
+      <ion-label>{{ chat.usuario2?.nombre }} {{ chat.usuario2?.apellidos }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- <ion-content [fullscreen]="true" color="light">
 
   <ion-list *ngIf="segment == 'chats' && (chatRooms) as rooms">
 
@@ -30,4 +41,4 @@
 
   </ion-list>
 
-</ion-content>
+</ion-content> -->

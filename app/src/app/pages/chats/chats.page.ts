@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Chat, Usuario } from 'src/app/interfaces/interfaces';
+import { ChatService } from 'src/app/services/chat.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-chat',
@@ -8,44 +11,75 @@ import { Router } from '@angular/router';
 })
 export class ChatPage implements OnInit {
 
-  // @ViewChild('popover') popover: PopoverController;
-  segment = 'chats';
-  open_new_chat = false;
-  users = [
-    {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
-    {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
-  ];
-  chatRooms = [
-    {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
-    {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
-  ];
+  chats: Chat[] = [];
 
-  constructor(private router: Router) { }
+  usuario: Usuario = {};
+
+  constructor(private chatService: ChatService,
+              private usuarioService: UsuarioService,
+              private router: Router) { }
 
   ngOnInit() {
+    this.getChats();
   }
 
-  onSegmentChanged(event: any) {
-    console.log(event);
+  getChats() {
+    this.usuario = this.usuarioService.getUsuario();
+    const userId = this.usuario._id;
+    if(userId) {
+      this.chatService.getChats(userId).subscribe(
+        (response: any) => {
+          this.chats = response.chats;
+        },
+        (error) => {
+          console.error('Error al obtener los chats', error);
+        }
+      );
+    }
   }
 
-  newChat() {
-    this.open_new_chat = true;
+  irAChat(chatId?: string) {
+    this.router.navigate(['/', 'user','chats', 'chat', chatId]);
   }
 
-  onWillDismiss(event: any) {}
+  // // @ViewChild('popover') popover: PopoverController;
+  // segment = 'chats';
+  // open_new_chat = false;
+  // users = [
+  //   {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
+  //   {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
+  // ];
+  // chatRooms = [
+  //   {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
+  //   {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
+  // ];
 
-  // cancel() {
-  //   this.modal.dismiss();
-  //   this.open_new_chat = false;
+  // constructor(private router: Router) { }
+
+  // ngOnInit() {
   // }
 
-  startChat(item: any) {
+  // onSegmentChanged(event: any) {
+  //   console.log(event);
+  // }
 
-  }
+  // newChat() {
+  //   this.open_new_chat = true;
+  // }
 
-  getChat(item: any) {
-    this.router.navigate(['/', 'user','chats', 'chat', item?.id]);
-  }
+  // onWillDismiss(event: any) {}
+
+  // // cancel() {
+  // //   this.modal.dismiss();
+  // //   this.open_new_chat = false;
+  // // }
+
+  // startChat(item: any) {
+
+  // }
+
+  // getChat(item: any) {
+  //   this.router.navigate(['/', 'user','chats', 'chat', item?.id]);
+  // }
 
 }
