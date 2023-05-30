@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ReporteComponent } from 'src/app/components/reporte/reporte.component';
 import { EditarArticuloComponent } from 'src/app/components/editar-articulo/editar-articulo.component';
+import { ChatService } from 'src/app/services/chat.service';
 
 declare const google: any;
 
@@ -58,7 +59,8 @@ export class ItemPage implements OnInit {
     private alertController: AlertController,
     private http: HttpClient,
     private location: Location,
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private chatService: ChatService) { }
 
   ngOnInit() {
     this.usuarioActual = this.usuarioService.getUsuario();
@@ -95,6 +97,22 @@ export class ItemPage implements OnInit {
     });
 
   }
+
+  // ngAfterViewChecked() {
+  //   this.route.paramMap.subscribe(params => {
+  //     const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
+  //     this.articulosService.getArticuloById(id).then(async res => {
+  //       this.articulo = res;
+  //     })
+  //   });
+
+  //   this.usuarioService.getFavoritos().subscribe(res => {
+  //     this.articulosFavoritos = res.favoritos;
+
+  //     this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
+
+  //   });
+  // }
 
   favorito() {
     const headers = new HttpHeaders({
@@ -206,5 +224,29 @@ export class ItemPage implements OnInit {
 
     await modal.present();
   }
+
+  // crearChat(usuarioId?: string) {
+  //   if(usuarioId) {
+  //     this.chatService.createChat(usuarioId);
+  //     console.log(usuarioId);
+
+  //     this.ruta.navigate(['/', 'user','chats']);
+  //   }
+  // }
+
+  crearChat(usuarioId?: string) {
+    if (usuarioId) {
+      this.chatService.createChat(usuarioId).subscribe(
+        (response) => {
+          console.log('Chat creado:', response);
+          this.ruta.navigate(['/', 'user', 'chats']);
+        },
+        (error) => {
+          console.error('Error al crear el chat:', error);
+        }
+      );
+    }
+  }
+  
 
 }

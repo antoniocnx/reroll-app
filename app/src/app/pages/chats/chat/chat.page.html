@@ -5,13 +5,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <ion-list>
     <ion-item *ngFor="let mensaje of mensajes">
       <ion-label>{{ mensaje.texto }}</ion-label>
     </ion-item>
   </ion-list>
+</ion-content> -->
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let mensaje of mensajes" 
+    [ngClass]="{'sent-message': mensaje.usuario === chat.usuario1?._id ||  mensaje.usuario === chat.usuario2?._id, 
+                'received-message': mensaje.usuario === chat.usuario1?._id ||  mensaje.usuario === chat.usuario2?._id}">
+      <div class="message-bubble">{{ mensaje.texto }}</div>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
 
 <ion-footer>
   <ion-toolbar>

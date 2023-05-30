@@ -17,8 +17,8 @@
   <app-articulos *ngIf="articulos" [articulos]="articulos"></app-articulos>
 
   <!-- INFINITE SCROLL -->
-  <ion-infinite-scroll [disabled]="estadoInfiniteScroll" threshold="150px" (ionInfinite)="!estadoInfiniteScroll && scroll($event)">
+  <!-- <ion-infinite-scroll [disabled]="estadoInfiniteScroll" threshold="150px" (ionInfinite)="!estadoInfiniteScroll && scroll($event)">
     <ion-infinite-scroll-content loadingText="Cargando..." loadingSpinner="crescent"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll> -->
 
 </ion-content>

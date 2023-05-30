@@ -17,7 +17,9 @@ export class ReportesPage implements OnInit {
 
   reportes: Reporte[] = [];
 
-  articuloInfo: boolean = false;
+  //articuloInfo: boolean = false;
+  articuloInfo: { [key: string]: boolean } = {};
+
 
   constructor(private http: HttpClient,
     private router: Router,
@@ -131,8 +133,15 @@ export class ReportesPage implements OnInit {
     }
   }
 
-  mostrarArticulo() {
-    this.articuloInfo = !this.articuloInfo;
+  // mostrarArticulo() {
+  //   this.articuloInfo = !this.articuloInfo;
+  // }
+
+  mostrarArticulo(reporteId?: string) {
+    if(reporteId) {
+      this.articuloInfo[reporteId] = !this.articuloInfo[reporteId];
+    }
   }
+  
 
 }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from 'src/app/services/chat.service';
 import { Location } from '@angular/common';
-import { Chat } from 'src/app/interfaces/interfaces';
+import { Chat, Usuario } from 'src/app/interfaces/interfaces';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-chat',
@@ -11,6 +12,8 @@ import { Chat } from 'src/app/interfaces/interfaces';
 })
 export class ChatPage implements OnInit {
 
+  usuario: Usuario = {};
+
   chatId: string = '';
   chat: Chat = {};
   mensajes: any[] = []; // Ajusta el tipo de datos según tu modelo de mensajes
@@ -18,9 +21,12 @@ export class ChatPage implements OnInit {
 
   constructor(private route: ActivatedRoute,
       private chatService: ChatService,
-      private location: Location) { }
+      private location: Location,
+      private usuarioService: UsuarioService) { }
 
   ngOnInit() {
+    this.usuario = this.usuarioService.getUsuario();
+
     const chatId = this.route.snapshot.paramMap.get('id');
     console.log(chatId);
     if (chatId !== null) {
@@ -31,7 +37,13 @@ export class ChatPage implements OnInit {
         this.chat = res;
         console.log(res);
       });
+
+      this.chatService.unirseAlChat(chatId);
+      this.chatService.recibirMensaje().subscribe(async mensaje => {
+        this.mensajes.push(mensaje);
+      });
     }
+
   }
 
   getMensajes() {
@@ -45,38 +57,27 @@ export class ChatPage implements OnInit {
     );
   }
 
+  // enviarMensaje() {
+  //   if (this.nuevoMensaje) {
+  //     this.chatService.enviarMensaje(this.chatId, this.nuevoMensaje).subscribe(
+  //       (response: any) => {
+  //         this.nuevoMensaje = '';
+  //         this.getMensajes();
+  //       },
+  //       (error) => {
+  //         console.error('Error al enviar el mensaje', error);
+  //       }
+  //     );
+  //   }
+  // }
+
   enviarMensaje() {
-    if (this.nuevoMensaje) {
-      this.chatService.enviarMensaje(this.chatId, this.nuevoMensaje).subscribe(
-        (response: any) => {
-          this.nuevoMensaje = '';
-          this.getMensajes();
-        },
-        (error) => {
-          console.error('Error al enviar el mensaje', error);
-        }
-      );
-    }
+    this.chatService.enviarMensaje(this.usuario._id!, this.nuevoMensaje, this.chatId);
+    this.nuevoMensaje = '';
   }
 
   goBack() {
     this.location.back();
   }
-
-  // name: string = 'Chat';
-  // message: string = '';
-  // isLoading = false;
-  // currentUserId = 1;
-  // chats = [
-  //   {id: 1, sender: 1, message: 'Hola!'},
-  //   {id: 2, sender: 2, message: 'Lo primero de todo, cómo están los máquinas?'},
-  // ];
-
-  // constructor() { }
-
-  // ngOnInit() {
-  // }
-
-  // sendMessage() {}
 
 }

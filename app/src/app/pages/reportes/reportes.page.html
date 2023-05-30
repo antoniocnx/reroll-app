@@ -43,10 +43,10 @@
             <ion-card-subtitle>{{ reporte.motivo }}</ion-card-subtitle>
           </ion-card-header>
 
-          <ion-button expand="full" color="tertiary" (click)="mostrarArticulo()">
+          <ion-button expand="full" color="tertiary" (click)="mostrarArticulo(reporte._id)">
             Ver artículo
           </ion-button>
-          <div *ngIf="articuloInfo">
+          <div *ngIf="reporte._id && articuloInfo[reporte._id]">
               <ion-card-content>
             <swiper [navigation]="true" [pagination]="{ clickable: true }">
               <ng-container *ngIf="reporte.articulo && reporte.articulo.galeria">
@@ -87,13 +87,22 @@
             </ion-item>
 
             <ion-item lines="none">
+              <ion-grid>
               <ion-text>Categoría: &nbsp;</ion-text>
               <ion-text color="dark">{{ reporte.articulo?.categoria }}</ion-text>
+            </ion-grid>
             </ion-item>
-
+        
             <ion-item lines="none">
-              <ion-text>Descripción: &nbsp;</ion-text>
-              <ion-text color="dark">{{ reporte.articulo?.descripcion }}</ion-text>
+              <ion-grid>
+               <ion-row>  <!-- class="block-descripcion" -->
+                    <ion-label>Descripción:</ion-label>
+                </ion-row>
+                <br>
+                <ion-row class="ion-row-start">
+                    <ion-text color="dark">{{ reporte.articulo?.descripcion }}</ion-text>
+                </ion-row>
+              </ion-grid>
             </ion-item>
 
             <ion-item lines="none">

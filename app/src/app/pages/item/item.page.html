@@ -47,7 +47,7 @@
     </ion-item>
 
     <ion-item lines="none">
-      <ion-button shape="round" size="default" fill="clear" slot="end" color="light">
+      <ion-button *ngIf="usuarioActual._id !== articulo.usuario?._id" shape="round" size="default" fill="clear" slot="end" color="light" (click)="crearChat(articulo.usuario?._id)">
         <ion-icon slot="icon-only" name="chatbubble" color="dark"></ion-icon>
       </ion-button>
       <!-- <a [routerLink]="['/user', articulo.usuario?._id]"> -->

@@ -24,3 +24,20 @@ ion-footer ion-toolbar ion-buttons {
     padding-left: 7px;
     margin-right: 0px;
 }
+
+.sent-message {
+    text-align: right;
+    background-color: #DCF8C6;
+  }
+  
+  .received-message {
+    text-align: left;
+    background-color: #E8E8E8;
+  }
+  
+  .message-bubble {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
