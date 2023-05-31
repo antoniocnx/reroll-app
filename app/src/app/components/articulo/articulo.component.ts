@@ -63,13 +63,15 @@ export class ArticuloComponent implements OnInit {
     this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
       (res: any) => {
         this.esFavorito = !this.esFavorito;
+        // Emitir evento para que en artículos se llame a getArticulos.
+        // Con eventEmitter en articulos.service.ts
       },
       (err: any) => {
         console.error(err);
       }
     );
 
-    this.esFavorito != this.esFavorito;
+    // this.esFavorito != this.esFavorito;
 
   }
   

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { NavController, AlertController, IonInput } from '@ionic/angular';
 import { Administrador } from 'src/app/interfaces/interfaces';
 import { AdministradorService } from 'src/app/services/administrador.service';
@@ -31,9 +31,9 @@ export class ActualizaPerfilAdminPage implements OnInit {
   formUpdate: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required, this.noScriptValidator]],
     apellidos: ['', [Validators.required, this.noScriptValidator]],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
-    password: ['', [Validators.minLength(6), this.noScriptValidator]],
-    nacimiento: ['', [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
+    email: ['', [Validators.required, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.minLength(8), this.passwordCompleja(), this.noScriptValidator]],
+    nacimiento: ['', [Validators.required, this.edadPermitida, this.noScriptValidator]],
     sexo: ['', [Validators.required, this.noScriptValidator]],
     direccion: ['', [Validators.required, this.noScriptValidator]],
     ciudad: ['', [Validators.required, this.noScriptValidator]],
@@ -215,28 +215,10 @@ export class ActualizaPerfilAdminPage implements OnInit {
 
   emailAdminNoValido(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const email = control.value;
-      if (email && !(email.toLowerCase().endsWith('@admin.com'))) {
-        return { 'emailNoPermitido': true };
-      }
-      return null;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailRegex.test(control.value);
+      return valid ? null : { emailInvalido: true };
     };
-  }
-
-  mayorDeEdad(control: AbstractControl): { [key: string]: boolean } | null {
-    const fechaNacimiento = new Date(control.value);
-    const hoy = new Date();
-    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-
-    if (hoy.getMonth() < fechaNacimiento.getMonth() || (hoy.getMonth() == fechaNacimiento.getMonth() && hoy.getDate() < fechaNacimiento.getDate())) {
-      edad--;
-    }
-
-    if (edad < 18) {
-      return { 'menorDeEdad': true };
-    }
-
-    return null;
   }
 
   async geolocalizar() {
@@ -308,6 +290,50 @@ export class ActualizaPerfilAdminPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  // Complejidad de la contraseña
+  passwordCompleja() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      // Verificar si la contraseña contiene al menos una mayúscula, un número y un símbolo
+      const tieneMayuscula = /[A-Z]/.test(value);
+      const tieneNumero = /[0-9]/.test(value);
+      const tieneSimbolo = /[.!@#$%^&*_\-]/.test(value);
+
+      if (!tieneMayuscula || !tieneNumero || !tieneSimbolo) {
+        return { passwordCompleja: true };
+      }
+
+      return null;
+    };
+  }
+
+  // Comprueba que la edad de registro esté entre 18 y 120 años
+  edadPermitida(control: AbstractControl) {
+    const fechaNacimiento = new Date(control.value);
+    const hoy = new Date();
+    const edadMinima = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+    const edadMaxima = new Date(hoy.getFullYear() - 120, hoy.getMonth(), hoy.getDate());
+
+    if (fechaNacimiento > edadMinima) {
+      return { menorDeEdad: true };
+    }
+
+    if (fechaNacimiento < edadMaxima) {
+      return { edadMaxima: true };
+    }
+
+    return null;
+  }
+
+  // Asegura que los años tengan 4 cifras
+  getMaxDate() {
+    const currentDate = new Date();
+    const maxYear = currentDate.getFullYear() + 1;
+    const maxDate = new Date(maxYear, 0, 1).toISOString().split('T')[0];
+    return maxDate;
   }
 
 }

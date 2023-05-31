@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { IonInput, NavController } from '@ionic/angular';
 import { AdministradorService } from 'src/app/services/administrador.service';
 import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.service';
@@ -25,11 +25,11 @@ export class SignupAdminPage implements OnInit {
   //
 
   formSignup: FormGroup = this.formBuilder.group({
-    nombre: ['',[Validators.required, this.noScriptValidator]],
+    nombre: ['', [Validators.required, this.noScriptValidator]],
     apellidos: ['', [Validators.required, this.noScriptValidator]],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
-    password: ['', [Validators.required, Validators.minLength(6), this.noScriptValidator]],
-    nacimiento: [(new Date('2000-01-01')), [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
+    email: ['', [Validators.required, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.required, Validators.minLength(8), this.passwordCompleja(), this.noScriptValidator]],
+    nacimiento: ['', [Validators.required, this.edadPermitida, this.noScriptValidator]],
     sexo: ['', [Validators.required, this.noScriptValidator]],
     direccion: ['', [Validators.required, this.noScriptValidator]],
     ciudad: ['', [Validators.required, this.noScriptValidator]],
@@ -67,6 +67,24 @@ export class SignupAdminPage implements OnInit {
 
   ngOnInit() { }
 
+  // Complejidad de la contraseña
+  passwordCompleja() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      // Verificar si la contraseña contiene al menos una mayúscula, un número y un símbolo
+      const tieneMayuscula = /[A-Z]/.test(value);
+      const tieneNumero = /[0-9]/.test(value);
+      const tieneSimbolo = /[.!@#$%^&*_\-]/.test(value);
+
+      if (!tieneMayuscula || !tieneNumero || !tieneSimbolo) {
+        return { passwordCompleja: true };
+      }
+
+      return null;
+    };
+  }
+
   // Verificar si el valor contiene scripts maliciosos
   noScriptValidator(control: FormControl) {
     const value = control.value;
@@ -80,6 +98,14 @@ export class SignupAdminPage implements OnInit {
     // }
 
     return null;
+  }
+
+  // Asegura que los años tengan 4 cifras
+  getMaxDate() {
+    const currentDate = new Date();
+    const maxYear = currentDate.getFullYear() + 1;
+    const maxDate = new Date(maxYear, 0, 1).toISOString().split('T')[0];
+    return maxDate;
   }
 
   // Autocompletado de la dirección
@@ -212,25 +238,24 @@ export class SignupAdminPage implements OnInit {
 
   emailAdminNoValido(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const email = control.value;
-      if (email && !(email.toLowerCase().endsWith('@admin.com'))) {
-        return { 'emailNoPermitido': true };
-      }
-      return null;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailRegex.test(control.value);
+      return valid ? null : { emailInvalido: true };
     };
   }
 
-  mayorDeEdad(control: AbstractControl): { [key: string]: boolean } | null {
+  edadPermitida(control: AbstractControl) {
     const fechaNacimiento = new Date(control.value);
     const hoy = new Date();
-    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const edadMinima = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+    const edadMaxima = new Date(hoy.getFullYear() - 120, hoy.getMonth(), hoy.getDate());
 
-    if (hoy.getMonth() < fechaNacimiento.getMonth() || (hoy.getMonth() == fechaNacimiento.getMonth() && hoy.getDate() < fechaNacimiento.getDate())) {
-      edad--;
+    if (fechaNacimiento > edadMinima) {
+      return { menorDeEdad: true };
     }
 
-    if (edad < 18) {
-      return { 'menorDeEdad': true };
+    if (fechaNacimiento < edadMaxima) {
+      return { edadMaxima: true };
     }
 
     return null;

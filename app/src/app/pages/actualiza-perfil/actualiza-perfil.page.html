@@ -64,27 +64,22 @@
               </ion-icon>
               <ion-input type="password" placeholder="Contraseña" class="form-control" formControlName="password"
                 [type]="isTypePassword ? 'password' : 'text'" [clearInput]="true"></ion-input>
-              <!-- <ion-input 
-                formControlName="password" 
-                [type]="isTypePassword ? 'password' : 'text'"
-                placeholder="Enter Password">
-              </ion-input> -->
             </ion-item>
             <ion-text class="ion-text-left" color="danger"
               *ngIf="!formUpdate.get('password')?.valid && formUpdate.get('password')?.touched">
               <p class="error" *ngIf="formUpdate.get('password')?.invalid || formUpdate.get('password')?.dirty">
-                * Por favor, introduce una contraseña de al menos 6 caracteres
+                * La contraseña debe tener al menos 8 caracteres y contener una mayúscula, un número y un símbolo
               </p>
             </ion-text>
 
             <ion-item class="ion-align-items-center">
               <ion-label class="label-form" class="label-form-fecha">Fecha de nacimiento:</ion-label>
               <ion-input type="date" placeholder="Fecha de nacimiento" class="form-control"
-                formControlName="nacimiento"></ion-input>
+                formControlName="nacimiento" max="{{ getMaxDate() }}"></ion-input>
             </ion-item>
             <ion-text class="ion-text-left" color="danger"
               *ngIf="!formUpdate.get('nacimiento')?.valid && formUpdate.get('nacimiento')?.touched">
-              <p class="error">* Es obligatorio tener más de 18 años</p>
+              <p class="error">* Es obligatorio tener entre 18 y 120 años para registrarse</p>
             </ion-text>
 
             <ion-item>

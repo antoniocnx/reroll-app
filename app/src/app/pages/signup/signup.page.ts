@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -30,9 +30,9 @@ export class SignupPage implements OnInit {
   formSignup: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required, this.noScriptValidator]],
     apellidos: ['', [Validators.required, this.noScriptValidator]],
-    email: ['', [Validators.required, Validators.email, this.emailAdminNoValido(), this.noScriptValidator]],
-    password: ['', [Validators.required, Validators.minLength(6), this.noScriptValidator]],
-    nacimiento: [(new Date('2000-01-01')), [Validators.required, this.mayorDeEdad, this.noScriptValidator]],
+    email: ['', [Validators.required, this.emailAdminNoValido(), this.noScriptValidator]],
+    password: ['', [Validators.required, Validators.minLength(8), this.passwordCompleja(), this.noScriptValidator]],
+    nacimiento: ['', [Validators.required, this.edadPermitida, this.noScriptValidator]],
     sexo: ['', Validators.required],
     direccion: ['', [Validators.required, this.noScriptValidator]],
     ciudad: ['', [Validators.required, this.noScriptValidator]],
@@ -77,6 +77,24 @@ export class SignupPage implements OnInit {
     }
   }
 
+  // Complejidad de la contraseña
+  passwordCompleja() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      // Verificar si la contraseña contiene al menos una mayúscula, un número y un símbolo
+      const tieneMayuscula = /[A-Z]/.test(value);
+      const tieneNumero = /[0-9]/.test(value);
+      const tieneSimbolo = /[.!@#$%^&*_\-]/.test(value);
+
+      if (!tieneMayuscula || !tieneNumero || !tieneSimbolo) {
+        return { passwordCompleja: true };
+      }
+
+      return null;
+    };
+  }
+
   // Verificar si el valor contiene scripts maliciosos
   noScriptValidator(control: FormControl) {
     const value = control.value;
@@ -92,8 +110,15 @@ export class SignupPage implements OnInit {
     return null;
   }
 
-  // Autocompletado de la dirección
+  // Asegura que los años tengan 4 cifras
+  getMaxDate() {
+    const currentDate = new Date();
+    const maxYear = currentDate.getFullYear() + 1;
+    const maxDate = new Date(maxYear, 0, 1).toISOString().split('T')[0];
+    return maxDate;
+  }
 
+  // Autocompletado de la dirección
   ionViewDidEnter() {
     // Calle
     this.autocompleteAddress.getInputElement().then((res: any) => {
@@ -207,29 +232,53 @@ export class SignupPage implements OnInit {
 
   emailAdminNoValido(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      const email = control.value;
-      if (email && email.toLowerCase().endsWith('@admin.com')) {
-        return { 'emailNoPermitido': true };
-      }
-      return null;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailRegex.test(control.value);
+      return valid ? null : { emailInvalido: true };
     };
   }
 
-  mayorDeEdad(control: AbstractControl): { [key: string]: boolean } | null {
+  // Comprueba que la edad de registro esté entre 18 y 120 años
+  edadPermitida(control: AbstractControl) {
     const fechaNacimiento = new Date(control.value);
     const hoy = new Date();
-    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const edadMinima = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+    const edadMaxima = new Date(hoy.getFullYear() - 120, hoy.getMonth(), hoy.getDate());
 
-    if (hoy.getMonth() < fechaNacimiento.getMonth() || (hoy.getMonth() == fechaNacimiento.getMonth() && hoy.getDate() < fechaNacimiento.getDate())) {
-      edad--;
+    if (fechaNacimiento > edadMinima) {
+      return { menorDeEdad: true };
     }
 
-    if (edad < 18) {
-      return { 'menorDeEdad': true };
+    if (fechaNacimiento < edadMaxima) {
+      return { edadMaxima: true };
     }
 
     return null;
   }
+
+  // mayorDeEdad(control: AbstractControl) {
+  //   const fechaNacimiento = new Date(control.value);
+  //   const hoy = new Date();
+  //   const edadMinima = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+
+  //   if (fechaNacimiento > edadMinima) {
+  //     return { menorDeEdad: true };
+  //   }
+
+  //   return null;
+  // }
+
+  // edadMaxima(control: AbstractControl) {
+  //   const fechaNacimiento = new Date(control.value);
+  //   const hoy = new Date();
+  //   const edadMaxima = new Date(hoy.getFullYear() - 120, hoy.getMonth(), hoy.getDate());
+
+  //   if (fechaNacimiento < edadMaxima) {
+  //     return { edadMaxima: true };
+  //   }
+
+  //   return null;
+  // }
 
   onChange() {
     this.isTypePassword = !this.isTypePassword;
