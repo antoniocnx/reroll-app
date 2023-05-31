@@ -35,13 +35,34 @@
     <ion-row>
       <ion-col size="12" sizeLg="3" sizeMd="4" sizeSm="6" sizeXs="12" *ngFor="let reporte of reportes">
         <ion-card>
-          <ion-card-header class="card-header">
+          <!-- <ion-card-header class="card-header">
             <ion-button fill="clear" color="dark" class="card-header-button" (click)="eliminarReporte(reporte._id)">
               <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-button>
             <ion-card-title>Reportado por: {{ reporte.usuario?.nombre }} {{ reporte.usuario?.apellidos }}</ion-card-title>
             <ion-card-subtitle>{{ reporte.motivo }}</ion-card-subtitle>
+          </ion-card-header> -->
+
+          <ion-card-header class="card-header">
+            <ion-row>
+              <ion-col size="12" class="ion-text-end">
+                <ion-button fill="clear" color="dark" (click)="eliminarReporte(reporte._id)">
+                  <ion-icon slot="icon-only" name="close"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <ion-card-title>Reportado por: {{ reporte.usuario?.nombre }} {{ reporte.usuario?.apellidos }}</ion-card-title>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <ion-card-subtitle>{{ reporte.motivo }}</ion-card-subtitle>
+              </ion-col>
+            </ion-row>
           </ion-card-header>
+          
 
           <ion-button expand="full" color="tertiary" (click)="mostrarArticulo(reporte._id)">
             Ver artículo
