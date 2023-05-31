@@ -225,28 +225,54 @@ export class ItemPage implements OnInit {
     await modal.present();
   }
 
-  // crearChat(usuarioId?: string) {
-  //   if(usuarioId) {
-  //     this.chatService.createChat(usuarioId);
-  //     console.log(usuarioId);
-
-  //     this.ruta.navigate(['/', 'user','chats']);
+  // crearChat(articuloId?: string, usuarioId?: string) {
+  //   if (articuloId && usuarioId) {
+  //     this.chatService.createChat(articuloId, usuarioId).subscribe(
+  //       (response: any) => {
+  //         const chatId = response.chat._id;
+  //         console.log('Chat creado:', response);
+  //         console.log('Chat ID:', chatId);
+  //         this.ruta.navigate(['/', 'user','chats', 'chat', chatId]);
+  //       },
+  //       (error) => {
+  //         console.error('Error al crear el chat:', error);
+  //       }
+  //     );
   //   }
   // }
 
-  crearChat(usuarioId?: string) {
-    if (usuarioId) {
-      this.chatService.createChat(usuarioId).subscribe(
-        (response) => {
-          console.log('Chat creado:', response);
-          this.ruta.navigate(['/', 'user', 'chats']);
+  crearChat(articuloId?: string, usuarioId?: string) {
+    if (articuloId && usuarioId) {
+      // Comprobar si existe un chat entre los usuarios y el artículo
+      this.chatService.existeChat(articuloId, this.usuarioActual._id!, usuarioId).subscribe(
+        (response: any) => {
+          const existeChat = response.existeChat;
+  
+          if (existeChat) {
+            // Si existe el chat, abrir la sala de chat existente
+            this.ruta.navigate(['/', 'user', 'chats', 'chat', existeChat._id]);
+          } else {
+            // Si no existe el chat, crear uno nuevo
+            this.chatService.createChat(articuloId, usuarioId).subscribe(
+              (response: any) => {
+                const chatId = response.chat._id;
+                console.log('Chat creado:', response);
+                console.log('Chat ID:', chatId);
+                this.ruta.navigate(['/', 'user', 'chats', 'chat', chatId]);
+              },
+              (error) => {
+                console.error('Error al crear el chat:', error);
+              }
+            );
+          }
         },
         (error) => {
-          console.error('Error al crear el chat:', error);
+          console.error('Error al comprobar la existencia del chat:', error);
         }
       );
     }
   }
+  
   
 
 }

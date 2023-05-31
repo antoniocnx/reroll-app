@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UsuarioService } from './usuario.service';
@@ -24,15 +24,15 @@ export class ChatService {
     return this.http.get(`${ url }/chat/${userId}`);
   }
 
-  createChat(userId: string) {
+  createChat(articuloId: string, userId: string) {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
     
     const options = { headers: headers };
 
-    return this.http.post(`${url}/chat/${userId}`, {}, options);
-    //return this.http.post(`${ url }/chat/${userId}`, { headers });
+    return this.http.post(`${url}/chat/${articuloId}/${userId}`, {}, options);
+
   }
 
   // enviarMensaje(chatId: string, texto: string) {
@@ -66,6 +66,10 @@ export class ChatService {
         observer.next(mensaje);
       })
     })
+  }
+
+  existeChat(articuloId: string, usuario1Id: string, usuario2Id: string) {
+    return this.http.get(`${url}/chat/check/${articuloId}/${usuario1Id}/${usuario2Id}`);
   }
 
 }

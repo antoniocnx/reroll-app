@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChatService } from 'src/app/services/chat.service';
 import { Location } from '@angular/common';
-import { Chat, Usuario } from 'src/app/interfaces/interfaces';
+import { Articulo, Chat, Usuario } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { ArticulosService } from 'src/app/services/articulos.service';
 
 @Component({
   selector: 'app-chat',
@@ -13,16 +14,20 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class ChatPage implements OnInit {
 
   usuario: Usuario = {};
+  articulo: Articulo = {};
 
   chatId: string = '';
   chat: Chat = {};
   mensajes: any[] = []; // Ajusta el tipo de datos según tu modelo de mensajes
   nuevoMensaje: string = '';
 
+  mostrarTabs = false; // Variable para controlar la visibilidad de las tabs
+
   constructor(private route: ActivatedRoute,
-      private chatService: ChatService,
-      private location: Location,
-      private usuarioService: UsuarioService) { }
+    private chatService: ChatService,
+    private usuarioService: UsuarioService,
+    private ruta: Router,
+    private articulosService: ArticulosService) { }
 
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
@@ -33,9 +38,13 @@ export class ChatPage implements OnInit {
       this.chatId = chatId;
       console.log(chatId);
       this.getMensajes();
-      this.chatService.getChatInfo(chatId).subscribe(res => {
+      this.chatService.getChatInfo(chatId).subscribe((res: Chat) => {
         this.chat = res;
-        console.log(res);
+        console.log('CHAT', res);
+        if (res) {
+          res.articulo = this.articulo;
+          console.log('ARTICULO', res.articulo)
+        }
       });
 
       this.chatService.unirseAlChat(chatId);
@@ -57,6 +66,11 @@ export class ChatPage implements OnInit {
     );
   }
 
+  enviarMensaje() {
+    this.chatService.enviarMensaje(this.usuario._id!, this.nuevoMensaje, this.chatId);
+    this.nuevoMensaje = '';
+  }
+
   // enviarMensaje() {
   //   if (this.nuevoMensaje) {
   //     this.chatService.enviarMensaje(this.chatId, this.nuevoMensaje).subscribe(
@@ -71,13 +85,8 @@ export class ChatPage implements OnInit {
   //   }
   // }
 
-  enviarMensaje() {
-    this.chatService.enviarMensaje(this.usuario._id!, this.nuevoMensaje, this.chatId);
-    this.nuevoMensaje = '';
-  }
-
   goBack() {
-    this.location.back();
+    this.ruta.navigate(['/', 'user', 'chats']);
   }
 
 }

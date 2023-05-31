@@ -11,6 +11,8 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class ChatPage implements OnInit {
 
+  chat: Chat = {};
+
   chats: Chat[] = [];
 
   usuario: Usuario = {};
@@ -21,6 +23,8 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     this.getChats();
+
+    // this.obtenerChatInfo();
   }
 
   getChats() {
@@ -36,6 +40,20 @@ export class ChatPage implements OnInit {
         }
       );
     }
+  }
+
+  obtenerChatInfo(chatId: string) {
+    this.chatService.getChatInfo(chatId).subscribe(
+      (res: any) => {
+        // Manejar la respuesta del chat
+        this.chat = res.chat;
+        // ...
+      },
+      (error: any) => {
+        console.error(error);
+        // Manejar el error al obtener la información del chat
+      }
+    );
   }
 
   irAChat(chatId?: string) {
