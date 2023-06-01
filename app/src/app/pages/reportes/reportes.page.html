@@ -53,7 +53,8 @@
             </ion-row>
             <ion-row>
               <ion-col size="12">
-                <ion-card-title>Reportado por: {{ reporte.usuario?.nombre }} {{ reporte.usuario?.apellidos }}</ion-card-title>
+                <ion-card-title>Reportado por: {{ reporte.usuario?.nombre }} {{ reporte.usuario?.apellidos
+                  }}</ion-card-title>
               </ion-col>
             </ion-row>
             <ion-row>
@@ -62,80 +63,81 @@
               </ion-col>
             </ion-row>
           </ion-card-header>
-          
+
 
           <ion-button expand="full" color="tertiary" (click)="mostrarArticulo(reporte._id)">
             Ver artículo
           </ion-button>
           <div *ngIf="reporte._id && articuloInfo[reporte._id]">
-              <ion-card-content>
-            <swiper [navigation]="true" [pagination]="{ clickable: true }">
-              <ng-container *ngIf="reporte.articulo && reporte.articulo.galeria">
-                <ng-template swiperSlide *ngFor="let imagen of reporte.articulo.galeria">
-                  <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
-                </ng-template>
-              </ng-container>
-            </swiper>
+            <ion-card-content>
+              <swiper [navigation]="true" [pagination]="{ clickable: true }">
+                <ng-container *ngIf="reporte.articulo && reporte.articulo.galeria">
+                  <ng-template swiperSlide *ngFor="let imagen of reporte.articulo.galeria">
+                    <ion-img [src]="imagen" alt="Imagen del artículo"></ion-img>
+                  </ng-template>
+                </ng-container>
+              </swiper>
 
-            <ion-item [color]="reporte.articulo?.estado === 'En venta' ? 'success' : 
+              <ion-item [color]="reporte.articulo?.estado === 'En venta' ? 'success' : 
                                   (reporte.articulo?.estado === 'Reservado' ? 'warning' : 
                                   (reporte.articulo?.estado === 'Vendido' ? 'danger' : ''))">
-              <ion-text class="texto-estado">{{ reporte.articulo?.estado }}</ion-text>
-            </ion-item>
+                <ion-text class="texto-estado">{{ reporte.articulo?.estado }}</ion-text>
+              </ion-item>
 
-            <ion-item lines="none">
+              <ion-item lines="none">
 
-              <ion-text color="dark">
-                <h1>{{ reporte.articulo?.precio }}€</h1>
-              </ion-text>
-            </ion-item>
-
-            <ion-item lines="none">
-              <ion-text color="dark">
-                <h4>{{ reporte.articulo?.nombre }}</h4>
-              </ion-text>
-            </ion-item>
-
-            <ion-item lines="none">
-              <ion-avatar slot="start">
-                <img src="/assets/avatars/{{ reporte.articulo?.usuario?.avatar }}">
-              </ion-avatar>
-              <ion-label class="usuarioArticulo">
-                <ion-text>
-                  <h2>{{ reporte.articulo?.usuario?.nombre }} {{ reporte.articulo?.usuario?.apellidos }}</h2>
+                <ion-text color="dark">
+                  <h1>{{ reporte.articulo?.precio }}€</h1>
                 </ion-text>
-              </ion-label>
-            </ion-item>
+              </ion-item>
 
-            <ion-item lines="none">
-              <ion-grid>
-              <ion-text>Categoría: &nbsp;</ion-text>
-              <ion-text color="dark">{{ reporte.articulo?.categoria }}</ion-text>
-            </ion-grid>
-            </ion-item>
-        
-            <ion-item lines="none">
-              <ion-grid>
-               <ion-row>  <!-- class="block-descripcion" -->
+              <ion-item lines="none">
+                <ion-text color="dark">
+                  <h4>{{ reporte.articulo?.nombre }}</h4>
+                </ion-text>
+              </ion-item>
+
+              <ion-item lines="none">
+                <ion-avatar slot="start">
+                  <img src="/assets/avatars/{{ reporte.articulo?.usuario?.avatar }}">
+                </ion-avatar>
+                <ion-label class="usuarioArticulo">
+                  <ion-text>
+                    <h2>{{ reporte.articulo?.usuario?.nombre }} {{ reporte.articulo?.usuario?.apellidos }}</h2>
+                  </ion-text>
+                </ion-label>
+              </ion-item>
+
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-text>Categoría: &nbsp;</ion-text>
+                  <ion-text color="dark">{{ reporte.articulo?.categoria }}</ion-text>
+                </ion-grid>
+              </ion-item>
+
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-row> <!-- class="block-descripcion" -->
                     <ion-label>Descripción:</ion-label>
-                </ion-row>
-                <br>
-                <ion-row class="ion-row-start">
+                  </ion-row>
+                  <br>
+                  <ion-row class="ion-row-start">
                     <ion-text color="dark">{{ reporte.articulo?.descripcion }}</ion-text>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
 
-            <ion-item lines="none">
-              <ion-text>Envío: &nbsp;</ion-text>
-              <ion-text
-                [ngClass]="{'domicilio': reporte.articulo?.envio === 'Domicilio', 'en-mano': reporte.articulo?.envio === 'En mano'}">{{
-                reporte.articulo?.envio }}</ion-text>
-            </ion-item>
-          </ion-card-content>
-          
-          <ion-button expand="full" color="danger" (click)="eliminarArticulo(reporte.articulo?._id)">Eliminar artículo</ion-button>
-        </div>
+              <ion-item lines="none">
+                <ion-text>Envío: &nbsp;</ion-text>
+                <ion-text
+                  [ngClass]="{'domicilio': reporte.articulo?.envio === 'Domicilio', 'en-mano': reporte.articulo?.envio === 'En mano'}">{{
+                  reporte.articulo?.envio }}</ion-text>
+              </ion-item>
+            </ion-card-content>
+
+            <ion-button expand="full" color="danger" (click)="eliminarArticulo(reporte.articulo?._id)">Eliminar
+              artículo</ion-button>
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>

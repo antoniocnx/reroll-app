@@ -31,19 +31,17 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
-    console.log('USUARIO ACTUAL', this.usuario);
 
     const chatId = this.route.snapshot.paramMap.get('id');
-    console.log(chatId);
+
     if (chatId !== null) {
       this.chatId = chatId;
-      console.log(chatId);
+  
       this.getMensajes();
       this.chatService.getChatInfo(chatId).then(res => {
         this.chat = res;
-        console.log('CHAT', res);
         this.articulo = res.articulo;
-        console.log('ARTÍCULO', res.articulo);
+
         if (this.chat.usuario1?._id === this.usuario._id) {
           this.yoUsuario = this.chat.usuario1;
           this.otroUsuario = this.chat.usuario2;
@@ -79,6 +77,10 @@ export class ChatPage implements OnInit {
 
   goBack() {
     this.ruta.navigate(['/', 'user', 'chats']);
+  }
+
+  irAlArticulo(id?: string) {
+    this.ruta.navigate(['/user/item/' + id]);
   }
 
 }

@@ -9,12 +9,12 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let chat of chats" (click)="irAChat(chat._id)">
-      <ion-avatar slot="start">
-        <!-- <img src="/assets/avatars/{{ getUsuarioAvatar(chat) }}"> -->
-        <ion-img *ngIf="chat.articulo" [src]="chat.articulo.galeria?.[0]"></ion-img>
-      </ion-avatar>
+      <div class="avatar-container">
+        <ion-avatar slot="start">
+          <ion-img class="square-avatar" *ngIf="chat.articulo" [src]="chat.articulo.galeria?.[0]"></ion-img>
+        </ion-avatar>
+      </div>
       <ion-label>{{ chat.articulo?.nombre }}</ion-label>
-      <!-- <ion-label>{{ getUsuarioNombre(chat) }} {{ getUsuarioApellidos(chat) }}</ion-label> -->
     </ion-item>
   </ion-list>
 </ion-content>

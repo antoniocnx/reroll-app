@@ -1,21 +1,16 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar color="tertiary">
-    <ion-title>{{ articulo.nombre }}</ion-title>
-    <ion-back-button defaultHref="" (click)="goBack()" slot="start"></ion-back-button>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
     <ion-grid>
       <ion-row>
+
         <ion-col size="1">
           <ion-back-button defaultHref="" (click)="goBack()"></ion-back-button>
         </ion-col>
-        <ion-col size="11">
+
+        <ion-col size="9">
           <ion-row>
             <ion-col>
-              <ion-title>{{ articulo.nombre }} - {{ articulo.precio }}€</ion-title>
+              <ion-title class="posicion-title">{{ articulo.nombre }} - {{ articulo.precio }}€</ion-title>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -24,19 +19,40 @@
             </ion-col>
           </ion-row>
         </ion-col>
+
+        <ion-col size="1">
+          <ion-button fill="clear" (click)="irAlArticulo(articulo._id)">
+            <ion-icon slot="icon-only" name="eye" class="color-icono"></ion-icon>
+          </ion-button>
+        </ion-col>
+
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content>
+<!-- <ion-content>
   <ion-list>
-    <ion-item *ngFor="let mensaje of mensajes">
-      <ion-label>{{ mensaje.texto }}</ion-label>
+    <ion-item *ngFor="let mensaje of mensajes" lines="none" class="chat-message" [ngClass]="{'enviado': mensaje.usuario === yoUsuario?._id, 'recibido': mensaje.usuario === otroUsuario?._id}">
+      <!-- <ion-label>{{ mensaje.texto }}</ion-label> ->
+      <div class="message-bubble">
+        <p>{{ mensaje.texto }}</p>
+      </div>
     </ion-item>
   </ion-list>
+</ion-content> -->
+
+<ion-content>
+  <div class="chat-container">
+    <div *ngFor="let mensaje of mensajes" class="chat-message" [ngClass]="{'enviado': mensaje.usuario === yoUsuario?._id, 'recibido': mensaje.usuario === otroUsuario?._id}">
+      <div class="message-bubble">
+        <p>{{ mensaje.texto }}</p>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
 
 <ion-footer>
   <ion-toolbar>
@@ -46,50 +62,3 @@
     </ion-fab-button>
   </ion-toolbar>
 </ion-footer>
-
-<!-- <ion-footer>
-  <ion-toolbar>
-    <ion-input [(ngModel)]="nuevoMensaje" placeholder="Escribe un mensaje"></ion-input>
-    <ion-button expand="block" (click)="enviarMensaje()">Enviar</ion-button>
-  </ion-toolbar>
-</ion-footer> -->
-
-
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar color="tertiary">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/user/chats"></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{name}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-  <ion-list 
-    lines="none" 
-    *ngIf="(chats) as chat$">
-    <ion-item-group class="chats-group" *ngFor="let chat of chats">
-      <app-chat-box [chat]="chat" [current_user_id]="currentUserId"></app-chat-box>
-    </ion-item-group>
-  </ion-list>
-
-</ion-content> -->
-
-<!-- <ion-footer>
-  <ion-toolbar color="light">
-    <ion-textarea 
-      autoGrow 
-      rows="1" 
-      placeholder="Mensaje" >
-    </ion-textarea>
-    <ion-buttons slot="end">
-      <ion-fab-button size="small" color="tertiary" (click)="sendMessage()">
-        <ion-icon name="send"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button size="small" color="primary">
-        <ion-spinner name="crescent" color="white"></ion-spinner>
-      </ion-fab-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer> -->
