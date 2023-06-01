@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UsuarioService } from './usuario.service';
 import { Socket, io } from 'socket.io-client';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 
 const url = environment.heroku_url;
 // const url = environment.url;
@@ -48,8 +48,9 @@ export class ChatService {
     return this.http.get(`${ url }/chat/${chatId}/mensajes`);
   }
 
-  getChatInfo(chatId: string) {
-    return this.http.get(`${ url }/chat/${chatId}/info`);
+  async getChatInfo(chatId: string) {
+    const res: any = await firstValueFrom(this.http.get(`${ url }/chat/${chatId}/info`));
+    return res.chat;
   }
 
   unirseAlChat(chatId: string) {

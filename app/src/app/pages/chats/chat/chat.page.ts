@@ -14,23 +14,24 @@ import { ArticulosService } from 'src/app/services/articulos.service';
 export class ChatPage implements OnInit {
 
   usuario: Usuario = {};
+  yoUsuario: Usuario | undefined = {};
+  otroUsuario: Usuario | undefined = {};
+
   articulo: Articulo = {};
 
   chatId: string = '';
   chat: Chat = {};
-  mensajes: any[] = []; // Ajusta el tipo de datos según tu modelo de mensajes
+  mensajes: any[] = [];
   nuevoMensaje: string = '';
-
-  mostrarTabs = false; // Variable para controlar la visibilidad de las tabs
 
   constructor(private route: ActivatedRoute,
     private chatService: ChatService,
     private usuarioService: UsuarioService,
-    private ruta: Router,
-    private articulosService: ArticulosService) { }
+    private ruta: Router) { }
 
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
+    console.log('USUARIO ACTUAL', this.usuario);
 
     const chatId = this.route.snapshot.paramMap.get('id');
     console.log(chatId);
@@ -38,12 +39,17 @@ export class ChatPage implements OnInit {
       this.chatId = chatId;
       console.log(chatId);
       this.getMensajes();
-      this.chatService.getChatInfo(chatId).subscribe((res: Chat) => {
+      this.chatService.getChatInfo(chatId).then(res => {
         this.chat = res;
         console.log('CHAT', res);
-        if (res) {
-          res.articulo = this.articulo;
-          console.log('ARTICULO', res.articulo)
+        this.articulo = res.articulo;
+        console.log('ARTÍCULO', res.articulo);
+        if (this.chat.usuario1?._id === this.usuario._id) {
+          this.yoUsuario = this.chat.usuario1;
+          this.otroUsuario = this.chat.usuario2;
+        } else if (this.chat.usuario2?._id === this.usuario._id) {
+          this.yoUsuario = this.chat.usuario2;
+          this.otroUsuario = this.chat.usuario1;
         }
       });
 
@@ -70,20 +76,6 @@ export class ChatPage implements OnInit {
     this.chatService.enviarMensaje(this.usuario._id!, this.nuevoMensaje, this.chatId);
     this.nuevoMensaje = '';
   }
-
-  // enviarMensaje() {
-  //   if (this.nuevoMensaje) {
-  //     this.chatService.enviarMensaje(this.chatId, this.nuevoMensaje).subscribe(
-  //       (response: any) => {
-  //         this.nuevoMensaje = '';
-  //         this.getMensajes();
-  //       },
-  //       (error) => {
-  //         console.error('Error al enviar el mensaje', error);
-  //       }
-  //     );
-  //   }
-  // }
 
   goBack() {
     this.ruta.navigate(['/', 'user', 'chats']);

@@ -8,37 +8,13 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let chat of chats" (click)=" irAChat(chat._id)">
+    <ion-item *ngFor="let chat of chats" (click)="irAChat(chat._id)">
       <ion-avatar slot="start">
-        <img src="/assets/avatars/{{ chat.usuario2?.avatar }}">
+        <!-- <img src="/assets/avatars/{{ getUsuarioAvatar(chat) }}"> -->
+        <ion-img *ngIf="chat.articulo" [src]="chat.articulo.galeria?.[0]"></ion-img>
       </ion-avatar>
-      <ion-label>{{ chat.usuario2?.nombre }} {{ chat.usuario2?.apellidos }}</ion-label>
+      <ion-label>{{ chat.articulo?.nombre }}</ion-label>
+      <!-- <ion-label>{{ getUsuarioNombre(chat) }} {{ getUsuarioApellidos(chat) }}</ion-label> -->
     </ion-item>
   </ion-list>
 </ion-content>
-
-<!-- <ion-content [fullscreen]="true" color="light">
-
-  <ion-list *ngIf="segment == 'chats' && (chatRooms) as rooms">
-
-    <ion-item
-    *ngFor="let item of rooms" 
-    (click)="getChat(item)"
-    [detail]="true">
-      <ion-avatar slot="start">
-        <img [src]="item?.photo" />
-      </ion-avatar>
-      <ion-label>
-        {{item?.name}}
-        <p>
-          <ion-text>
-            Mensaje
-          </ion-text>
-        </p>
-      </ion-label>
-      <ion-text slot="end" color="medium">10:00h</ion-text>
-    </ion-item>
-
-  </ion-list>
-
-</ion-content> -->
