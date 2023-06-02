@@ -70,6 +70,17 @@ export class ChatPage implements OnInit {
   getArticuloChat(chat: Chat) {
     return chat.articulo?.nombre;
   }
+  
+  getUltimoMensaje(chat: Chat) {
+    if (chat.mensajes && chat.mensajes.length > 0) {
+      const ultimoMensaje = chat.mensajes[chat.mensajes.length - 1].fechaMsg;
+      const date = new Date(ultimoMensaje);
+      const hora = date.getHours();
+      const minutos = date.getMinutes();
+      return `${hora}:${minutos}`;
+    }
+    return '';
+  }
 
   irAChat(chatId?: string) {
     this.router.navigate(['/', 'user', 'chats', 'chat', chatId]);

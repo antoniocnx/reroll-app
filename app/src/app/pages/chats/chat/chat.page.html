@@ -31,23 +31,12 @@
   </ion-toolbar>
 </ion-header>
 
-
-<!-- <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let mensaje of mensajes" lines="none" class="chat-message" [ngClass]="{'enviado': mensaje.usuario === yoUsuario?._id, 'recibido': mensaje.usuario === otroUsuario?._id}">
-      <!-- <ion-label>{{ mensaje.texto }}</ion-label> ->
-      <div class="message-bubble">
-        <p>{{ mensaje.texto }}</p>
-      </div>
-    </ion-item>
-  </ion-list>
-</ion-content> -->
-
 <ion-content>
   <div class="chat-container">
     <div *ngFor="let mensaje of mensajes" class="chat-message" [ngClass]="{'enviado': mensaje.usuario === yoUsuario?._id, 'recibido': mensaje.usuario === otroUsuario?._id}">
       <div class="message-bubble">
         <p>{{ mensaje.texto }}</p>
+        <span class="message-time">{{ obtenerHora(mensaje.fechaMsg) }}</span>
       </div>
     </div>
   </div>

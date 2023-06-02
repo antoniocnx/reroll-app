@@ -75,6 +75,13 @@ export class ChatPage implements OnInit {
     this.nuevoMensaje = '';
   }
 
+  obtenerHora(fecha: string): string {
+    const date = new Date(fecha);
+    const hora = date.getHours();
+    const minutos = date.getMinutes();
+    return `${hora}:${minutos}`;
+  }
+
   goBack() {
     this.ruta.navigate(['/', 'user', 'chats']);
   }

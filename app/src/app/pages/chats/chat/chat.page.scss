@@ -29,7 +29,8 @@ ion-footer ion-toolbar ion-buttons {
 }
 
 .posicion-title {
-    padding-right: 0;
+    padding-right: 0px;
+    padding-left: 10px;
 }
 
 .color-icono {
@@ -65,7 +66,8 @@ ion-footer ion-toolbar ion-buttons {
     border-radius: 10px;
     color: #fff;
     max-width: 70%;
-    // font-weight: bold;
+    display: flex;
+    flex-direction: column;
 }
 
 .chat-message.enviado .message-bubble {
@@ -89,3 +91,12 @@ ion-footer ion-toolbar ion-buttons {
 .chat-message.recibido .message-bubble p {
     text-align: left;
 }
+
+.message-time {
+    font-size: 12px;
+    // color: #999;
+    color: white;
+    margin-top: 5px;
+    align-self: flex-end;
+}
+  
