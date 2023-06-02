@@ -19,16 +19,16 @@ export class InicioPage implements OnInit {
 
   constructor(private articulosService: ArticulosService) { }
   
-  ionViewDidEnter() {
-    this.articulosService.getArticulos();
-  }
-
   ngOnInit() {
     this.scroll();
-
+    
     this.articulosService.nuevoArticulo.subscribe(arti => {
       this.articulos.unshift(arti);
     });
+  }
+
+  ionViewDidEnter() {
+    this.scroll();
   }
 
   // FUNCIÓN DEL REFRESHER
@@ -53,7 +53,6 @@ export class InicioPage implements OnInit {
     });
   }
   
-
   onCategoriaChange(event: any) {
     this.categoriaBusqueda = event.target.value;
   }

@@ -55,22 +55,7 @@ export class ArticulosService {
     const res: any = await firstValueFrom(this.http.get(`${url}/articulo/${id} `));
     return res.articulo;
   }
-  
-  // FUNCIONA PERO SIN IMÁGENES
-  // crearArticulo(articulo: any) {
-  //   const headers = new HttpHeaders({
-  //     'x-token': this.usuarioService.token
-  //   })
 
-  //   return new Promise(resolve => {
-  //     this.http.post<RespuestaCrearArticulo>(`${url}/articulo/post`, articulo, { headers })
-  //       .subscribe(resp => {
-  //         this.nuevoArticulo.emit(resp['articulo']);
-  //         resolve(true);
-  //       });
-  //   });
-
-  // }
 
   // Crea artículos con imágenes
   crearArticulo(formData: FormData) {
@@ -100,14 +85,5 @@ export class ArticulosService {
   eliminarArticulo(articuloId: string) {
     return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`);
   }
-
-  // eliminarArticulo(articuloId: string) {
-
-  //   const headers = new HttpHeaders({
-  //     'x-token': this.usuarioService.token
-  //   });
-
-  //   return this.http.delete<{ success: boolean, message: string }>(`${url}/articulo/delete/${articuloId}`, { headers });
-  // }
 
 }

@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { IonContent, ScrollDetail } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Articulo } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
-
-// import { AuthService } from 'src/app/services/auth.service';
-// import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-favoritos',
@@ -18,34 +17,48 @@ export class FavoritosPage implements OnInit {
 
   estadoInfiniteScroll = false;
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    // this.usuarioService.favoritos$.subscribe((favoritos: Articulo[]) => {
+    //   this.articulos = favoritos;
+    // });
+
     this.scroll();
+
+  }
+
+  ionViewDidEnter() {
+    // Actualizar la lista de favoritos al entrar en la página
+    this.actualizarFavoritos();
   }
 
   // FUNCIÓN DEL REFRESHER
   refresh(event: any) {
-    this.scroll(event);
+    this.actualizarFavoritos();
     this.articulos = [];
     this.estadoInfiniteScroll = false;
+    if (event) {
+      event.target.complete();
+    }
   }
 
   // FUNCIÓN DEL INFINITE SCROLL
   scroll(event?: any) {
+    this.actualizarFavoritos();
+    if (event) {
+      event.target.complete();
+    }
+  }
 
+  private actualizarFavoritos() {
     this.usuarioService.getFavoritos().subscribe(res => {
-      this.articulos.unshift(...res.favoritos);
+      this.articulos = res.favoritos;
 
-      if (event) {
-        event.target.complete();
-        if (res.favoritos.length === this.articulos.length) {
-          this.estadoInfiniteScroll = true;
-        }
+      if (res.favoritos.length === this.articulos.length) {
+        this.estadoInfiniteScroll = true;
       }
-
     });
-
   }
 
 }

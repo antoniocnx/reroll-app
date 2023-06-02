@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
 import { Articulo, RespuestaFavoritos, RespuestaLogin, RespuestaSignUp, RespuestaUsuario, Usuario, Valoracion, ValoracionUsuario } from '../interfaces/interfaces';
 import { NavController } from '@ionic/angular';
-import { Observable, firstValueFrom, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, firstValueFrom, map } from 'rxjs';
 import { resolve } from 'dns';
 
 const url = environment.heroku_url;
@@ -18,6 +18,13 @@ export class UsuarioService {
 
   private usuario: Usuario = {};
 
+  // Favoritos
+
+  private favoritosSubject: Subject<Articulo[]> = new Subject<Articulo[]>();
+  favoritos$ = this.favoritosSubject.asObservable();
+
+  //
+
   constructor(private http: HttpClient,
     private storage: Storage,
     private navCrtl: NavController) {
@@ -30,6 +37,10 @@ export class UsuarioService {
       this.storage.remove('token');
     });
 
+  }
+
+  actualizarFavoritos(favoritos: Articulo[]) {
+    this.favoritosSubject.next(favoritos);
   }
 
   getUsuario() {
@@ -55,8 +66,6 @@ export class UsuarioService {
 
       this.http.post<RespuestaLogin>(`${url}/usuario/login`, data)
         .subscribe(async resp => {
-          console.log(resp);
-
           if (resp['ok']) {
             await this.guardarToken(resp['token']);
             resolve(true);
@@ -65,9 +74,7 @@ export class UsuarioService {
             this.storage.clear();
             resolve(false);
           }
-
         });
-
     });
 
   }
@@ -83,7 +90,6 @@ export class UsuarioService {
     return new Promise(resolve => {
       this.http.post<RespuestaSignUp>(`${url}/usuario/create`, usuario)
         .subscribe(resp => {
-          console.log(resp);
 
           if (resp.status == 'ok') {
             this.guardarToken(resp['token']);
@@ -130,7 +136,6 @@ export class UsuarioService {
     this.token = token;
     await this.storage.set('token', token);
 
-    // Esto es necesario porque si hago login y logout con el mismo user de seguido la app se raya
     await this.validaToken();
   }
 
@@ -163,11 +168,6 @@ export class UsuarioService {
         })
     });
   }
-
-  // getValoraciones(id: string) {
-  //   const res: any = this.http.get<ValoracionUsuario>(`${ url }/usuario/valoraciones/${ id }`);
-  //   return res.valoraciones;
-  // }
 
   getValoraciones(id: string): Observable<Valoracion[]> {
     return this.http.get<{ ok: boolean, valoraciones: Valoracion[] }>(`${ url }/usuario/valoraciones/${ id }`).pipe(

@@ -16,9 +16,9 @@ const url_local = environment.url;
   styleUrls: ['./articulo.component.scss'],
 })
 export class ArticuloComponent implements OnInit {
-  
+
   @Input() articulo: Articulo = {};
-  
+
   articulosFavoritos: Articulo[] = [];
 
   usuario: Usuario = {};
@@ -26,61 +26,55 @@ export class ArticuloComponent implements OnInit {
   deshabilitado: boolean = true;
 
   esFavorito: boolean = false;
-  
+
   constructor(private router: Router,
     private usuarioService: UsuarioService,
     private http: HttpClient) { }
-  
+
   ngOnInit() {
-    // this.route.paramMap.subscribe(params => {
-    //   const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
-    //   this.articulosService.getArticuloById(id).then(async res => {
-    //     this.articulo = res;
-    //   })
-    // });
 
     this.usuario = this.usuarioService.getUsuario();
 
     this.usuarioService.getFavoritos().subscribe(res => {
       this.articulosFavoritos = res.favoritos;
 
-      this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
+      this.compruebaFavoritos(this.articulosFavoritos);
 
     });
 
-    // this.compruebaFavorito();
   }
 
   favorito(event: Event) {
     event.stopPropagation();
-    
+
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
     });
-    
+
     const articuloId = this.articulo._id;
-    
-    this.http.post(`${ url }/usuario/favoritos/${ articuloId }`, {}, { headers }).subscribe(
+
+    this.http.post(`${url}/usuario/favoritos/${articuloId}`, {}, { headers }).subscribe(
       (res: any) => {
+        const favoritosActualizados = res.favoritos;
         this.esFavorito = !this.esFavorito;
-        // Emitir evento para que en artículos se llame a getArticulos.
-        // Con eventEmitter en articulos.service.ts
+
+        // Emitir los favoritos actualizados
+        this.usuarioService.actualizarFavoritos(favoritosActualizados);
       },
       (err: any) => {
         console.error(err);
       }
     );
-
-    // this.esFavorito != this.esFavorito;
-
   }
-  
+
+  compruebaFavoritos(articulos: Articulo[]) {
+    if(articulos.some(articuloFavorito => articuloFavorito._id === this.articulo._id)) {
+      this.esFavorito = true;
+    }
+  }
+
   irAlArticulo(id: string) {
     this.router.navigate(['/user/item/' + id]);
   }
-
-  // compruebaFavorito() {
-  //   return this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
-  // }
 
 }

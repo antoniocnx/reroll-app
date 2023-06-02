@@ -98,22 +98,6 @@ export class ItemPage implements OnInit {
 
   }
 
-  // ngAfterViewChecked() {
-  //   this.route.paramMap.subscribe(params => {
-  //     const id = params.get('id') ?? ''; // Usa una cadena vacía si params.get('id') devuelve null
-  //     this.articulosService.getArticuloById(id).then(async res => {
-  //       this.articulo = res;
-  //     })
-  //   });
-
-  //   this.usuarioService.getFavoritos().subscribe(res => {
-  //     this.articulosFavoritos = res.favoritos;
-
-  //     this.esFavorito = this.articulosFavoritos.some(articuloFavorito => articuloFavorito._id === this.articulo._id);
-
-  //   });
-  // }
-
   favorito() {
     const headers = new HttpHeaders({
       'x-token': this.usuarioService.token
@@ -224,22 +208,6 @@ export class ItemPage implements OnInit {
 
     await modal.present();
   }
-
-  // crearChat(articuloId?: string, usuarioId?: string) {
-  //   if (articuloId && usuarioId) {
-  //     this.chatService.createChat(articuloId, usuarioId).subscribe(
-  //       (response: any) => {
-  //         const chatId = response.chat._id;
-  //         console.log('Chat creado:', response);
-  //         console.log('Chat ID:', chatId);
-  //         this.ruta.navigate(['/', 'user','chats', 'chat', chatId]);
-  //       },
-  //       (error) => {
-  //         console.error('Error al crear el chat:', error);
-  //       }
-  //     );
-  //   }
-  // }
 
   crearChat(articuloId?: string, usuarioId?: string) {
     if (articuloId && usuarioId) {

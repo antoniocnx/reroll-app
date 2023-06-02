@@ -20,9 +20,7 @@ export class ChatPage implements OnInit {
   constructor(
     private chatService: ChatService,
     private usuarioService: UsuarioService,
-    private router: Router,
-    private ruta: ActivatedRoute
-  ) {}
+    private router: Router) {}
 
   ngOnInit() {
     this.getChats();
