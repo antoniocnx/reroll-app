@@ -71,13 +71,21 @@ export class ChatPage implements OnInit {
     return chat.articulo?.nombre;
   }
   
-  getUltimoMensaje(chat: Chat) {
+  getHoraUltimoMensaje(chat: Chat) {
     if (chat.mensajes && chat.mensajes.length > 0) {
       const ultimoMensaje = chat.mensajes[chat.mensajes.length - 1].fechaMsg;
       const date = new Date(ultimoMensaje);
       const hora = date.getHours();
       const minutos = date.getMinutes();
       return `${hora}:${minutos}`;
+    }
+    return '';
+  }
+
+  getUltimoMensaje(chat: Chat) {
+    if (chat.mensajes && chat.mensajes.length > 0) {
+      const ultimoMensaje = chat.mensajes[chat.mensajes.length - 1].texto;
+      return `${ultimoMensaje}`;
     }
     return '';
   }

@@ -26,40 +26,34 @@ export class MisArticulosPage implements OnInit {
   // }
 
   ngOnInit() {
+
     this.usuario =  this.usuariosService.getUsuario();
-    
-    this.articulosService.nuevoArticulo.subscribe(arti => {
-      if(arti.usuario?._id === this.usuario._id) {
-        this.articulos.unshift(arti);
-        console.log(this.articulos);
-      }
-    });
-    
     this.scroll();
+  
   }
 
-  // FUNCIÓN DEL REFRESHER
+  // REFRESHER
   refresh(event: any) {
-    this.scroll(event, true);
+    this.scroll(event);
     this.articulos = [];
     this.estadoInfiniteScroll = false;
   }
 
-  // FUNCIÓN DEL INFINITE SCROLL
-  scroll(event?: any, pull: boolean = false) {
+  // INFINITE SCROLL
+  scroll(event?: any) {
 
-    this.articulosService.getArticulos(pull)
+    this.articulosService.getTodosArticulos()
       .subscribe(resp => {
-      // this.articulos.push(...resp.articulos);
-      this.articulos = resp.articulos.filter(arti => arti.usuario?._id === this.usuario._id);
+      const misArticulos = resp.articulos.filter(articulo => articulo.usuario?._id === this.usuario._id);
+      this.articulos.unshift(...misArticulos);
+      
       if(event) {
         event.target.complete();
         if(resp.articulos.length === 0) {
           this.estadoInfiniteScroll = true;
         }
       }
-    })
-    
+    });
   }
 
   goBack() {

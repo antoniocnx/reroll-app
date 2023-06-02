@@ -31,7 +31,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <div class="chat-container">
     <div *ngFor="let mensaje of mensajes" class="chat-message" [ngClass]="{'enviado': mensaje.usuario === yoUsuario?._id, 'recibido': mensaje.usuario === otroUsuario?._id}">
       <div class="message-bubble">
@@ -40,7 +40,24 @@
       </div>
     </div>
   </div>
+</ion-content> -->
+
+<ion-content>
+  <div class="chat-container">
+    <ng-container *ngFor="let mensaje of mensajes; let i = index">
+      <div *ngIf="mostrarFecha(i)" class="date-divider">
+        {{ obtenerFecha(mensaje.fechaMsg) }}
+      </div>
+      <div class="chat-message" [ngClass]="{'enviado': mensaje.usuario === yoUsuario?._id, 'recibido': mensaje.usuario === otroUsuario?._id}">
+        <div class="message-bubble">
+          <p>{{ mensaje.texto }}</p>
+          <span class="message-time">{{ obtenerHora(mensaje.fechaMsg) }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </ion-content>
+
 
 
 <ion-footer>

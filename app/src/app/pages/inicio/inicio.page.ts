@@ -8,8 +8,6 @@ import { ArticulosService } from 'src/app/services/articulos.service';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
-
-  rangoPrecio = { lower: 0, upper: 2000 };
   
   textoBusqueda: string = '';
 
@@ -42,20 +40,19 @@ export class InicioPage implements OnInit {
 
   // FUNCIÓN DEL INFINITE SCROLL
   scroll(event?: any, pull: boolean = false) {
-
-    this.articulosService.getArticulos(pull)
-      .subscribe(resp => {
-      this.articulos.push(...resp.articulos);
-      
-      if(event) {
+    this.articulosService.getArticulos(pull).subscribe(resp => {
+      const nuevosArticulos = resp.articulos.filter(articulo => articulo.estado !== 'Vendido');
+      this.articulos.push(...nuevosArticulos);
+  
+      if (event) {
         event.target.complete();
-        if(resp.articulos.length === 0) {
+        if (nuevosArticulos.length === 0) {
           this.estadoInfiniteScroll = true;
         }
       }
-    })
-    
+    });
   }
+  
 
   onCategoriaChange(event: any) {
     this.categoriaBusqueda = event.target.value;

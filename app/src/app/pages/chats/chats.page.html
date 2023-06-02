@@ -11,14 +11,16 @@
     <ion-item *ngFor="let chat of chats" (click)="irAChat(chat._id)">
       <div class="avatar-container">
         <ion-avatar slot="start">
-          <ion-img class="square-avatar" *ngIf="chat.articulo" [src]="chat.articulo.galeria?.[0]"></ion-img>
+          <ion-img *ngIf="chat.articulo" [src]="chat.articulo.galeria?.[0]"></ion-img>
         </ion-avatar>
       </div>
       <ion-label>{{ chat.articulo?.nombre }}</ion-label>
+      <!-- <ion-label>{{ getUltimoMensaje(chat) }}</ion-label> -->
       <!-- Columna para la hora del último mensaje -->
       <ion-col size="3" class="ion-text-end">
-        <ion-label>{{ getUltimoMensaje(chat) }}h</ion-label>
+        <ion-label>{{ getHoraUltimoMensaje(chat) }}h</ion-label>
       </ion-col>
     </ion-item>
   </ion-list>
 </ion-content>
+

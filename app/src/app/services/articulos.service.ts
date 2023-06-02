@@ -43,6 +43,10 @@ export class ArticulosService {
     return this.http.get<RespuestaArticulo>(`${url}/articulo/get?pagina=${this.paginaArticulos}`);
   }
 
+  getTodosArticulos() {
+    return this.http.get<RespuestaArticulo>(`${url}/articulo/get`);
+  }
+
   getNumArticulos() {
     return this.http.get<RespuestaArticulo>(`${url}/articulo/get`);
   }

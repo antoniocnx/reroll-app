@@ -99,4 +99,15 @@ ion-footer ion-toolbar ion-buttons {
     margin-top: 5px;
     align-self: flex-end;
 }
+
+.date-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    color:  var(--ion-color-dark);
+    margin: 10px 0;
+    width: 100%;
+}
   

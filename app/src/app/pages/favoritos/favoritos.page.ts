@@ -22,27 +22,17 @@ export class FavoritosPage implements OnInit {
 
   ngOnInit() {
     this.scroll();
-    
-    this.usuarioService.getFavoritos().subscribe(res => {
-      this.articulos = res.favoritos;
-    }
-    // ,
-    //   error => {
-    //     console.error(error);
-    //   }
-    );
-
   }
 
   // FUNCIÓN DEL REFRESHER
   refresh(event: any) {
-    this.scroll(event, true);
+    this.scroll(event);
     this.articulos = [];
     this.estadoInfiniteScroll = false;
   }
 
   // FUNCIÓN DEL INFINITE SCROLL
-  scroll(event?: any, pull: boolean = false) {
+  scroll(event?: any) {
 
     this.usuarioService.getFavoritos().subscribe(res => {
       this.articulos.unshift(...res.favoritos);
