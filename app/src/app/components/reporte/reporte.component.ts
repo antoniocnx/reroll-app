@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
+import * as DOMPurify from 'dompurify';
 
 const url = environment.heroku_url;
 
@@ -35,7 +36,8 @@ export class ReporteComponent implements OnInit {
       'x-token': this.usuarioService.token
     });
 
-    const motivoSanitizer = this.sanitizer.sanitize(SecurityContext.HTML, this.motivo);
+    // const motivoSanitizer = this.sanitizer.sanitize(SecurityContext.HTML, this.motivo);
+    const motivoSanitizer = DOMPurify.sanitize(this.motivo);
   
     const mensaje = {
       motivo: motivoSanitizer

@@ -77,8 +77,8 @@ export class ChatPage implements OnInit {
 
   obtenerHora(fecha: string): string {
     const date = new Date(fecha);
-    const hora = date.getHours();
-    const minutos = date.getMinutes();
+    const hora = String(date.getHours()).padStart(2, '0');
+    const minutos = String(date.getMinutes()).padStart(2, '0');
     return `${hora}:${minutos}`;
   }
 

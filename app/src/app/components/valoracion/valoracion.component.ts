@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
+import * as DOMPurify from 'dompurify';
 
 const url = environment.heroku_url;
 
@@ -34,7 +35,8 @@ export class ValoracionComponent implements OnInit {
       'x-token': this.usuarioService.token
     });
 
-    const comentarioSanitizer = this.sanitizer.sanitize(SecurityContext.HTML, this.comentario);
+    //const comentarioSanitizer = this.sanitizer.sanitize(SecurityContext.HTML, this.comentario);
+    const comentarioSanitizer = DOMPurify.sanitize(this.comentario);
     
     const valoracion = {
       puntuacion: this.puntuacion,

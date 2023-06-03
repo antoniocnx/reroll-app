@@ -21,6 +21,10 @@ export class PerfilAdminPage implements OnInit {
     this.admin = this.adminService.getAdmin();
   }
 
+  ionViewDidEnter() {
+    this.admin = this.adminService.getAdmin();
+  }
+
   async logout() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',

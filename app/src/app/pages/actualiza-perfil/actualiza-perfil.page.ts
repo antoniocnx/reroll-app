@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -177,6 +177,7 @@ export class ActualizaPerfilPage implements OnInit {
             if (actualizado) {
               // Toast con el mensaje
               this.interfazUsuario.presentToast('Usuario actualizado correctamente');
+
               this.navCrtl.navigateRoot('/user/perfil', { animated: true });
             } else {
               // Toast con el error

@@ -22,7 +22,18 @@
         Categoría
       </ion-segment-button>
     </ion-segment>
+    <ion-select *ngIf="categoriaBusqueda === 'categoria'" [(ngModel)]="textoBusqueda" placeholder="Selecciona una categoría...">
+      <ion-select-option value="">Todas</ion-select-option>
+      <ion-select-option value="Cartas">Cartas</ion-select-option>
+      <ion-select-option value="Creativo">Creativo</ion-select-option>
+      <ion-select-option value="Didactico">Didáctico</ion-select-option>
+      <ion-select-option value="Estrategia">Estrategia</ion-select-option>
+      <ion-select-option value="Familiar">Familiar</ion-select-option>
+      <ion-select-option value="Party">Party</ion-select-option>
+      <ion-select-option value="Rol">Rol</ion-select-option>
+    </ion-select>
   </ion-toolbar>
+
 
   <!-- ARTÍCULOS -->
   <app-articulos *ngIf="articulos" [articulos]="articulos" 

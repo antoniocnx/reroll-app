@@ -13,14 +13,12 @@ export class FavoritosPage implements OnInit {
 
   articulos: Articulo[] = [];
 
-  esFavorito: boolean = false;
-
   estadoInfiniteScroll = false;
 
   constructor(private usuarioService: UsuarioService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    // this.usuarioService.favoritos$.subscribe((favoritos: Articulo[]) => {
+    // this.usuarioService.favoritos$.subscribe((favoritos) => {
     //   this.articulos = favoritos;
     // });
 

@@ -1,15 +1,21 @@
 ion-header ion-toolbar ion-title {
-    text-align: center;
+  text-align: center;
 }
-  
+
 ion-segment-button::part(indicator-background) {
-    background: #ac00d7;
-  }
-  
-  .segment-button-checked.md::part(native) {
-    color: #ac00d7;
-  }
-  
-  ion-segment-button.md::part(indicator-background) {
-    height: 5px;
-  }
+  background: var(--ion-color-tertiary);
+  font-weight: bold;
+}
+
+.segment-button-checked.md::part(native) {
+  color: var(--ion-color-dark);
+}
+
+ion-segment-button.md::part(indicator-background) {
+  height: 5px;
+}
+
+.segment-wrapper {
+  display: flex;
+  align-items: center;
+}

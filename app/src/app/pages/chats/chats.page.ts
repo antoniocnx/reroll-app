@@ -73,8 +73,8 @@ export class ChatPage implements OnInit {
     if (chat.mensajes && chat.mensajes.length > 0) {
       const ultimoMensaje = chat.mensajes[chat.mensajes.length - 1].fechaMsg;
       const date = new Date(ultimoMensaje);
-      const hora = date.getHours();
-      const minutos = date.getMinutes();
+      const hora = String(date.getHours()).padStart(2, '0');
+      const minutos = String(date.getMinutes()).padStart(2, '0');
       return `${hora}:${minutos}`;
     }
     return '';

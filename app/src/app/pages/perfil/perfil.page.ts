@@ -21,6 +21,10 @@ export class PerfilPage implements OnInit {
     this.usuario = this.usuarioService.getUsuario();
   }
 
+  ionViewDidEnter() {
+    this.usuario = this.usuarioService.getUsuario();
+  }
+
   async logout() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',

@@ -17,7 +17,6 @@ export class ReportesPage implements OnInit {
 
   reportes: Reporte[] = [];
 
-  //articuloInfo: boolean = false;
   articuloInfo: { [key: string]: boolean } = {};
 
 
@@ -50,13 +49,6 @@ export class ReportesPage implements OnInit {
     );
   }
 
-  // irAlArticulo(id?: string) {
-  //   if(id) {
-  //     console.log(id);
-  //     this.router.navigate(['/user/item/' + id]);
-  //   }
-  // }
-
   async eliminarReporte(id?: string) {
     if (id) {
       const alert = await this.alertController.create({
@@ -73,11 +65,11 @@ export class ReportesPage implements OnInit {
               this.http.delete(`${url}/reporte/${id}`).subscribe(
                 (response) => {
                   console.log('Reporte eliminado:', response);
-                  // Realiza las acciones necesarias después de eliminar el reporte
+                  // Eliminar el reporte de la lista this.reportes
+                  this.reportes = this.reportes.filter((reporte) => reporte._id !== id);
                 },
                 (error) => {
                   console.error('Error al eliminar el reporte:', error);
-                  // Realiza las acciones necesarias en caso de error
                 }
               );
             },
@@ -111,11 +103,11 @@ export class ReportesPage implements OnInit {
                         this.http.delete(`${url}/reporte/${this.reportes[i]._id}`).subscribe(
                           (response) => {
                             console.log('Reporte eliminado:', response);
-                            // Realiza las acciones necesarias después de eliminar el reporte
+                            // Eliminar el reporte de la lista this.reportes
+                            this.reportes = this.reportes.filter((reporte) => reporte._id !== this.reportes[i]._id);
                           },
                           (error) => {
                             console.error('Error al eliminar el reporte:', error);
-                            // Realiza las acciones necesarias en caso de error
                           }
                         )
                       };//
@@ -133,15 +125,11 @@ export class ReportesPage implements OnInit {
     }
   }
 
-  // mostrarArticulo() {
-  //   this.articuloInfo = !this.articuloInfo;
-  // }
-
   mostrarArticulo(reporteId?: string) {
-    if(reporteId) {
+    if (reporteId) {
       this.articuloInfo[reporteId] = !this.articuloInfo[reporteId];
     }
   }
-  
+
 
 }

@@ -215,7 +215,7 @@ export class ItemPage implements OnInit {
       this.chatService.existeChat(articuloId, this.usuarioActual._id!, usuarioId).subscribe(
         (response: any) => {
           const existeChat = response.existeChat;
-  
+
           if (existeChat) {
             // Si existe el chat, abrir la sala de chat existente
             this.ruta.navigate(['/', 'user', 'chats', 'chat', existeChat._id]);
@@ -240,7 +240,7 @@ export class ItemPage implements OnInit {
       );
     }
   }
-  
-  
+
+
 
 }
