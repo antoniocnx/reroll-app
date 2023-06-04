@@ -187,7 +187,7 @@ export class SignupAdminPage implements OnInit {
 
     const valido = await this.adminService.registro(formSignup.value);
 
-    if (valido) {
+    if (!valido) {
       // Alerta de error
       this.interfazUsuario.alertaLogin('Administrador registrado con éxito.');
     } else {

@@ -11,20 +11,10 @@ import { InterfazUsuarioService } from 'src/app/services/interfaz-usuario.servic
 })
 export class LoginAdminPage implements OnInit {
 
-  loginAdmin = {
-    email: 'admin1@admin.com',
-    password: '123456'
-  }
-
   formLogin: FormGroup = this.formBuilder.group({
-    email: ['admin1@admin.com', [Validators.required, Validators.email, this.noScriptValidator]],
-    password: ['123456', [Validators.required, this.noScriptValidator]]
+    email: ['', [Validators.required, Validators.email, this.noScriptValidator]],
+    password: ['', [Validators.required, this.noScriptValidator]]
   })
-
-  // formLogin: FormGroup = this.formBuilder.group ({
-  //   email: ['', [ Validators.required, Validators.email] ],
-  //   password: ['', [ Validators.required ] ]
-  // })
 
   isTypePassword: boolean = true;
   isLogin = false;
@@ -60,10 +50,6 @@ export class LoginAdminPage implements OnInit {
     if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
       return { noHTML: true };
     }
-
-    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
-    //   return { noScript: true };
-    // }
 
     return null;
   }

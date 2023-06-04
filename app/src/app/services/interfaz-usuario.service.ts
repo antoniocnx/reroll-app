@@ -11,7 +11,7 @@ export class InterfazUsuarioService {
 
   async alertaLogin(mensaje: string) {
     const alert = await this.alertController.create({
-      header: 'Error',
+      header: 'Alerta',
       message: mensaje,
       buttons: ['OK'],
     });

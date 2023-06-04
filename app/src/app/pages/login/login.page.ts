@@ -12,8 +12,8 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class LoginPage implements OnInit {
 
   formLogin: FormGroup = this.formBuilder.group({
-    email: ['test1@test.com', [Validators.required, Validators.email, this.noScriptValidator]],
-    password: ['123456', [Validators.required, this.noScriptValidator]]
+    email: ['', [Validators.required, Validators.email, this.noScriptValidator]],
+    password: ['', [Validators.required, this.noScriptValidator]]
   })
 
   isTypePassword: boolean = true;
@@ -52,10 +52,6 @@ export class LoginPage implements OnInit {
     if (/\<|\>|javascript:|on\w+\s*=/.test(value)) {
       return { noHTML: true };
     }
-
-    // if (/\<script.*\>|javascript:|on\w+\s*=/.test(value)) {
-    //   return { noScript: true };
-    // }
 
     return null;
   }
