@@ -39,7 +39,7 @@ export class SignupPage implements OnInit {
     localidad: ['', [Validators.required, this.noScriptValidator]],
     pais: ['', [Validators.required, this.noScriptValidator]],
     cp: [[Validators.required, this.noScriptValidator]],
-    avatar: ['av-robin.png'],
+    avatar: [''],
     checkbox: [false, [Validators.requiredTrue, this.noScriptValidator]]
   })
 
